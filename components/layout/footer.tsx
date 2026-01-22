@@ -1,0 +1,231 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useI18n } from '@/lib/i18n/context';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Linkedin,
+  Twitter,
+  Facebook,
+  ArrowRight,
+  Send
+} from 'lucide-react';
+
+export function Footer() {
+  const { t, language } = useI18n();
+  const [email, setEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubscribe = () => {
+    if (!email || !email.includes('@')) {
+      setSubscribeStatus('error');
+      setTimeout(() => setSubscribeStatus('idle'), 3000);
+      return;
+    }
+    // Simulate subscription success
+    setSubscribeStatus('success');
+    setEmail('');
+    setTimeout(() => setSubscribeStatus('idle'), 3000);
+  };
+
+  const quickLinks = [
+    { href: '/', label: t?.nav?.home ?? 'Inicio' },
+    { href: '/business-consultants', label: t?.nav?.businessConsultants ?? 'Consultores' },
+    { href: '/success-stories', label: t?.nav?.successStories ?? 'Proyectos' },
+    { href: '/team-profile', label: t?.nav?.teamProfile ?? 'Perfil' },
+    { href: '/blog', label: t?.nav?.blog ?? 'Blog' },
+    { href: '/contact', label: t?.nav?.contact ?? 'Contacto' },
+  ];
+
+  const serviceLinks = [
+    { href: '/services/process-consulting', label: t?.servicesDropdown?.processConsulting ?? 'Consultoría de Procesos' },
+    { href: '/services/quality-consulting', label: t?.servicesDropdown?.qualityConsulting ?? 'Consultoría de Calidad' },
+    { href: '/services/project-consulting', label: t?.servicesDropdown?.projectConsulting ?? 'Consultoría de Proyectos' },
+    { href: '/services/it-consulting', label: t?.servicesDropdown?.itConsulting ?? 'Consultoría de TI' },
+    { href: '/services/software-development', label: t?.servicesDropdown?.softwareDevelopment ?? 'Desarrollo de Software' },
+  ];
+
+  return (
+    <footer className="bg-azul-marino relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      </div>
+
+      {/* Main Footer Content */}
+      <div className="container-custom relative z-10 pt-20 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+          {/* Brand Column */}
+          <div className="lg:col-span-1">
+            <Link href="/" className="inline-flex items-center gap-3 mb-6">
+              <div className="relative w-12 h-12 rounded-xl overflow-hidden">
+                <Image
+                  src="/logo_8.jpeg"
+                  alt="Alternative Logo"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <span className="text-white font-semibold text-xl">Alternative</span>
+            </Link>
+            <p className="text-white/60 mb-6 leading-relaxed">
+              {language === 'es' 
+                ? 'Impulsamos tu empresa estratégicamente con soluciones integrales en consultoría, desarrollo de software e infraestructura tecnológica.'
+                : 'We strategically boost your business with comprehensive solutions in consulting, software development, and technological infrastructure.'}
+            </p>
+            {/* Social Links */}
+            <div className="flex gap-3">
+              {[
+                { icon: Linkedin, href: '#', label: 'LinkedIn' },
+                { icon: Twitter, href: '#', label: 'Twitter' },
+                { icon: Facebook, href: '#', label: 'Facebook' },
+              ].map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center text-white/70 hover:bg-turquesa hover:text-azul-marino transition-all duration-300"
+                    aria-label={social.label}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-white font-semibold text-lg mb-6">
+              {language === 'es' ? 'Enlaces Rápidos' : 'Quick Links'}
+            </h4>
+            <ul className="space-y-3">
+              {quickLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-white/60 hover:text-turquesa transition-colors inline-flex items-center gap-2 group"
+                  >
+                    <ArrowRight className="w-4 h-4 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Services */}
+          <div>
+            <h4 className="text-white font-semibold text-lg mb-6">
+              {language === 'es' ? 'Servicios' : 'Services'}
+            </h4>
+            <ul className="space-y-3">
+              {serviceLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-white/60 hover:text-turquesa transition-colors inline-flex items-center gap-2 group"
+                  >
+                    <ArrowRight className="w-4 h-4 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h4 className="text-white font-semibold text-lg mb-6">
+              {language === 'es' ? 'Contacto' : 'Contact'}
+            </h4>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-turquesa flex-shrink-0 mt-0.5" />
+                <span className="text-white/60">
+                  Panamá, Ciudad de Panamá
+                </span>
+              </li>
+              <li>
+                <a href="tel:+50769908906" className="flex items-center gap-3 text-white/60 hover:text-turquesa transition-colors">
+                  <Phone className="w-5 h-5 text-turquesa flex-shrink-0" />
+                  +507 6990-8906
+                </a>
+              </li>
+              <li>
+                <a href="mailto:info@grupoalternative.com" className="flex items-center gap-3 text-white/60 hover:text-turquesa transition-colors">
+                  <Mail className="w-5 h-5 text-turquesa flex-shrink-0" />
+                  info@grupoalternative.com
+                </a>
+              </li>
+              <li className="flex items-start gap-3">
+                <Clock className="w-5 h-5 text-turquesa flex-shrink-0 mt-0.5" />
+                <span className="text-white/60">
+                  {language === 'es' ? 'Lun-Sáb: 08:00 a.m. - 05:00 p.m.' : 'Mon-Sat: 08:00 AM - 05:00 PM'}
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Newsletter Section */}
+        <div className="border-t border-white/10 pt-8 pb-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div>
+              <h4 className="text-white font-semibold text-lg mb-2">
+                {language === 'es' ? 'Suscríbete a Nuestro Newsletter' : 'Subscribe to Our Newsletter'}
+              </h4>
+              <p className="text-white/60">
+                {language === 'es' 
+                  ? 'Recibe insights y tendencias de consultoría directamente en tu correo.'
+                  : 'Get consulting insights and trends delivered directly to your inbox.'}
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-3">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={language === 'es' ? 'Tu correo electrónico' : 'Your email address'}
+                  className="bg-white/10 border border-white/20 rounded-xl px-5 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-turquesa w-full lg:w-72"
+                />
+                <button 
+                  onClick={handleSubscribe}
+                  className="bg-turquesa text-azul-marino font-semibold px-6 py-3 rounded-xl hover:bg-menta transition-all duration-300 flex items-center gap-2 flex-shrink-0"
+                >
+                  <Send className="w-5 h-5" />
+                  <span className="hidden sm:inline">{language === 'es' ? 'Suscribir' : 'Subscribe'}</span>
+                </button>
+              </div>
+              {subscribeStatus === 'success' && (
+                <p className="text-menta text-sm">{language === 'es' ? '¡Gracias por suscribirte!' : 'Thanks for subscribing!'}</p>
+              )}
+              {subscribeStatus === 'error' && (
+                <p className="text-red-400 text-sm">{language === 'es' ? 'Por favor ingresa un email válido' : 'Please enter a valid email'}</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-white/10 pt-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <p className="text-white/50 text-sm">
+              © {new Date().getFullYear()} Grupo Alternative. {language === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+            </p>
+            <p className="text-white/50 text-sm">
+              {language === 'es' ? 'Consultores Tecnológicos Empresariales' : 'Enterprise Technology Consultants'}
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
