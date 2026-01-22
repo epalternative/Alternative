@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request?.json?.();
+    const body = await request.json();
     const { name, email, phone, company, message } = body ?? {};
 
     // Validation
@@ -18,28 +18,19 @@ export async function POST(request: NextRequest) {
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex?.test?.(email)) {
+    if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
       );
     }
 
-    // Save to database
-    const contact = await prisma?.contactForm?.create?.({
-      data: {
-        name: String(name ?? ''),
-        email: String(email ?? ''),
-        phone: phone ? String(phone) : null,
-        company: company ? String(company) : null,
-        message: String(message ?? ''),
-        status: 'new',
-        formType: 'contact',
-      },
-    });
+    // TODO: Add database integration when DATABASE_URL is configured
+    // For now, just log and return success
+    console.log('Contact form submission:', { name, email, phone, company, message });
 
     return NextResponse.json(
-      { success: true, id: contact?.id },
+      { success: true, message: 'Form submitted successfully' },
       { status: 201 }
     );
   } catch (error) {
