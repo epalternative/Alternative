@@ -901,8 +901,20 @@ export default function Home() {
 
 
       {/* ===================== CTA FINAL ===================== */}
-      <section className="py-20 lg:py-32 bg-azul-marino">
-        <div className="container-custom">
+      <section className="py-20 lg:py-32 bg-violeta relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Large blob top right */}
+          <div className="absolute -top-32 -right-32 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+          {/* Medium blob bottom left */}
+          <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-azul-marino/40 rounded-full blur-2xl" />
+          {/* Small accent blob */}
+          <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-turquesa/10 rounded-full blur-3xl" />
+          {/* Curved shape overlay */}
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-white/5 rounded-l-[100px]" />
+        </div>
+        
+        <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Left content */}
             <AnimatedSection>
