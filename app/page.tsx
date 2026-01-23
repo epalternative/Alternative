@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useI18n } from '@/lib/i18n/context';
 import { Counter } from '@/components/ui/counter';
 import {
@@ -44,7 +44,10 @@ import {
   FileText,
   BadgeCheck,
   Globe,
-  Timer
+  Timer,
+  Handshake,
+  BookOpen,
+  Calendar
 } from 'lucide-react';
 
 // Animated section wrapper
@@ -98,550 +101,479 @@ const StaggerItem = ({ children, className = '' }: { children: React.ReactNode; 
   </motion.div>
 );
 
-export default function HomePage() {
+export default function Home() {
   const { language } = useI18n();
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const [formData, setFormData] = useState({
+    nombre: '',
+    email: '',
+    telefono: '',
+    empresa: '',
+    industria: '',
+    desafio: '',
+    horario: ''
+  });
 
-  // Trust badges
-  const trustBadges = [
-    { icon: BadgeCheck, label: 'PMP® Certified' },
-    { icon: FileCheck, label: 'ISO 9001 Lead Auditor' },
-    { icon: GraduationCap, label: 'MBA' },
-    { icon: Clock, label: '15+ años experiencia' },
-  ];
-
-  // Problems and Solutions
-  const problems = [
-    {
-      title: language === 'es' ? 'Procesos ineficientes que elevan costos' : 'Inefficient processes raising costs',
-      desc: language === 'es' 
-        ? 'Operaciones manuales repetitivas, cuellos de botella ocultos, desperdicios que nadie puede cuantificar. Cada día perdido es dinero que se evapora.'
-        : 'Repetitive manual operations, hidden bottlenecks, unquantified waste. Every lost day is evaporating money.',
-    },
-    {
-      title: language === 'es' ? 'Proyectos que se retrasan o fracasan' : 'Projects that delay or fail',
-      desc: language === 'es'
-        ? 'Sin metodología clara, con alcance descontrolado, equipos desalineados y cronogramas irreales. El 70% de proyectos fallan por mala gestión.'
-        : 'No clear methodology, scope creep, misaligned teams, unrealistic timelines. 70% of projects fail due to poor management.',
-    },
-    {
-      title: language === 'es' ? 'Necesidad urgente de certificación ISO 9001' : 'Urgent need for ISO 9001 certification',
-      desc: language === 'es'
-        ? 'Cumplimiento regulatorio para licitaciones, clientes corporativos exigentes, o requisitos del sector bancario. Sin certificación, pierdes oportunidades.'
-        : 'Regulatory compliance for bids, demanding corporate clients, banking sector requirements. Without certification, you lose opportunities.',
-    },
-    {
-      title: language === 'es' ? 'Transformación digital sin resultados' : 'Digital transformation without results',
-      desc: language === 'es'
-        ? 'Implementaste software, pero los procesos siguen igual de lentos. La tecnología sin rediseño de procesos solo automatiza la ineficiencia.'
-        : 'You implemented software, but processes are still slow. Technology without process redesign only automates inefficiency.',
-    },
-  ];
-
-  const solutions = [
-    {
-      title: language === 'es' ? 'Reducimos costos operativos entre 25-40%' : 'We reduce operational costs by 25-40%',
-      desc: language === 'es'
-        ? 'Mapeo completo AS-IS/TO-BE, eliminación de desperdicios, automatización estratégica. Metodologías BPM y Lean Six Sigma con resultados medibles en 90 días.'
-        : 'Complete AS-IS/TO-BE mapping, waste elimination, strategic automation. BPM and Lean Six Sigma methodologies with measurable results in 90 days.',
-    },
-    {
-      title: language === 'es' ? 'Proyectos exitosos con metodologías comprobadas' : 'Successful projects with proven methodologies',
-      desc: language === 'es'
-        ? 'PMP, Agile/Scrum, PMO estructurado. Planificación realista, seguimiento estricto, gestión de riesgos proactiva. Tus proyectos terminan a tiempo y en presupuesto.'
-        : 'PMP, Agile/Scrum, structured PMO. Realistic planning, strict monitoring, proactive risk management. Your projects finish on time and on budget.',
-    },
-    {
-      title: language === 'es' ? 'Certificaciones ISO 9001 en tiempo récord' : 'ISO 9001 certifications in record time',
-      desc: language === 'es'
-        ? 'Implementación completa, auditoría interna y acompañamiento hasta certificación. Conocemos los requisitos del sector bancario, manufactura y servicios.'
-        : 'Complete implementation, internal audit and support until certification. We know the requirements for banking, manufacturing and services sectors.',
-    },
-    {
-      title: language === 'es' ? 'Transformación digital con ROI comprobado' : 'Digital transformation with proven ROI',
-      desc: language === 'es'
-        ? 'Primero optimizamos procesos, luego digitalizamos. Roadmap claro, priorización basada en impacto, gestión del cambio. Tecnología que realmente transforma.'
-        : 'First we optimize processes, then we digitalize. Clear roadmap, impact-based prioritization, change management. Technology that truly transforms.',
-    },
-  ];
-
-  // Services - 6 services
+  // Services data
   const services = [
-    { 
-      icon: Settings, 
-      title: language === 'es' ? 'Optimización de Procesos' : 'Process Optimization', 
-      desc: language === 'es' ? 'BPM, Lean Six Sigma, automatización y mapeo de procesos. Reducimos costos operativos y eliminamos desperdicios con metodologías probadas.' : 'BPM, Lean Six Sigma, automation and process mapping. We reduce operational costs and eliminate waste with proven methodologies.',
-      tags: ['BPM', 'Lean Six Sigma', 'RPA', 'AS-IS / TO-BE'],
-      href: '/services/process-consulting', 
-      color: 'bg-menta'
+    {
+      icon: Settings,
+      title: 'Optimización de Procesos',
+      description: 'BPM empresarial, Lean Six Sigma y diseño de procesos. Reducimos costos operativos entre 25-40% con metodologías probadas y resultados medibles.',
+      includes: ['BPM empresarial', 'Lean Six Sigma', 'Diseño y rediseño de procesos', 'Automatización de procesos'],
+      benefit: 'Operaciones más eficientes y rentables',
+      href: '/servicios/optimizacion-procesos',
+      color: 'bg-turquesa/10'
     },
-    { 
-      icon: FolderKanban, 
-      title: language === 'es' ? 'Gestión de Proyectos' : 'Project Management', 
-      desc: language === 'es' ? 'PMP Project Management, metodologías ágiles y PMO Office. Proyectos que terminan a tiempo, en presupuesto y con los resultados esperados.' : 'PMP Project Management, agile methodologies and PMO Office. Projects that finish on time, on budget and with expected results.',
-      tags: ['PMP®', 'Scrum/Kanban', 'PMO Office', 'Auditoría'],
-      href: '/services/project-consulting', 
-      color: 'bg-violeta'
+    {
+      icon: FolderKanban,
+      title: 'Gestión de Proyectos',
+      description: 'PMP Project Management, metodologías ágiles y PMO Office. Proyectos que terminan a tiempo, en presupuesto y generan el valor esperado por el negocio.',
+      includes: ['PMP® Project Management', 'Metodologías Ágiles (Scrum/Kanban)', 'PMO Office (governance)', 'Casos de negocio y viabilidad'],
+      benefit: 'Proyectos predecibles y exitosos',
+      href: '/servicios/gestion-proyectos',
+      color: 'bg-azul-marino/5'
     },
-    { 
-      icon: Award, 
-      title: language === 'es' ? 'Sistemas de Calidad ISO 9001' : 'ISO 9001 Quality Systems', 
-      desc: language === 'es' ? 'Implementación, auditoría y certificación ISO 9001. Especializados en sector bancario, financiero y manufactura con requisitos regulatorios estrictos.' : 'ISO 9001 implementation, audit and certification. Specialized in banking, financial and manufacturing sectors with strict regulatory requirements.',
-      tags: ['ISO 9001', 'Auditoría Interna', 'Certificación', 'Sector Financiero'],
-      href: '/services/quality-consulting', 
-      color: 'bg-turquesa'
+    {
+      icon: Award,
+      title: 'Sistemas de Calidad',
+      description: 'Implementación, auditoría y gestión de sistemas de calidad basados en ISO 9001 y otros marcos de referencia. Especializados en sectores regulados como banca y manufactura.',
+      includes: ['Implementación de sistemas de calidad', 'Auditoría y mejora continua', 'Alineación con ISO 9001', 'Gestión de calidad sostenible'],
+      benefit: 'Calidad estructurada y sostenible',
+      href: '/servicios/sistemas-calidad',
+      color: 'bg-menta/10'
     },
-    { 
-      icon: Cpu, 
-      title: language === 'es' ? 'Transformación Digital' : 'Digital Transformation', 
-      desc: language === 'es' ? 'Roadmap de transformación, automatización inteligente y adopción tecnológica. Primero optimizamos procesos, luego digitalizamos para ROI real.' : 'Transformation roadmap, intelligent automation and technology adoption. First we optimize processes, then digitalize for real ROI.',
-      tags: ['Roadmap', 'Change Management', 'Automatización', 'Adopción'],
-      href: '/services/it-consulting', 
-      color: 'bg-lavanda'
+    {
+      icon: Cpu,
+      title: 'Transformación Digital',
+      description: 'Roadmap de transformación, automatización inteligente y habilitación tecnológica. Primero optimizamos procesos, luego digitalizamos para asegurar ROI real y sostenible.',
+      includes: ['Estrategia de transformación digital', 'Automatización inteligente', 'Desarrollo de software a medida', 'Infraestructura IT'],
+      benefit: 'Digitalización con impacto medible',
+      href: '/servicios/transformacion-digital',
+      color: 'bg-turquesa/5'
     },
-    { 
-      icon: Target, 
-      title: language === 'es' ? 'Consultoría Estratégica' : 'Strategic Consulting', 
-      desc: language === 'es' ? 'Diagnóstico organizacional, priorización estratégica y planes de ejecución. Te ayudamos a identificar qué optimizar primero para máximo impacto.' : 'Organizational diagnosis, strategic prioritization and execution plans. We help you identify what to optimize first for maximum impact.',
-      tags: ['Diagnóstico', 'Análisis de Brechas', 'Priorización', 'Roadmap'],
-      href: '/business-consultants', 
-      color: 'bg-oliva'
+    {
+      icon: Target,
+      title: 'Consultoría Estratégica',
+      description: 'Diagnóstico organizacional, estudios de viabilidad y desarrollo de RFP. Identificamos qué optimizar primero para generar máximo impacto empresarial.',
+      includes: ['Diagnóstico organizacional', 'Estudios de viabilidad', 'Desarrollo de RFP estratégicos', 'Roadmaps de ejecución'],
+      benefit: 'Decisiones basadas en datos',
+      href: '/servicios/consultoria-estrategica',
+      color: 'bg-gris-arena/20'
     },
-    { 
-      icon: Code, 
-      title: language === 'es' ? 'Desarrollo de Software' : 'Software Development', 
-      desc: language === 'es' ? 'Soluciones internas, portales corporativos y automatización custom. Cuando tu proceso optimizado requiere una herramienta que no existe en el mercado.' : 'Internal solutions, corporate portals and custom automation. When your optimized process requires a tool that doesn\'t exist in the market.',
-      tags: ['Apps Internas', 'Portales', 'APIs', 'Automatización'],
-      href: '/services/software-development', 
-      color: 'bg-gris-arena',
-      isComplementary: true
-    },
+    {
+      icon: Code,
+      title: 'Desarrollo & Tecnología',
+      description: 'Soluciones de software a medida, portales corporativos y soporte de infraestructura. Para cuando tu proceso optimizado necesita tecnología específica que no existe en el mercado.',
+      includes: ['Aplicaciones a medida', 'Portales corporativos', 'Integraciones API', 'Soporte de infraestructura IT'],
+      benefit: 'Soluciones tecnológicas adaptadas',
+      href: '/servicios/desarrollo-tecnologia',
+      badge: 'Servicios complementarios',
+      color: 'bg-blanco-hueso'
+    }
   ];
 
-  // Industries
+  // Industries data
   const industries = [
     {
       icon: Building2,
-      title: language === 'es' ? 'Banca y Servicios Financieros' : 'Banking & Financial Services',
-      desc: language === 'es' ? 'Cumplimiento regulatorio SBP, optimización de procesos core, ISO 9001 para instituciones financieras.' : 'SBP regulatory compliance, core process optimization, ISO 9001 for financial institutions.',
-      challenges: language === 'es' 
-        ? ['Acuerdos SBP 8-2025 y 9-2025', 'ALA/CFT compliance', 'Eficiencia operacional', 'Resiliencia digital (DORA)']
-        : ['SBP Agreements 8-2025 and 9-2025', 'AML/CFT compliance', 'Operational efficiency', 'Digital resilience (DORA)'],
-      href: '/services/quality-consulting',
+      title: 'Banca y Servicios Financieros',
+      description: 'Cumplimiento regulatorio, optimización de procesos core, sistemas de calidad para instituciones financieras, transformación digital bancaria y resiliencia operativa.',
+      challenges: ['Cumplimiento regulatorio estricto', 'Eficiencia operacional bajo presión de costos', 'Transformación digital con seguridad', 'Gestión de riesgos operacionales'],
+      solutions: ['Optimización de procesos de crédito', 'Implementación de sistemas de calidad', 'Automatización de operaciones bancarias', 'Compliance y auditoría regulatoria'],
+      href: '/industrias/banca-servicios-financieros'
     },
     {
       icon: Factory,
-      title: language === 'es' ? 'Manufactura y Logística' : 'Manufacturing & Logistics',
-      desc: language === 'es' ? 'Optimización de cadena de suministro, reducción de tiempos de ciclo, Lean Manufacturing.' : 'Supply chain optimization, cycle time reduction, Lean Manufacturing.',
-      challenges: language === 'es'
-        ? ['Desperdicios en producción', 'Inventarios descontrolados', 'Tiempos de entrega', 'Calidad y trazabilidad']
-        : ['Production waste', 'Uncontrolled inventory', 'Delivery times', 'Quality and traceability'],
-      href: '/services/process-consulting',
+      title: 'Manufactura y Logística',
+      description: 'Optimización de cadena de suministro, reducción de tiempos de ciclo, implementación de sistemas de calidad y mejora continua con Lean Manufacturing.',
+      challenges: ['Desperdicios en línea de producción', 'Inventarios descontrolados', 'Tiempos de entrega inconsistentes', 'Trazabilidad y calidad'],
+      solutions: ['Lean Manufacturing y Six Sigma', 'Optimización de cadena de suministro', 'Sistemas de calidad ISO 9001', 'Automatización de planta'],
+      href: '/industrias/manufactura-logistica'
     },
     {
       icon: ShoppingCart,
-      title: language === 'es' ? 'Retail y Comercio' : 'Retail & Commerce',
-      desc: language === 'es' ? 'Eficiencia operacional en tiendas, optimización de inventarios, experiencia de cliente mejorada.' : 'Store operational efficiency, inventory optimization, improved customer experience.',
-      challenges: language === 'es'
-        ? ['Rotación de inventario', 'Experiencia omnicanal', 'Múltiples sucursales', 'Márgenes bajo presión']
-        : ['Inventory turnover', 'Omnichannel experience', 'Multiple branches', 'Margins under pressure'],
-      href: '/services/process-consulting',
+      title: 'Retail y Comercio',
+      description: 'Eficiencia operacional en puntos de venta, optimización de inventarios, experiencia de cliente mejorada y procesos escalables para múltiples sucursales.',
+      challenges: ['Rotación de inventario eficiente', 'Experiencia cliente consistente', 'Operación de múltiples ubicaciones', 'Márgenes bajo presión competitiva'],
+      solutions: ['Optimización de procesos comerciales', 'Sistemas de gestión de inventario', 'Estandarización multi-sucursal', 'Transformación digital retail'],
+      href: '/industrias/retail-comercio'
     },
     {
       icon: Laptop,
-      title: language === 'es' ? 'Tecnología y Telecomunicaciones' : 'Technology & Telecommunications',
-      desc: language === 'es' ? 'Escalamiento operacional, gobierno de proyectos tecnológicos, procesos ágiles.' : 'Operational scaling, technology project governance, agile processes.',
-      challenges: language === 'es'
-        ? ['Escalar sin perder agilidad', 'Gobierno de proyectos', 'Time-to-market', 'Deuda técnica']
-        : ['Scale without losing agility', 'Project governance', 'Time-to-market', 'Technical debt'],
-      href: '/services/project-consulting',
-    },
+      title: 'Tecnología y Telecomunicaciones',
+      description: 'Escalamiento operacional, gobierno de proyectos tecnológicos, procesos ágiles y gestión de portafolios de productos digitales.',
+      challenges: ['Escalar sin perder agilidad', 'Gobierno de múltiples proyectos simultáneos', 'Time-to-market competitivo', 'Calidad y deuda técnica'],
+      solutions: ['PMO estructurado', 'Metodologías ágiles a escala', 'Optimización de procesos de desarrollo', 'Gestión de portafolio de proyectos'],
+      href: '/industrias/tecnologia-telecomunicaciones'
+    }
   ];
 
-  // Why us differentiators
-  const differentiators = [
+  // Success cases data
+  const successCases = [
     {
-      icon: GraduationCap,
-      title: language === 'es' ? 'Certificaciones y Expertise de Clase Mundial' : 'World-Class Certifications & Expertise',
-      desc: language === 'es'
-        ? 'Katherine González, nuestra CEO: MBA, PMP® certificada por PMI, ISO 9001 Lead Auditor. 15+ años liderando transformaciones en banca, manufactura, tecnología y retail.'
-        : 'Katherine González, our CEO: MBA, PMI certified PMP®, ISO 9001 Lead Auditor. 15+ years leading transformations in banking, manufacturing, technology and retail.',
-      stat: '15+ años | 50+ proyectos',
+      industry: 'Banca y Servicios Financieros',
+      title: 'Institución Financiera Regional',
+      challenge: 'Procesos de aprobación de créditos excesivamente lentos (15-20 días promedio), incumplimiento de SLA internos, alto costo operacional por gestión manual y múltiples aprobaciones innecesarias.',
+      solution: 'Rediseño completo del proceso de crédito bajo metodología BPM, automatización de validaciones repetitivas, eliminación de aprobaciones redundantes, capacitación de equipos y tableros de control en tiempo real.',
+      results: [
+        { metric: '40%', label: 'Reducción tiempo aprobación' },
+        { metric: '25%', label: 'Aumento productividad' },
+        { metric: '100%', label: 'Cumplimiento SLA' }
+      ],
+      testimonial: 'Alternative no solo optimizó nuestros procesos, nos enseñó a gestionarlos con disciplina. Hoy somos una institución más ágil y competitiva, y lo más importante: lo mantenemos internamente.',
+      author: 'CFO, Institución Financiera Regional'
     },
     {
-      icon: BarChart3,
-      title: language === 'es' ? 'Metodologías Probadas, Resultados Medibles' : 'Proven Methodologies, Measurable Results',
-      desc: language === 'es'
-        ? 'No vendemos teoría. Aplicamos BPM, Lean Six Sigma, PMP y Agile con disciplina. Cada proyecto tiene métricas claras: reducción de costos, tiempo de ciclo, calidad.'
-        : 'We don\'t sell theory. We apply BPM, Lean Six Sigma, PMP and Agile with discipline. Every project has clear metrics: cost reduction, cycle time, quality.',
-      stat: '35% reducción costos',
+      industry: 'Manufactura y Logística',
+      title: 'Empresa de Manufactura y Logística',
+      challenge: 'Inventarios descontrolados sin visibilidad real, tiempos de entrega inconsistentes (solo 60% a tiempo), desperdicios no cuantificados en línea de producción, falta de sistema de calidad documentado.',
+      solution: 'Implementación de Lean Manufacturing, mapeo completo de cadena de valor, sistema Kanban para control de inventario, capacitación en mejora continua y acompañamiento para implementación de sistema de calidad ISO 9001.',
+      results: [
+        { metric: '30%', label: 'Reducción inventario' },
+        { metric: '92%', label: 'Entregas a tiempo' },
+        { metric: '$180K', label: 'Ahorros anuales' }
+      ],
+      testimonial: 'Identificamos y eliminamos desperdicios que ni sabíamos que existían. El ROI de la consultoría se recuperó en 4 meses, y seguimos mejorando con las herramientas que nos dejaron.',
+      author: 'COO, Empresa de Manufactura'
     },
     {
-      icon: Zap,
-      title: language === 'es' ? 'Expertise Big Four, Agilidad Boutique' : 'Big Four Expertise, Boutique Agility',
-      desc: language === 'es'
-        ? 'Conocemos las metodologías de las grandes consultoras, pero sin su burocracia ni precios prohibitivos. Respuesta rápida, equipos dedicados, atención directa de socios.'
-        : 'We know big consulting methodologies, but without their bureaucracy or prohibitive prices. Fast response, dedicated teams, direct partner attention.',
-      stat: '90 días implementación',
-    },
-    {
-      icon: Globe,
-      title: language === 'es' ? 'Conocimiento del Mercado Panameño' : 'Panamanian Market Knowledge',
-      desc: language === 'es'
-        ? 'Entendemos la Superintendencia de Bancos de Panamá, la realidad del mercado local, los desafíos de operar en LATAM. Soluciones adaptadas a tu contexto.'
-        : 'We understand Panama\'s Banking Superintendency, local market reality, LATAM operational challenges. Solutions adapted to your context.',
-      stat: '100% cumplimiento SBP',
-    },
+      industry: 'Tecnología',
+      title: 'Empresa de Tecnología (PMO Implementation)',
+      challenge: 'Múltiples proyectos sin metodología estándar, 70% con retrasos significativos, equipos trabajando en silos, clientes insatisfechos con tiempos de entrega, falta de visibilidad ejecutiva del portafolio.',
+      solution: 'Implementación de PMO Office estructurado, adopción de marcos Scrum y Kanban para proyectos ágiles, capacitación PMP para líderes de proyecto, dashboards ejecutivos de seguimiento y priorización de portafolio.',
+      results: [
+        { metric: '85%', label: 'Proyectos a tiempo' },
+        { metric: '50%', label: 'Reducción retrabajo' },
+        { metric: '4.5/5', label: 'Satisfacción cliente' }
+      ],
+      testimonial: 'Pasamos de no saber qué estaba pasando en nuestros proyectos, a tener un PMO que realmente agrega valor estratégico, no solo reportes que nadie lee.',
+      author: 'CTO, Empresa de Tecnología'
+    }
   ];
 
-  // Case studies / Success stories
-  const caseStudies = [
-    {
-      industry: language === 'es' ? 'Banca' : 'Banking',
-      title: language === 'es' ? 'Banco Regional Panamá' : 'Regional Bank Panama',
-      challenge: language === 'es' 
-        ? 'Procesos de aprobación de créditos lentos (15-20 días), incumplimiento de tiempos SLA, alto costo operacional.'
-        : 'Slow credit approval processes (15-20 days), SLA non-compliance, high operational cost.',
-      results: [
-        { value: '40%', label: language === 'es' ? 'Reducción tiempo aprobación' : 'Approval time reduction' },
-        { value: '25%', label: language === 'es' ? 'Aumento productividad' : 'Productivity increase' },
-        { value: '100%', label: language === 'es' ? 'Cumplimiento SBP' : 'SBP Compliance' },
-      ],
-      testimonial: language === 'es' 
-        ? 'Grupo Alternative no solo optimizó nuestros procesos, nos enseñó a gestionarlos. Hoy somos un banco más ágil.'
-        : 'Grupo Alternative not only optimized our processes, they taught us to manage them. Today we are a more agile bank.',
-      author: 'CFO, Banco Regional',
-      color: 'border-turquesa',
-    },
-    {
-      industry: language === 'es' ? 'Manufactura' : 'Manufacturing',
-      title: language === 'es' ? 'Empresa Manufactura' : 'Manufacturing Company',
-      challenge: language === 'es'
-        ? 'Inventarios descontrolados, tiempos de entrega inconsistentes (60% a tiempo), desperdicios no cuantificados.'
-        : 'Uncontrolled inventory, inconsistent delivery times (60% on time), unquantified waste.',
-      results: [
-        { value: '30%', label: language === 'es' ? 'Reducción inventario' : 'Inventory reduction' },
-        { value: '92%', label: language === 'es' ? 'Entregas a tiempo' : 'On-time deliveries' },
-        { value: '$180K', label: language === 'es' ? 'Ahorros anuales' : 'Annual savings' },
-      ],
-      testimonial: language === 'es'
-        ? 'Redujimos costos que ni sabíamos que existían. El ROI se pagó en 4 meses.'
-        : 'We reduced costs we didn\'t even know existed. The ROI paid for itself in 4 months.',
-      author: 'COO, Industrial Plus',
-      color: 'border-menta',
-    },
-    {
-      industry: language === 'es' ? 'Tecnología' : 'Technology',
-      title: language === 'es' ? 'Empresa Tecnología' : 'Technology Company',
-      challenge: language === 'es'
-        ? 'Proyectos sin metodología estándar, 70% con retrasos, equipos desalineados, clientes insatisfechos.'
-        : 'Projects without standard methodology, 70% delayed, misaligned teams, dissatisfied customers.',
-      results: [
-        { value: '85%', label: language === 'es' ? 'Proyectos a tiempo' : 'On-time projects' },
-        { value: '50%', label: language === 'es' ? 'Reducción retrabajo' : 'Rework reduction' },
-        { value: '4.5/5', label: language === 'es' ? 'Satisfacción cliente' : 'Customer satisfaction' },
-      ],
-      testimonial: language === 'es'
-        ? 'Ahora tenemos un PMO que realmente agrega valor, no solo reportes que nadie lee.'
-        : 'Now we have a PMO that truly adds value, not just reports that nobody reads.',
-      author: 'CTO, TechCorp',
-      color: 'border-violeta',
-    },
-  ];
-
-  // Testimonials
+  // Testimonials data
   const testimonials = [
-    { 
-      name: 'Juan Carlos Méndez', 
-      role: 'CFO, Banco Lafise Panamá', 
-      quote: language === 'es' 
-        ? 'Grupo Alternative transformó completamente nuestra operación. En 6 meses redujimos costos en 32% y cumplimos certificación ISO 9001. Katherine y su equipo no solo consultan, te enseñan a ser autosuficiente.'
-        : 'Grupo Alternative completely transformed our operation. In 6 months we reduced costs by 32% and achieved ISO 9001 certification. Katherine and her team don\'t just consult, they teach you to be self-sufficient.',
-      badge: 'Banca | ISO 9001'
+    {
+      quote: 'Alternative transformó completamente nuestra operación crediticia. En 6 meses redujimos costos en 32% y estructuramos un sistema de calidad robusto. El equipo no solo consultó, nos capacitó para ser autosuficientes.',
+      author: 'Juan Carlos Méndez',
+      role: 'CFO, Institución Financiera Regional',
+      badge: 'Banca | Optimización de Procesos',
+      initials: 'JC'
     },
-    { 
-      name: 'María Fernández', 
-      role: 'CTO, TechPanama', 
-      quote: language === 'es'
-        ? 'Teníamos 15 proyectos corriendo simultáneamente, todos atrasados. Implementaron un PMO estructurado y hoy el 85% termina a tiempo. Game changer para nuestra empresa.'
-        : 'We had 15 projects running simultaneously, all delayed. They implemented a structured PMO and today 85% finish on time. Game changer for our company.',
-      badge: 'Tecnología | PMO'
+    {
+      quote: 'Teníamos 15 proyectos corriendo simultáneamente, todos con retrasos. Implementaron un PMO estructurado y hoy el 85% termina a tiempo. Cambió completamente nuestra capacidad de ejecución.',
+      author: 'María Fernández',
+      role: 'CTO, Empresa de Tecnología',
+      badge: 'Tecnología | PMO',
+      initials: 'MF'
     },
-    { 
-      name: 'Roberto Castillo', 
-      role: 'COO, LogiServ', 
-      quote: language === 'es'
-        ? 'Escéptico al inicio, pero los resultados hablan solos: 40% menos tiempo en procesos de crédito. Nuestros clientes lo notan, nuestro equipo está más motivado.'
-        : 'Skeptical at first, but the results speak for themselves: 40% less time in credit processes. Our customers notice it, our team is more motivated.',
-      badge: 'Banca | BPM'
+    {
+      quote: 'Era escéptico al inicio sobre consultoría, pero los resultados son innegables: 40% menos tiempo en procesos operativos clave. Nuestros clientes lo notan, nuestro equipo está más motivado y productivo.',
+      author: 'Roberto Castillo',
+      role: 'COO, Banco Regional',
+      badge: 'Banca | BPM',
+      initials: 'RC'
     },
-    { 
-      name: 'Laura Gómez', 
-      role: 'CEO, Industrial Plus', 
-      quote: language === 'es'
-        ? 'Iban a implementar un ERP sin arreglar procesos. Alternative nos detuvo, optimizó primero, luego digitalizó. Nos ahorraron $200K en software que no necesitábamos.'
-        : 'They were going to implement an ERP without fixing processes. Alternative stopped us, optimized first, then digitalized. They saved us $200K in software we didn\'t need.',
-      badge: 'Manufactura | Transformación Digital'
+    {
+      quote: 'Íbamos a implementar un ERP costoso sin arreglar nuestros procesos primero. Alternative nos detuvo, optimizó procesos, y luego sí digitalizamos. Nos ahorraron más de $200,000 en software que no necesitábamos.',
+      author: 'Laura Gómez',
+      role: 'CEO, Empresa de Manufactura',
+      badge: 'Manufactura | Transformación Digital',
+      initials: 'LG'
     },
+    {
+      quote: 'El enfoque de transferencia de conocimiento es real. No solo nos dejaron procesos optimizados, nos capacitaron para continuar mejorando sin depender de consultores externos.',
+      author: 'Carlos Ramírez',
+      role: 'Gerente de Operaciones, Empresa de Retail',
+      badge: 'Retail | Lean Six Sigma',
+      initials: 'CR'
+    }
   ];
 
-  // Resources / Lead magnets
+  // Resources data
   const resources = [
     {
       icon: FileCheck,
-      title: language === 'es' ? 'Checklist Cumplimiento SBP 2025' : 'SBP Compliance Checklist 2025',
-      desc: language === 'es'
-        ? 'Checklist completo de los Acuerdos SBP 8-2025 y 9-2025. Verifica si tu institución cumple con los nuevos requisitos regulatorios.'
-        : 'Complete checklist for SBP Agreements 8-2025 and 9-2025. Verify if your institution complies with new regulatory requirements.',
-      format: 'PDF (6 páginas)',
-      benefit: language === 'es' ? 'Evita sanciones regulatorias' : 'Avoid regulatory sanctions',
-    },
-    {
-      icon: FileText,
-      title: language === 'es' ? 'Guía Implementación ISO 9001' : 'ISO 9001 Implementation Guide',
-      desc: language === 'es'
-        ? 'Paso a paso para implementar ISO 9001 en tu empresa. Incluye plantillas de documentos obligatorios y timeline realista.'
-        : 'Step by step to implement ISO 9001 in your company. Includes mandatory document templates and realistic timeline.',
-      format: 'PDF + Excel',
-      benefit: language === 'es' ? 'Acelera tu certificación 3-6 meses' : 'Accelerate your certification 3-6 months',
+      title: 'Guía de Implementación de Sistemas de Calidad',
+      description: 'Guía paso a paso para implementar un sistema de gestión de calidad alineado a ISO 9001. Incluye plantillas de documentos obligatorios, checklist de requisitos y timeline realista de implementación.',
+      format: 'PDF descargable (22 páginas) + plantillas Excel editables',
+      benefit: 'Estructura tu sistema de calidad en 3-6 meses',
+      audience: 'Gerentes de calidad, COOs, directores de operaciones',
+      cta: 'Descargar guía gratuita'
     },
     {
       icon: Calculator,
-      title: language === 'es' ? 'Calculadora ROI en Procesos' : 'Process ROI Calculator',
-      desc: language === 'es'
-        ? 'Herramienta interactiva para calcular el costo real de tus procesos ineficientes. Identifica dónde están los mayores desperdicios.'
-        : 'Interactive tool to calculate the real cost of your inefficient processes. Identify where the biggest wastes are.',
-      format: language === 'es' ? 'Herramienta Web' : 'Web Tool',
-      benefit: language === 'es' ? 'Cuantifica ahorros en 5 min' : 'Quantify savings in 5 min',
+      title: 'Calculadora de ROI en Optimización de Procesos',
+      description: 'Herramienta interactiva para calcular el costo real de tus procesos ineficientes. Identifica dónde están los mayores desperdicios operacionales en tu empresa y cuantifica oportunidades de ahorro.',
+      format: 'Herramienta web interactiva (5 minutos)',
+      benefit: 'Cuantifica ahorros potenciales en 5 minutos',
+      audience: 'CFOs, gerentes de operaciones, directores financieros',
+      cta: 'Calcular mi ROI'
     },
+    {
+      icon: FileText,
+      title: 'Plantilla de Casos de Negocio para Proyectos',
+      description: 'Plantilla profesional para desarrollar casos de negocio robustos que justifiquen inversiones en proyectos. Incluye análisis financiero, evaluación de riesgos, alineación estratégica y métricas de éxito.',
+      format: 'Excel descargable + guía de uso (PDF 8 páginas)',
+      benefit: 'Presenta proyectos con justificación ejecutiva sólida',
+      audience: 'Project managers, gerentes de proyectos, directores de PMO',
+      cta: 'Descargar plantilla'
+    }
   ];
 
-  // Process phases
-  const phases = [
-    { icon: Search, title: language === 'es' ? 'Diagnóstico' : 'Diagnosis', desc: language === 'es' ? 'Analizamos tu situación actual e identificamos oportunidades' : 'We analyze your current situation and identify opportunities', num: '01' },
-    { icon: Lightbulb, title: language === 'es' ? 'Estrategia' : 'Strategy', desc: language === 'es' ? 'Diseñamos un plan personalizado para tus objetivos' : 'We design a customized plan for your goals', num: '02' },
-    { icon: Rocket, title: language === 'es' ? 'Implementación' : 'Implementation', desc: language === 'es' ? 'Ejecutamos con acompañamiento continuo y experto' : 'We execute with continuous expert support', num: '03' },
-    { icon: LineChart, title: language === 'es' ? 'Seguimiento' : 'Follow-up', desc: language === 'es' ? 'Medimos resultados y optimizamos continuamente' : 'We measure results and continuously optimize', num: '04' },
+  // Blog posts data
+  const blogPosts = [
+    {
+      title: '5 Señales de que tus Procesos Están Destruyendo Rentabilidad (Y Cómo Solucionarlo)',
+      excerpt: 'La mayoría de empresas pierden entre 20-30% de su rentabilidad en procesos ineficientes que ni siquiera pueden cuantificar. Estas son las 5 señales de alerta más comunes y cómo empezar a corregirlas hoy mismo...',
+      category: 'Optimización de Procesos',
+      readTime: '8 min lectura',
+      href: '/blog/senales-procesos-destruyen-rentabilidad'
+    },
+    {
+      title: 'Sistemas de Calidad ISO 9001: Más Allá del Certificado',
+      excerpt: 'Muchas empresas buscan certificación ISO 9001 por requisito de clientes o licitaciones, pero el verdadero valor está en usar el marco como sistema de mejora continua sostenible. Aquí cómo diferenciarse...',
+      category: 'Sistemas de Calidad',
+      readTime: '12 min lectura',
+      href: '/blog/sistemas-calidad-iso-9001-mas-alla-certificado'
+    },
+    {
+      title: 'Metodologías Ágiles vs PMP: Cuándo Usar Cada Enfoque en Gestión de Proyectos',
+      excerpt: 'No existe una metodología universal para todos los proyectos. PMP es ideal para proyectos predecibles con alcance definido. Scrum/Kanban para entornos cambiantes. Aquí cómo decidir cuál usar...',
+      category: 'Gestión de Proyectos',
+      readTime: '10 min lectura',
+      href: '/blog/metodologias-agiles-vs-pmp'
+    }
+  ];
+
+  // Why Alternative differentiators
+  const differentiators = [
+    {
+      icon: GraduationCap,
+      title: 'Equipo Certificado con Expertise Internacional',
+      description: 'Equipo multidisciplinario con certificaciones PMP®, ISO 9001 Lead Auditor, Lean Six Sigma y MBA. 15+ años liderando transformaciones empresariales en banca, manufactura, tecnología y retail en Latinoamérica y el Caribe.',
+      stat: '15+ años | 50+ proyectos exitosos'
+    },
+    {
+      icon: BarChart3,
+      title: 'Metodologías Probadas, Resultados Medibles',
+      description: 'No vendemos teoría. Aplicamos BPM, Lean Six Sigma, PMP y marcos de calidad con disciplina rigurosa. Cada proyecto tiene métricas claras: reducción de costos, tiempo de ciclo, calidad, satisfacción. Nuestros clientes promedian 35% de reducción de costos operativos.',
+      stat: '35% reducción de costos promedio'
+    },
+    {
+      icon: Zap,
+      title: 'Expertise de Gran Consultoría, Agilidad de Boutique',
+      description: 'Conocemos las metodologías de las grandes consultoras internacionales, pero sin su burocracia ni precios prohibitivos. Respuesta rápida, equipos dedicados, atención directa de socios. Implementaciones efectivas en 90 días, no en 12 meses.',
+      stat: '90 días promedio de implementación'
+    },
+    {
+      icon: Handshake,
+      title: 'Enfoque Práctico y Transferencia de Conocimiento',
+      description: 'No creamos dependencia. Nuestro objetivo es que tu equipo se apropie de las metodologías y continúe mejorando después de nuestra intervención. Consultoría con transferencia genuina de capacidades internas.',
+      stat: '100% clientes continúan mejora continua'
+    }
   ];
 
   return (
     <>
-      {/* ============ HERO SECTION ============ */}
-      <section ref={heroRef} className="relative min-h-screen bg-azul-marino overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      {/* ===================== HERO SECTION ===================== */}
+      <section className="relative min-h-screen bg-azul-marino overflow-hidden">
+        {/* Background elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-turquesa/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-menta/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-turquesa/5 rounded-full" />
         </div>
-        
-        {/* Floating Geometric Elements */}
-        <motion.div style={{ y: heroY }} className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[15%] left-[5%] w-3 h-3 bg-turquesa rounded-full animate-pulse" />
-          <div className="absolute top-[25%] right-[8%] w-4 h-4 bg-menta rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
-          <div className="absolute bottom-[30%] left-[10%] w-2 h-2 bg-violeta rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-[60%] right-[15%] w-3 h-3 bg-lavanda rounded-full animate-pulse" style={{ animationDelay: '1.5s' }} />
-        </motion.div>
+
+        {/* Floating dots */}
+        <div className="absolute top-32 left-[10%] w-2 h-2 bg-turquesa rounded-full animate-pulse" />
+        <div className="absolute top-[60%] left-[5%] w-3 h-3 bg-menta/60 rounded-full animate-pulse delay-1000" />
+        <div className="absolute top-[40%] right-[8%] w-2 h-2 bg-turquesa/80 rounded-full animate-pulse delay-500" />
 
         <div className="container-custom relative z-10 pt-32 pb-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="order-2 lg:order-1">
+            {/* Left content */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="order-2 lg:order-1"
+            >
               {/* Eyebrow */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="inline-flex items-center gap-2 bg-turquesa/20 border border-turquesa/30 rounded-full px-4 py-2 mb-6"
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="inline-flex items-center gap-2 bg-turquesa/20 backdrop-blur-sm border border-turquesa/30 text-turquesa px-4 py-2 rounded-full text-sm font-medium mb-6"
               >
-                <Star className="w-4 h-4 text-turquesa fill-turquesa" />
-                <span className="text-turquesa text-sm font-medium">
-                  {language === 'es' ? 'Consultoría Empresarial en Panamá' : 'Business Consulting in Panama'}
-                </span>
+                <Star className="w-4 h-4" />
+                Consultoría Empresarial
               </motion.div>
 
-              {/* Main Heading */}
-              <motion.h1
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="text-4xl sm:text-5xl lg:text-[3.5rem] font-semibold text-white mb-6 leading-[1.1]"
-              >
-                {language === 'es' ? (
-                  <>Optimizamos tus operaciones para que tu empresa <span className="text-turquesa">crezca más rápido</span></>
-                ) : (
-                  <>We optimize your operations so your business <span className="text-turquesa">grows faster</span></>
-                )}
-              </motion.h1>
+              {/* H1 */}
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight mb-4">
+                Consultoría empresarial que genera{' '}
+                <span className="text-turquesa">
+                  resultados medibles
+                </span>
+              </h1>
 
-              {/* Subtitle */}
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="text-lg text-white/70 mb-8 max-w-xl leading-relaxed"
-              >
-                {language === 'es' 
-                  ? 'Consultoría empresarial en optimización de procesos, gestión de proyectos y transformación digital. Certificados PMP®, ISO 9001 Lead Auditor y MBA. Clientes en banca, manufactura, retail y tecnología.'
-                  : 'Business consulting in process optimization, project management and digital transformation. PMP®, ISO 9001 Lead Auditor and MBA certified. Clients in banking, manufacturing, retail and technology.'}
-              </motion.p>
+              {/* Tagline */}
+              <p className="text-turquesa font-medium text-lg mb-4">
+                Impulsamos tu empresa estratégicamente
+              </p>
 
-              {/* CTA Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.7 }}
-                className="flex flex-wrap gap-3 mb-10"
-              >
-                <Link 
-                  href="/contact"
+              {/* Subheadline */}
+              <p className="text-lg text-white/70 mb-8 max-w-xl">
+                Consultoría especializada en optimización de procesos, gestión de proyectos y sistemas de calidad. Equipo certificado en PMP®, ISO 9001 Lead Auditor y Lean Six Sigma. Experiencia comprobada en banca, manufactura, retail y tecnología en Latinoamérica y el Caribe.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-wrap gap-4 mb-10">
+                <Link
+                  href="/contacto"
                   className="group inline-flex items-center gap-2 bg-turquesa text-azul-marino font-semibold px-5 py-3 rounded-lg hover:bg-menta transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-turquesa/20 text-sm"
                 >
-                  {language === 'es' ? 'Diagnóstico Gratuito' : 'Free Diagnosis'}
-                  <span className="bg-azul-marino/20 text-azul-marino text-xs font-medium px-2 py-0.5 rounded-full">15 min</span>
+                  Solicita Diagnóstico Gratuito
+                  <span className="bg-azul-marino/20 px-2 py-0.5 rounded text-xs">15 min</span>
                 </Link>
-                <Link 
+                <Link
                   href="#services"
                   className="group inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium px-5 py-3 rounded-lg hover:bg-white/20 transition-all duration-300 text-sm"
                 >
-                  {language === 'es' ? 'Nuestros servicios' : 'Our services'}
+                  Conoce nuestros servicios
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
-              </motion.div>
+              </div>
 
-              {/* Trust Badges */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.9 }}
-                className="flex flex-wrap gap-4"
-              >
-                {trustBadges.map((badge, idx) => {
-                  const Icon = badge.icon;
-                  return (
-                    <div key={idx} className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-2">
-                      <Icon className="w-4 h-4 text-turquesa" />
-                      <span className="text-white/80 text-sm font-medium">{badge.label}</span>
-                    </div>
-                  );
-                })}
-              </motion.div>
-            </div>
+              {/* Trust badges */}
+              <div className="flex flex-wrap gap-4">
+                {[
+                  { icon: BadgeCheck, text: 'Equipo PMP® Certified' },
+                  { icon: Award, text: 'ISO 9001 Lead Auditors' },
+                  { icon: TrendingUp, text: 'Lean Six Sigma Certified' },
+                  { icon: Clock, text: '15+ años de experiencia' }
+                ].map((badge, idx) => (
+                  <div key={idx} className="flex items-center gap-2 bg-white/5 backdrop-blur-sm border border-white/10 px-3 py-2 rounded-lg">
+                    <badge.icon className="w-4 h-4 text-turquesa" />
+                    <span className="text-white/80 text-sm">{badge.text}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
 
-            {/* Right Content - Image Grid */}
-            <motion.div 
-              initial={{ opacity: 0, x: 50 }}
+            {/* Right content - Image */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="order-1 lg:order-2"
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="order-1 lg:order-2 relative"
             >
               <div className="relative">
-                {/* Main Image */}
-                <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl">
-                  <div className="aspect-[4/3] relative">
-                    <Image
-                      src="/images/hero-meeting.jpg"
-                      alt={language === 'es' ? 'Consultoría empresarial' : 'Business consulting'}
-                      fill
-                      className="object-cover"
-                      priority
-                    />
-                    <div className="absolute inset-0 bg-azul-marino/20" />
-                  </div>
-                </div>
-                
-                {/* Floating Secondary Image */}
-                <motion.div 
-                  className="absolute -bottom-8 -left-8 w-48 h-36 rounded-2xl overflow-hidden shadow-xl border-4 border-azul-marino z-20"
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                >
+                {/* Main image */}
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                   <Image
-                    src="/images/hero-tech.jpg"
-                    alt={language === 'es' ? 'Katherine González CEO' : 'Katherine González CEO'}
-                    fill
-                    className="object-cover"
+                    src="/images/hero-meeting.jpg"
+                    alt="Consultoría empresarial Alternative"
+                    width={600}
+                    height={500}
+                    className="w-full h-auto object-cover"
+                    priority
                   />
-                </motion.div>
+                  <div className="absolute inset-0 bg-azul-marino/30" />
+                </div>
 
-                {/* Stats Card */}
-                <motion.div 
-                  className="absolute -top-4 -right-4 bg-white dark:bg-card rounded-2xl p-4 shadow-xl z-20"
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                >
+                {/* Team photo overlay */}
+                <div className="absolute -bottom-6 -left-6 w-32 h-32 rounded-2xl overflow-hidden border-4 border-azul-marino shadow-xl">
+                  <Image
+                    src="/images/team-working.jpg"
+                    alt="Equipo Alternative"
+                    width={128}
+                    height={128}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Stats overlay */}
+                <div className="absolute top-6 -right-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 shadow-xl">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-turquesa/20 rounded-xl flex items-center justify-center">
-                      <TrendingUp className="w-6 h-6 text-turquesa" />
+                    <div className="w-10 h-10 bg-turquesa/20 rounded-lg flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 text-turquesa" />
                     </div>
                     <div>
-                      <p className="text-2xl font-bold text-azul-marino dark:text-white">50+</p>
-                      <p className="text-xs text-foreground/60">{language === 'es' ? 'Proyectos Exitosos' : 'Successful Projects'}</p>
+                      <p className="text-2xl font-bold text-white">
+                        <Counter end={50} suffix="+" />
+                      </p>
+                      <p className="text-white/60 text-sm">Proyectos Exitosos</p>
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
-                {/* Second Stats Card */}
-                <motion.div 
-                  className="absolute bottom-4 right-8 bg-azul-marino text-white rounded-2xl px-4 py-3 shadow-xl z-20"
-                  animate={{ y: [0, 6, 0] }}
-                  transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                >
-                  <p className="text-lg font-bold">35%</p>
-                  <p className="text-xs text-white/70">{language === 'es' ? 'Reducción costos promedio' : 'Avg cost reduction'}</p>
-                </motion.div>
-
-                {/* Decorative Elements */}
-                <div className="absolute -bottom-4 right-8 w-20 h-20 bg-menta/30 rounded-xl -rotate-12 -z-10" />
-                <div className="absolute top-8 -left-4 w-16 h-16 bg-violeta/30 rounded-xl rotate-12 -z-10" />
+                <div className="absolute bottom-16 -right-4 bg-turquesa rounded-xl p-4 shadow-xl">
+                  <p className="text-2xl font-bold text-azul-marino">35%</p>
+                  <p className="text-azul-marino/70 text-sm">Reducción costos promedio</p>
+                </div>
               </div>
             </motion.div>
           </div>
         </div>
 
-        {/* Bottom Wave */}
+        {/* Bottom wave */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" className="fill-blanco-hueso dark:fill-background"/>
+            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="currentColor" className="text-blanco-hueso dark:text-background"/>
           </svg>
         </div>
       </section>
 
-      {/* ============ PROBLEM → SOLUTION SECTION ============ */}
-      <section className="py-24 bg-blanco-hueso dark:bg-background">
+      {/* ===================== PROBLEMA → SOLUCIÓN ===================== */}
+      <section className="py-20 lg:py-32 bg-blanco-hueso dark:bg-background">
         <div className="container-custom">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="inline-block text-violeta font-semibold text-sm uppercase tracking-wider mb-4">
-                {language === 'es' ? 'Desafíos y Soluciones' : 'Challenges & Solutions'}
-              </span>
-              <h2 className="text-4xl lg:text-5xl font-semibold text-azul-marino dark:text-white mb-6">
-                {language === 'es' ? '¿Tu empresa enfrenta estos desafíos operacionales?' : 'Is your company facing these operational challenges?'}
-              </h2>
-            </div>
+          <AnimatedSection className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
+              Desafíos y Soluciones
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white mb-4">
+              ¿Tu empresa enfrenta estos desafíos operacionales?
+            </h2>
           </AnimatedSection>
 
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Problems Column */}
             <AnimatedSection delay={0.1}>
-              <div className="bg-white dark:bg-card rounded-3xl p-8 shadow-brand h-full">
+              <div className="bg-white dark:bg-card rounded-2xl p-8 shadow-brand h-full border-l-4 border-red-400">
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center">
-                    <X className="w-5 h-5 text-red-500" />
+                  <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center">
+                    <X className="w-6 h-6 text-red-500" />
                   </div>
-                  <h3 className="text-xl font-semibold text-azul-marino dark:text-white">
-                    {language === 'es' ? 'Problemas Comunes' : 'Common Problems'}
-                  </h3>
+                  <h3 className="text-xl font-semibold text-azul-marino dark:text-white">Problemas Comunes</h3>
                 </div>
                 <div className="space-y-6">
-                  {problems.map((problem, idx) => (
+                  {[
+                    {
+                      title: 'Procesos ineficientes que elevan costos',
+                      desc: 'Operaciones manuales repetitivas, cuellos de botella ocultos, desperdicios no cuantificados. Cada día de ineficiencia representa dinero que tu empresa pierde sin poder medirlo.'
+                    },
+                    {
+                      title: 'Proyectos sin metodología que fracasan',
+                      desc: 'Alcance descontrolado, equipos desalineados, cronogramas irreales. El 70% de los proyectos fracasan por falta de metodología estructurada, no por falta de presupuesto o talento.'
+                    },
+                    {
+                      title: 'Sistemas de calidad inexistentes o desactualizados',
+                      desc: 'Sin procesos documentados para licitaciones, clientes corporativos exigentes, o cumplimiento regulatorio. La falta de estructura de calidad cierra puertas de negocio.'
+                    },
+                    {
+                      title: 'Transformación digital sin impacto real',
+                      desc: 'Implementaste tecnología, pero los procesos siguen igual de lentos. Sin optimización previa, la tecnología solo automatiza la ineficiencia existente.'
+                    }
+                  ].map((problem, idx) => (
                     <div key={idx} className="flex gap-4">
-                      <div className="flex-shrink-0 w-6 h-6 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mt-1">
-                        <X className="w-3 h-3 text-red-500" />
+                      <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                        <X className="w-4 h-4 text-red-500" />
                       </div>
                       <div>
                         <h4 className="font-semibold text-azul-marino dark:text-white mb-1">{problem.title}</h4>
-                        <p className="text-sm text-foreground/60 leading-relaxed">{problem.desc}</p>
+                        <p className="text-foreground/60 text-sm">{problem.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -651,24 +583,39 @@ export default function HomePage() {
 
             {/* Solutions Column */}
             <AnimatedSection delay={0.2}>
-              <div className="bg-turquesa/10 dark:bg-turquesa/5 border-2 border-turquesa/30 rounded-3xl p-8 h-full">
+              <div className="bg-white dark:bg-card rounded-2xl p-8 shadow-brand h-full border-l-4 border-turquesa">
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 bg-turquesa/20 rounded-xl flex items-center justify-center">
-                    <Check className="w-5 h-5 text-turquesa" />
+                  <div className="w-12 h-12 bg-turquesa/20 rounded-xl flex items-center justify-center">
+                    <Check className="w-6 h-6 text-turquesa" />
                   </div>
-                  <h3 className="text-xl font-semibold text-azul-marino dark:text-white">
-                    {language === 'es' ? 'Nuestras Soluciones' : 'Our Solutions'}
-                  </h3>
+                  <h3 className="text-xl font-semibold text-azul-marino dark:text-white">Nuestras Soluciones</h3>
                 </div>
                 <div className="space-y-6">
-                  {solutions.map((solution, idx) => (
+                  {[
+                    {
+                      title: 'Reducimos costos operativos entre 25-40%',
+                      desc: 'Mapeo completo de procesos actuales, identificación de desperdicios, rediseño optimizado y automatización estratégica. Metodologías BPM y Lean Six Sigma con resultados medibles en 90 días.'
+                    },
+                    {
+                      title: 'Proyectos exitosos con estándares globales',
+                      desc: 'Gestión bajo marcos PMP y metodologías ágiles (Scrum/Kanban). Planificación realista, seguimiento riguroso, gestión proactiva de riesgos. Tus proyectos terminan a tiempo, en presupuesto y generan el valor esperado.'
+                    },
+                    {
+                      title: 'Sistemas de calidad alineados a estándares internacionales',
+                      desc: 'Implementación de sistemas de gestión de calidad bajo ISO 9001 u otros marcos de referencia. Procesos documentados, auditorías estructuradas, mejora continua sostenible. Ideal para sectores regulados como banca y manufactura.'
+                    },
+                    {
+                      title: 'Transformación digital con ROI comprobado',
+                      desc: 'Primero optimizamos procesos, luego digitalizamos. Roadmap claro, priorización basada en impacto, gestión del cambio organizacional y adopción real. Tecnología que realmente transforma operaciones.'
+                    }
+                  ].map((solution, idx) => (
                     <div key={idx} className="flex gap-4">
-                      <div className="flex-shrink-0 w-6 h-6 bg-turquesa/20 rounded-full flex items-center justify-center mt-1">
-                        <Check className="w-3 h-3 text-turquesa" />
+                      <div className="w-8 h-8 bg-turquesa/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                        <Check className="w-4 h-4 text-turquesa" />
                       </div>
                       <div>
                         <h4 className="font-semibold text-azul-marino dark:text-white mb-1">{solution.title}</h4>
-                        <p className="text-sm text-foreground/60 leading-relaxed">{solution.desc}</p>
+                        <p className="text-foreground/60 text-sm">{solution.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -678,498 +625,634 @@ export default function HomePage() {
           </div>
 
           {/* CTA */}
-          <AnimatedSection delay={0.3}>
-            <div className="mt-12 text-center">
-              <p className="text-foreground/70 mb-4">
-                {language === 'es' ? '¿Identificaste 2 o más desafíos?' : 'Did you identify 2 or more challenges?'}
-              </p>
-              <Link 
-                href="/contact"
-                className="group inline-flex items-center gap-3 bg-turquesa text-azul-marino font-semibold px-7 py-4 rounded-xl hover:bg-menta transition-all duration-300 hover:-translate-y-1"
-              >
-                {language === 'es' ? 'Agenda un diagnóstico gratuito de 15 minutos' : 'Schedule a free 15-minute diagnosis'}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
+          <AnimatedSection delay={0.3} className="mt-12 text-center">
+            <p className="text-foreground/60 mb-4">¿Identificaste 2 o más desafíos?</p>
+            <Link
+              href="/contacto"
+              className="inline-flex items-center gap-2 text-turquesa font-semibold hover:text-menta transition-colors"
+            >
+              Agenda un diagnóstico gratuito de 15 minutos
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* ============ SERVICES SECTION ============ */}
-      <section id="services" className="py-24 bg-azul-marino relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-        </div>
-        
-        <div className="container-custom relative z-10">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="inline-block text-menta font-semibold text-sm uppercase tracking-wider mb-4">
-                {language === 'es' ? 'Nuestros Servicios' : 'Our Services'}
-              </span>
-              <h2 className="text-4xl lg:text-5xl font-semibold text-white mb-4">
-                {language === 'es' ? 'Nuestros servicios de consultoría empresarial' : 'Our business consulting services'}
-              </h2>
-              <p className="text-white/60 text-lg max-w-2xl mx-auto">
-                {language === 'es' 
-                  ? 'Soluciones integrales para optimizar tu operación, desde el diagnóstico hasta la implementación'
-                  : 'Comprehensive solutions to optimize your operation, from diagnosis to implementation'}
-              </p>
-            </div>
+      {/* ===================== SERVICIOS ===================== */}
+      <section id="services" className="py-20 lg:py-32 bg-white dark:bg-card">
+        <div className="container-custom">
+          <AnimatedSection className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
+              Nuestros Servicios
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white mb-4">
+              Nuestros servicios de consultoría empresarial
+            </h2>
+            <p className="text-foreground/60 max-w-2xl mx-auto">
+              Soluciones integrales para optimizar tu operación, desde el diagnóstico estratégico hasta la implementación completa
+            </p>
           </AnimatedSection>
 
           <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, idx) => {
-              const Icon = service.icon;
-              return (
-                <StaggerItem key={idx}>
-                  <Link href={service.href}>
-                    <div className={`group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300 h-full ${service.isComplementary ? 'opacity-80' : ''}`}>
-                      {service.isComplementary && (
-                        <span className="inline-block text-xs bg-white/10 text-white/60 px-2 py-1 rounded-full mb-4">
-                          {language === 'es' ? 'Servicio complementario' : 'Complementary service'}
-                        </span>
-                      )}
-                      <div className={`w-14 h-14 ${service.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                        <Icon className="w-7 h-7 text-azul-marino" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-turquesa transition-colors">
-                        {service.title}
-                      </h3>
-                      <p className="text-white/60 mb-4 leading-relaxed text-sm">
-                        {service.desc}
-                      </p>
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {service.tags.map((tag, tagIdx) => (
-                          <span key={tagIdx} className="text-xs bg-white/10 text-white/70 px-2 py-1 rounded-full">
-                            {tag}
+            {services.map((service, idx) => (
+              <StaggerItem key={idx}>
+                <Link href={service.href}>
+                  <div className={`group relative ${service.color} rounded-2xl p-6 h-full border border-gris-arena/20 hover:shadow-brand-lg transition-all duration-300 hover:-translate-y-1`}>
+                    {service.badge && (
+                      <span className="absolute top-4 right-4 px-2 py-1 bg-turquesa/20 text-turquesa text-xs font-medium rounded-full">
+                        {service.badge}
+                      </span>
+                    )}
+                    <div className="w-14 h-14 bg-turquesa/20 rounded-xl flex items-center justify-center mb-4">
+                      <service.icon className="w-7 h-7 text-turquesa" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-azul-marino dark:text-white mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-foreground/60 text-sm mb-4">
+                      {service.description}
+                    </p>
+                    <div className="mb-4">
+                      <div className="flex flex-wrap gap-2">
+                        {service.includes.map((item, i) => (
+                          <span key={i} className="text-xs bg-white/60 dark:bg-white/10 px-2 py-1 rounded-full text-foreground/70">
+                            {item}
                           </span>
                         ))}
                       </div>
-                      <div className="flex items-center gap-2 text-turquesa font-medium">
-                        <span className="text-sm">{language === 'es' ? 'Ver más' : 'Learn more'}</span>
-                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                      </div>
                     </div>
-                  </Link>
-                </StaggerItem>
-              );
-            })}
+                    <p className="text-sm text-turquesa font-medium mb-4">
+                      <CheckCircle2 className="w-4 h-4 inline mr-1" />
+                      {service.benefit}
+                    </p>
+                    <div className="flex items-center gap-2 text-turquesa font-medium text-sm group-hover:gap-3 transition-all">
+                      <span>Ver más</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                  </div>
+                </Link>
+              </StaggerItem>
+            ))}
           </StaggerContainer>
         </div>
       </section>
 
-      {/* ============ INDUSTRIES SECTION ============ */}
-      <section className="py-24 bg-white dark:bg-card/50">
+      {/* ===================== INDUSTRIAS ===================== */}
+      <section className="py-20 lg:py-32 bg-blanco-hueso dark:bg-background">
         <div className="container-custom">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="inline-block text-oliva font-semibold text-sm uppercase tracking-wider mb-4">
-                {language === 'es' ? 'Industrias' : 'Industries'}
-              </span>
-              <h2 className="text-4xl lg:text-5xl font-semibold text-azul-marino dark:text-white mb-4">
-                {language === 'es' ? 'Experiencia comprobada en sectores regulados' : 'Proven experience in regulated sectors'}
-              </h2>
-              <p className="text-foreground/60 text-lg max-w-2xl mx-auto">
-                {language === 'es'
-                  ? 'Entendemos los desafíos específicos de tu industria y adaptamos nuestras soluciones a tus requisitos'
-                  : 'We understand your industry\'s specific challenges and adapt our solutions to your requirements'}
-              </p>
-            </div>
-          </AnimatedSection>
-
-          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {industries.map((industry, idx) => {
-              const Icon = industry.icon;
-              return (
-                <StaggerItem key={idx}>
-                  <Link href={industry.href}>
-                    <div className="group bg-blanco-hueso dark:bg-secondary rounded-2xl p-6 hover:shadow-brand-lg transition-all duration-300 hover:-translate-y-2 h-full">
-                      <div className="w-14 h-14 bg-turquesa/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-turquesa/30 transition-colors">
-                        <Icon className="w-7 h-7 text-turquesa" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-azul-marino dark:text-white mb-2 group-hover:text-turquesa transition-colors">
-                        {industry.title}
-                      </h3>
-                      <p className="text-sm text-foreground/60 mb-4 leading-relaxed">
-                        {industry.desc}
-                      </p>
-                      <div className="space-y-2">
-                        {industry.challenges.slice(0, 3).map((challenge, cIdx) => (
-                          <div key={cIdx} className="flex items-center gap-2 text-xs text-foreground/50">
-                            <div className="w-1 h-1 bg-turquesa rounded-full" />
-                            {challenge}
-                          </div>
-                        ))}
-                      </div>
-                      <div className="flex items-center gap-2 text-turquesa font-medium mt-4 text-sm">
-                        <span>{language === 'es' ? 'Ver soluciones' : 'View solutions'}</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  </Link>
-                </StaggerItem>
-              );
-            })}
-          </StaggerContainer>
-
-          <AnimatedSection delay={0.3}>
-            <p className="text-center text-foreground/60 mt-10 text-sm">
-              {language === 'es' 
-                ? '¿Tu industria no está aquí? Trabajamos con todos los sectores. Lo importante es el problema y el impacto que podemos generar.'
-                : 'Is your industry not here? We work with all sectors. What matters is the problem and the impact we can generate.'}
+          <AnimatedSection className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
+              Industrias
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white mb-4">
+              Experiencia comprobada en sectores de alta complejidad
+            </h2>
+            <p className="text-foreground/60 max-w-2xl mx-auto">
+              Entendemos los desafíos específicos de tu industria y adaptamos nuestras soluciones a tus requisitos regulatorios y operacionales particulares
             </p>
           </AnimatedSection>
-        </div>
-      </section>
 
-      {/* ============ WHY US SECTION ============ */}
-      <section className="py-24 bg-blanco-hueso dark:bg-background">
-        <div className="container-custom">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="inline-block text-violeta font-semibold text-sm uppercase tracking-wider mb-4">
-                {language === 'es' ? 'Por Qué Elegirnos' : 'Why Choose Us'}
-              </span>
-              <h2 className="text-4xl lg:text-5xl font-semibold text-azul-marino dark:text-white mb-4">
-                {language === 'es' ? 'Por qué empresas líderes confían en nosotros' : 'Why leading companies trust us'}
-              </h2>
-            </div>
-          </AnimatedSection>
-
-          <StaggerContainer className="grid md:grid-cols-2 gap-8">
-            {differentiators.map((diff, idx) => {
-              const Icon = diff.icon;
-              return (
-                <StaggerItem key={idx}>
-                  <div className="bg-white dark:bg-card rounded-2xl p-8 shadow-brand hover:shadow-brand-lg transition-all duration-300">
+          <StaggerContainer className="grid md:grid-cols-2 gap-6">
+            {industries.map((industry, idx) => (
+              <StaggerItem key={idx}>
+                <Link href={industry.href}>
+                  <div className="group bg-white dark:bg-card rounded-2xl p-6 shadow-brand hover:shadow-brand-lg transition-all duration-300 hover:-translate-y-1 h-full">
                     <div className="flex items-start gap-4 mb-4">
                       <div className="w-14 h-14 bg-turquesa/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-7 h-7 text-turquesa" />
+                        <industry.icon className="w-7 h-7 text-turquesa" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold text-azul-marino dark:text-white mb-2">{diff.title}</h3>
-                        <p className="text-foreground/60 leading-relaxed">{diff.desc}</p>
+                        <h3 className="text-xl font-semibold text-azul-marino dark:text-white mb-2">
+                          {industry.title}
+                        </h3>
+                        <p className="text-foreground/60 text-sm">
+                          {industry.description}
+                        </p>
                       </div>
                     </div>
-                    <div className="mt-4 pt-4 border-t border-gris-arena/20">
-                      <span className="inline-block bg-turquesa/10 text-turquesa font-semibold text-sm px-4 py-2 rounded-full">
-                        {diff.stat}
-                      </span>
+
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <p className="text-xs font-medium text-foreground/40 uppercase tracking-wider mb-2">Desafíos</p>
+                        <ul className="space-y-1">
+                          {industry.challenges.slice(0, 3).map((c, i) => (
+                            <li key={i} className="text-sm text-foreground/60 flex items-start gap-1">
+                              <span className="text-red-400 mt-1">•</span>
+                              {c}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-foreground/40 uppercase tracking-wider mb-2">Soluciones</p>
+                        <ul className="space-y-1">
+                          {industry.solutions.slice(0, 3).map((s, i) => (
+                            <li key={i} className="text-sm text-foreground/60 flex items-start gap-1">
+                              <span className="text-turquesa mt-1">•</span>
+                              {s}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-turquesa font-medium text-sm group-hover:gap-3 transition-all">
+                      <span>Ver soluciones</span>
+                      <ArrowRight className="w-4 h-4" />
                     </div>
                   </div>
-                </StaggerItem>
-              );
-            })}
-          </StaggerContainer>
-
-          {/* CEO Quote */}
-          <AnimatedSection delay={0.4}>
-            <div className="mt-16 bg-azul-marino rounded-3xl p-8 lg:p-12 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-turquesa/10 rounded-bl-[200px]" />
-              <div className="relative z-10 flex flex-col lg:flex-row items-center gap-8">
-                <div className="flex-shrink-0">
-                  <div className="w-24 h-24 bg-turquesa/20 rounded-full flex items-center justify-center">
-                    <span className="text-3xl font-bold text-turquesa">KG</span>
-                  </div>
-                </div>
-                <div>
-                  <Quote className="w-10 h-10 text-turquesa/40 mb-4" />
-                  <p className="text-xl lg:text-2xl text-white font-medium leading-relaxed mb-4">
-                    {language === 'es'
-                      ? '"En 15 años he aprendido que los problemas más costosos de las empresas NO son tecnológicos. Son de procesos. Y los procesos se arreglan con metodología, disciplina y personas comprometidas."'
-                      : '"In 15 years I\'ve learned that the most costly business problems are NOT technological. They\'re about processes. And processes are fixed with methodology, discipline and committed people."'}
-                  </p>
-                  <div>
-                    <p className="text-white font-semibold">Katherine González</p>
-                    <p className="text-white/60 text-sm">MBA, PMP®, ISO 9001 Lead Auditor — CEO, Grupo Alternative</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* ============ CASE STUDIES / SUCCESS STORIES ============ */}
-      <section className="py-24 bg-white dark:bg-card/50">
-        <div className="container-custom">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="inline-block text-menta font-semibold text-sm uppercase tracking-wider mb-4">
-                {language === 'es' ? 'Casos de Éxito' : 'Success Stories'}
-              </span>
-              <h2 className="text-4xl lg:text-5xl font-semibold text-azul-marino dark:text-white mb-4">
-                {language === 'es' ? 'Resultados reales para empresas reales' : 'Real results for real companies'}
-              </h2>
-              <p className="text-foreground/60 text-lg max-w-2xl mx-auto">
-                {language === 'es'
-                  ? 'Casos de éxito con métricas comprobadas y testimoniales de clientes'
-                  : 'Success cases with proven metrics and customer testimonials'}
-              </p>
-            </div>
-          </AnimatedSection>
-
-          <StaggerContainer className="grid lg:grid-cols-3 gap-8">
-            {caseStudies.map((caseStudy, idx) => (
-              <StaggerItem key={idx}>
-                <div className={`bg-blanco-hueso dark:bg-secondary rounded-2xl p-8 border-t-4 ${caseStudy.color} h-full flex flex-col`}>
-                  <span className="inline-block text-xs font-semibold text-turquesa bg-turquesa/10 px-3 py-1 rounded-full mb-4 self-start">
-                    {caseStudy.industry}
-                  </span>
-                  <h3 className="text-xl font-semibold text-azul-marino dark:text-white mb-3">{caseStudy.title}</h3>
-                  <p className="text-sm text-foreground/60 mb-6 leading-relaxed">{caseStudy.challenge}</p>
-                  
-                  {/* Results */}
-                  <div className="grid grid-cols-3 gap-4 mb-6">
-                    {caseStudy.results.map((result, rIdx) => (
-                      <div key={rIdx} className="text-center">
-                        <p className="text-2xl font-bold text-turquesa">{result.value}</p>
-                        <p className="text-xs text-foreground/50">{result.label}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Testimonial */}
-                  <div className="mt-auto pt-6 border-t border-gris-arena/20">
-                    <p className="text-sm text-foreground/70 italic mb-3">&ldquo;{caseStudy.testimonial}&rdquo;</p>
-                    <p className="text-sm font-semibold text-azul-marino dark:text-white">— {caseStudy.author}</p>
-                  </div>
-                </div>
+                </Link>
               </StaggerItem>
             ))}
           </StaggerContainer>
 
-          <AnimatedSection delay={0.3}>
-            <div className="mt-12 text-center">
-              <Link 
-                href="/success-stories"
-                className="group inline-flex items-center gap-3 bg-turquesa text-azul-marino font-semibold px-7 py-4 rounded-xl hover:bg-menta transition-all duration-300 hover:-translate-y-1"
-              >
-                {language === 'es' ? '¿Quieres resultados como estos?' : 'Want results like these?'}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
+          <AnimatedSection delay={0.3} className="mt-12 text-center">
+            <p className="text-foreground/60 mb-4">
+              ¿Tu industria no aparece aquí? Trabajamos con empresas de todos los sectores. Lo importante es el desafío y el impacto que podemos generar juntos.
+            </p>
+            <Link
+              href="/industrias"
+              className="inline-flex items-center gap-2 text-turquesa font-semibold hover:text-menta transition-colors"
+            >
+              Ver todas las industrias
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* ============ RESOURCES SECTION ============ */}
-      <section className="py-24 bg-blanco-hueso dark:bg-background">
+      {/* ===================== POR QUÉ ALTERNATIVE ===================== */}
+      <section className="py-20 lg:py-32 bg-white dark:bg-card">
         <div className="container-custom">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="inline-block text-oliva font-semibold text-sm uppercase tracking-wider mb-4">
-                {language === 'es' ? 'Recursos Gratuitos' : 'Free Resources'}
-              </span>
-              <h2 className="text-4xl lg:text-5xl font-semibold text-azul-marino dark:text-white mb-4">
-                {language === 'es' ? 'Recursos gratuitos para optimizar tu empresa' : 'Free resources to optimize your company'}
-              </h2>
-              <p className="text-foreground/60 text-lg max-w-2xl mx-auto">
-                {language === 'es'
-                  ? 'Guías, checklists y herramientas descargables sin costo. Empieza a generar valor antes de hablar con nosotros.'
-                  : 'Free downloadable guides, checklists and tools. Start generating value before talking to us.'}
-              </p>
-            </div>
+          <AnimatedSection className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
+              Por Qué Elegirnos
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white">
+              Por qué empresas líderes en LATAM y el Caribe confían en Alternative
+            </h2>
           </AnimatedSection>
 
-          <StaggerContainer className="grid md:grid-cols-3 gap-8">
-            {resources.map((resource, idx) => {
-              const Icon = resource.icon;
-              return (
-                <StaggerItem key={idx}>
-                  <div className="bg-white dark:bg-card rounded-2xl p-8 shadow-brand hover:shadow-brand-lg transition-all duration-300 hover:-translate-y-2 h-full flex flex-col">
-                    <div className="w-14 h-14 bg-turquesa/20 rounded-xl flex items-center justify-center mb-6">
-                      <Icon className="w-7 h-7 text-turquesa" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-azul-marino dark:text-white mb-3">{resource.title}</h3>
-                    <p className="text-foreground/60 mb-4 leading-relaxed text-sm flex-grow">{resource.desc}</p>
-                    <div className="flex items-center justify-between text-sm mb-4">
-                      <span className="text-foreground/50">{resource.format}</span>
-                      <span className="text-turquesa font-medium">{resource.benefit}</span>
-                    </div>
-                    <button className="w-full group flex items-center justify-center gap-2 bg-turquesa/10 text-turquesa font-semibold py-3 rounded-xl hover:bg-turquesa hover:text-azul-marino transition-all duration-300">
-                      <Download className="w-5 h-5" />
-                      {language === 'es' ? 'Descargar gratis' : 'Download free'}
-                    </button>
-                  </div>
-                </StaggerItem>
-              );
-            })}
-          </StaggerContainer>
-        </div>
-      </section>
-
-      {/* ============ TESTIMONIALS SECTION ============ */}
-      <section className="py-24 bg-azul-marino relative overflow-hidden">
-        <div className="container-custom relative z-10">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="inline-block text-menta font-semibold text-sm uppercase tracking-wider mb-4">
-                {language === 'es' ? 'Testimonios' : 'Testimonials'}
-              </span>
-              <h2 className="text-4xl lg:text-5xl font-semibold text-white">
-                {language === 'es' ? 'Lo que dicen nuestros clientes' : 'What our clients say'}
-              </h2>
-            </div>
-          </AnimatedSection>
-
-          {/* Featured Testimonial */}
-          <AnimatedSection delay={0.2}>
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-10 lg:p-12">
-                <Quote className="w-14 h-14 text-turquesa/40 mb-6" />
-                <p className="text-2xl lg:text-3xl text-white font-medium leading-relaxed mb-8">
-                  &ldquo;{testimonials[0].quote}&rdquo;
-                </p>
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-menta rounded-full flex items-center justify-center">
-                      <span className="text-azul-marino font-bold text-xl">
-                        {testimonials[0].name.charAt(0)}
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white text-lg">{testimonials[0].name}</h4>
-                      <p className="text-white/60">{testimonials[0].role}</p>
-                    </div>
-                  </div>
-                  <span className="text-xs bg-white/10 text-white/70 px-3 py-1 rounded-full">{testimonials[0].badge}</span>
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {/* Other Testimonials */}
-          <StaggerContainer className="grid md:grid-cols-3 gap-6 mt-8 max-w-5xl mx-auto">
-            {testimonials.slice(1).map((testimonial, idx) => (
+          <StaggerContainer className="grid md:grid-cols-2 gap-6 mb-16">
+            {differentiators.map((diff, idx) => (
               <StaggerItem key={idx}>
-                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 h-full">
-                  <p className="text-white/80 mb-4 italic text-sm leading-relaxed">&ldquo;{testimonial.quote}&rdquo;</p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-turquesa/30 rounded-full flex items-center justify-center">
-                      <span className="text-turquesa font-semibold">{testimonial.name.charAt(0)}</span>
+                <div className="bg-blanco-hueso dark:bg-card rounded-2xl p-6 h-full border border-gris-arena/20">
+                  <div className="flex items-start gap-4">
+                    <div className="w-14 h-14 bg-turquesa/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <diff.icon className="w-7 h-7 text-turquesa" />
                     </div>
-                    <div>
-                      <h4 className="font-medium text-white text-sm">{testimonial.name}</h4>
-                      <p className="text-white/50 text-xs">{testimonial.role}</p>
-                    </div>
-                  </div>
-                  <span className="inline-block mt-4 text-xs bg-white/10 text-white/60 px-2 py-1 rounded-full">{testimonial.badge}</span>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-
-      {/* ============ PROCESS SECTION ============ */}
-      <section className="py-24 bg-white dark:bg-card/50">
-        <div className="container-custom">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="inline-block text-oliva font-semibold text-sm uppercase tracking-wider mb-4">
-                {language === 'es' ? 'Cómo Trabajamos' : 'How We Work'}
-              </span>
-              <h2 className="text-4xl lg:text-5xl font-semibold text-azul-marino dark:text-white mb-6">
-                {language === 'es' ? 'Nuestro Proceso' : 'Our Process'}
-              </h2>
-            </div>
-          </AnimatedSection>
-
-          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {phases.map((phase, idx) => {
-              const Icon = phase.icon;
-              return (
-                <StaggerItem key={idx}>
-                  <div className="relative">
-                    {/* Connector */}
-                    {idx < phases.length - 1 && (
-                      <div className="hidden lg:block absolute top-12 left-[60%] w-full h-px bg-gris-arena/50" />
-                    )}
-                    <div className="bg-blanco-hueso dark:bg-secondary rounded-2xl p-8 hover:shadow-brand-md transition-all duration-300 hover:-translate-y-1">
-                      <div className="text-5xl font-bold text-turquesa/20 mb-4">{phase.num}</div>
-                      <div className="w-12 h-12 bg-turquesa/20 rounded-xl flex items-center justify-center mb-4">
-                        <Icon className="w-6 h-6 text-turquesa" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-azul-marino dark:text-white mb-3">
-                        {phase.title}
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-azul-marino dark:text-white mb-2">
+                        {diff.title}
                       </h3>
-                      <p className="text-foreground/60 text-sm leading-relaxed">
-                        {phase.desc}
+                      <p className="text-foreground/60 text-sm mb-3">
+                        {diff.description}
                       </p>
                     </div>
                   </div>
-                </StaggerItem>
-              );
-            })}
-          </StaggerContainer>
-        </div>
-      </section>
-
-      {/* ============ CTA FINAL SECTION ============ */}
-      <section className="py-24 bg-blanco-hueso dark:bg-background relative overflow-hidden">
-        <div className="container-custom">
-          <AnimatedSection>
-            <div className="bg-violeta rounded-3xl p-12 lg:p-16 relative overflow-hidden">
-              {/* Decorative */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-bl-[200px]" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-azul-marino/20 rounded-tr-[150px]" />
-              
-              <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-                <div>
-                  <h2 className="text-4xl lg:text-5xl font-semibold text-white mb-6">
-                    {language === 'es' 
-                      ? '¿Listo para optimizar tu empresa?' 
-                      : 'Ready to optimize your company?'}
-                  </h2>
-                  <p className="text-xl text-white/80 mb-6">
-                    {language === 'es'
-                      ? 'Agenda un diagnóstico gratuito de 15 minutos. Sin compromiso, sin presentaciones de venta.'
-                      : 'Schedule a free 15-minute diagnosis. No commitment, no sales pitches.'}
-                  </p>
-                  <div className="space-y-3">
-                    {[
-                      language === 'es' ? 'Identificación de tu desafío más crítico' : 'Identification of your most critical challenge',
-                      language === 'es' ? 'Cuantificación del impacto en tu operación' : 'Quantification of impact on your operation',
-                      language === 'es' ? '3 recomendaciones accionables inmediatas' : '3 immediate actionable recommendations',
-                      language === 'es' ? 'Roadmap preliminar de solución' : 'Preliminary solution roadmap',
-                    ].map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-menta flex-shrink-0" />
-                        <span className="text-white/90">{item}</span>
-                      </div>
-                    ))}
+                  <div className="mt-4 pt-4 border-t border-gris-arena/20">
+                    <span className="text-turquesa font-semibold text-sm">{diff.stat}</span>
                   </div>
                 </div>
-                <div className="flex flex-col gap-4">
-                  <Link 
-                    href="/contact"
-                    className="group inline-flex items-center justify-center gap-3 bg-white text-violeta font-semibold px-8 py-5 rounded-xl hover:bg-menta transition-all duration-300 hover:-translate-y-1 hover:shadow-lg text-lg"
-                  >
-                    {language === 'es' ? 'Solicitar Diagnóstico Gratuito' : 'Request Free Diagnosis'}
-                    <Timer className="w-5 h-5" />
-                  </Link>
-                  <p className="text-center text-white/60 text-sm">
-                    {language === 'es' 
-                      ? 'Más de 50 empresas han empezado con este diagnóstico gratuito. Promedio de satisfacción: 4.9/5'
-                      : 'More than 50 companies have started with this free diagnosis. Average satisfaction: 4.9/5'}
-                  </p>
-                  <div className="flex items-center justify-center gap-4 mt-4">
-                    <Link 
-                      href="/success-stories"
-                      className="inline-flex items-center gap-2 text-white font-medium hover:text-menta transition-colors"
-                    >
-                      {language === 'es' ? 'Ver Casos de Éxito' : 'View Success Stories'}
-                      <ChevronRight className="w-5 h-5" />
-                    </Link>
-                  </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+
+          {/* Katherine Quote */}
+          <AnimatedSection delay={0.3}>
+            <div className="bg-azul-marino rounded-2xl p-8 lg:p-12 flex flex-col lg:flex-row items-center gap-8">
+              <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-turquesa flex-shrink-0 bg-turquesa/20 flex items-center justify-center">
+                <span className="text-turquesa font-bold text-3xl lg:text-4xl">KG</span>
+              </div>
+              <div className="flex-1">
+                <Quote className="w-10 h-10 text-turquesa/30 mb-4" />
+                <p className="text-white/90 text-lg lg:text-xl italic mb-4">
+                  &quot;En 15 años he aprendido que los problemas más costosos de las empresas NO son tecnológicos. Son de procesos mal diseñados, equipos desalineados y falta de metodología. Y eso se soluciona con disciplina, datos y personas comprometidas.&quot;
+                </p>
+                <div>
+                  <p className="text-white font-semibold">Katherine González</p>
+                  <p className="text-white/60 text-sm">PMP®, ISO 9001 Lead Auditor — CEO, Alternative</p>
                 </div>
               </div>
             </div>
           </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ===================== CASOS DE ÉXITO ===================== */}
+      <section className="py-20 lg:py-32 bg-blanco-hueso dark:bg-background">
+        <div className="container-custom">
+          <AnimatedSection className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
+              Casos de Éxito
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white mb-4">
+              Resultados reales para empresas reales
+            </h2>
+            <p className="text-foreground/60 max-w-2xl mx-auto">
+              Casos de éxito con métricas comprobadas y testimoniales de clientes verificados
+            </p>
+          </AnimatedSection>
+
+          <StaggerContainer className="grid lg:grid-cols-3 gap-6">
+            {successCases.map((caso, idx) => (
+              <StaggerItem key={idx}>
+                <div className="bg-white dark:bg-card rounded-2xl p-6 shadow-brand h-full flex flex-col">
+                  <span className="inline-block px-3 py-1 bg-turquesa/10 text-turquesa text-xs font-medium rounded-full mb-4 self-start">
+                    {caso.industry}
+                  </span>
+                  <h3 className="text-xl font-semibold text-azul-marino dark:text-white mb-3">
+                    {caso.title}
+                  </h3>
+                  <p className="text-foreground/60 text-sm mb-4 flex-1">
+                    {caso.challenge}
+                  </p>
+                  <div className="grid grid-cols-3 gap-3 mb-4">
+                    {caso.results.map((r, i) => (
+                      <div key={i} className="text-center p-2 bg-blanco-hueso dark:bg-background rounded-lg">
+                        <p className="text-lg font-bold text-turquesa">{r.metric}</p>
+                        <p className="text-xs text-foreground/60">{r.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="pt-4 border-t border-gris-arena/20">
+                    <p className="text-foreground/70 text-sm italic mb-2">&quot;{caso.testimonial}&quot;</p>
+                    <p className="text-foreground/50 text-xs">— {caso.author}</p>
+                  </div>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+
+          <AnimatedSection delay={0.3} className="mt-12 text-center">
+            <Link
+              href="/casos-exito"
+              className="inline-flex items-center gap-2 bg-turquesa text-azul-marino font-semibold px-6 py-3 rounded-xl hover:bg-menta transition-all"
+            >
+              ¿Quieres resultados como estos en tu empresa?
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ===================== RECURSOS GRATUITOS ===================== */}
+      <section className="py-20 lg:py-32 bg-white dark:bg-card">
+        <div className="container-custom">
+          <AnimatedSection className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
+              Recursos Gratuitos
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white mb-4">
+              Recursos gratuitos para optimizar tu empresa hoy mismo
+            </h2>
+            <p className="text-foreground/60 max-w-2xl mx-auto">
+              Guías, checklists y herramientas descargables sin costo. Empieza a generar valor antes de conversar con nosotros.
+            </p>
+          </AnimatedSection>
+
+          <StaggerContainer className="grid lg:grid-cols-3 gap-6">
+            {resources.map((resource, idx) => (
+              <StaggerItem key={idx}>
+                <div className="bg-blanco-hueso dark:bg-card rounded-2xl p-6 h-full border border-gris-arena/20 flex flex-col">
+                  <div className="w-14 h-14 bg-turquesa/20 rounded-xl flex items-center justify-center mb-4">
+                    <resource.icon className="w-7 h-7 text-turquesa" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-azul-marino dark:text-white mb-3">
+                    {resource.title}
+                  </h3>
+                  <p className="text-foreground/60 text-sm mb-4 flex-1">
+                    {resource.description}
+                  </p>
+                  <div className="space-y-2 mb-4">
+                    <p className="text-xs text-foreground/50">
+                      <strong>Formato:</strong> {resource.format}
+                    </p>
+                    <p className="text-xs text-turquesa font-medium">
+                      <CheckCircle2 className="w-3 h-3 inline mr-1" />
+                      {resource.benefit}
+                    </p>
+                  </div>
+                  <button className="w-full flex items-center justify-center gap-2 bg-azul-marino text-white font-medium px-4 py-3 rounded-xl hover:bg-azul-marino/90 transition-all">
+                    <Download className="w-4 h-4" />
+                    {resource.cta}
+                  </button>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+
+          <AnimatedSection delay={0.3} className="mt-12 text-center">
+            <p className="text-foreground/60 mb-4">
+              ¿Necesitas asesoría personalizada para tu situación específica? Nuestro diagnóstico gratuito analiza tu empresa en 15 minutos.
+            </p>
+            <Link
+              href="/contacto"
+              className="inline-flex items-center gap-2 text-turquesa font-semibold hover:text-menta transition-colors"
+            >
+              Agendar diagnóstico gratuito
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ===================== TESTIMONIALES ===================== */}
+      <section className="py-20 lg:py-32 bg-azul-marino">
+        <div className="container-custom">
+          <AnimatedSection className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-turquesa/20 text-turquesa rounded-full text-sm font-medium mb-4">
+              Testimonios
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
+              Lo que dicen nuestros clientes
+            </h2>
+            <p className="text-white/60 max-w-2xl mx-auto">
+              Testimoniales verificados de ejecutivos que han trabajado con Alternative
+            </p>
+          </AnimatedSection>
+
+          {/* Featured testimonial */}
+          <AnimatedSection delay={0.1} className="mb-8">
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 lg:p-10">
+              <Quote className="w-12 h-12 text-turquesa/30 mb-6" />
+              <p className="text-white/90 text-xl lg:text-2xl mb-8 leading-relaxed">
+                &quot;{testimonials[0].quote}&quot;
+              </p>
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 bg-turquesa/20 rounded-full flex items-center justify-center text-turquesa font-bold text-lg">
+                    {testimonials[0].initials}
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold">{testimonials[0].author}</h4>
+                    <p className="text-white/60 text-sm">{testimonials[0].role}</p>
+                  </div>
+                </div>
+                <span className="px-3 py-1 bg-turquesa/20 text-turquesa text-sm rounded-full">
+                  {testimonials[0].badge}
+                </span>
+              </div>
+            </div>
+          </AnimatedSection>
+
+          {/* Other testimonials */}
+          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {testimonials.slice(1).map((test, idx) => (
+              <StaggerItem key={idx}>
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 h-full">
+                  <p className="text-white/80 text-sm mb-4">&quot;{test.quote}&quot;</p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-turquesa/20 rounded-full flex items-center justify-center text-turquesa font-bold text-sm">
+                      {test.initials}
+                    </div>
+                    <div>
+                      <h4 className="text-white font-medium text-sm">{test.author}</h4>
+                      <p className="text-white/50 text-xs">{test.role}</p>
+                    </div>
+                  </div>
+                  <span className="inline-block mt-3 px-2 py-1 bg-turquesa/10 text-turquesa text-xs rounded-full">
+                    {test.badge}
+                  </span>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* ===================== BLOG RECIENTE ===================== */}
+      <section className="py-20 lg:py-32 bg-blanco-hueso dark:bg-background">
+        <div className="container-custom">
+          <AnimatedSection className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
+              Blog
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white mb-4">
+              Últimas publicaciones del blog
+            </h2>
+            <p className="text-foreground/60 max-w-2xl mx-auto">
+              Insights prácticos sobre optimización empresarial, gestión de proyectos y sistemas de calidad
+            </p>
+          </AnimatedSection>
+
+          <StaggerContainer className="grid lg:grid-cols-3 gap-6">
+            {blogPosts.map((post, idx) => (
+              <StaggerItem key={idx}>
+                <Link href={post.href}>
+                  <div className="group bg-white dark:bg-card rounded-2xl overflow-hidden shadow-brand hover:shadow-brand-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                    <div className="h-48 bg-azul-marino flex items-center justify-center">
+                      <BookOpen className="w-16 h-16 text-white/30" />
+                    </div>
+                    <div className="p-6 flex-1 flex flex-col">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="px-2 py-1 bg-turquesa/10 text-turquesa text-xs rounded-full">
+                          {post.category}
+                        </span>
+                        <span className="text-foreground/40 text-xs">{post.readTime}</span>
+                      </div>
+                      <h3 className="text-lg font-semibold text-azul-marino dark:text-white mb-3 group-hover:text-turquesa transition-colors">
+                        {post.title}
+                      </h3>
+                      <p className="text-foreground/60 text-sm flex-1">
+                        {post.excerpt}
+                      </p>
+                      <div className="flex items-center gap-2 text-turquesa font-medium text-sm mt-4 group-hover:gap-3 transition-all">
+                        <span>Leer artículo completo</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+
+          <AnimatedSection delay={0.3} className="mt-12 text-center">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-turquesa font-semibold hover:text-menta transition-colors"
+            >
+              Ver todos los artículos del blog
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ===================== CTA FINAL ===================== */}
+      <section className="py-20 lg:py-32 bg-azul-marino">
+        <div className="container-custom">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            {/* Left content */}
+            <AnimatedSection>
+              <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
+                ¿Listo para optimizar tu empresa?
+              </h2>
+              <p className="text-white/70 mb-8">
+                Agenda un diagnóstico gratuito de 15 minutos. Sin compromiso, sin presentaciones comerciales. Solo identificamos tus oportunidades de mejora más urgentes y te damos recomendaciones accionables.
+              </p>
+
+              <div className="mb-8">
+                <p className="text-turquesa font-medium mb-4">En 15 minutos cubrimos:</p>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {[
+                    'Identificación de tu desafío operacional más crítico',
+                    'Cuantificación preliminar del impacto en tu negocio',
+                    '3 recomendaciones accionables inmediatas',
+                    'Roadmap preliminar de solución (si aplica)'
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-turquesa flex-shrink-0 mt-0.5" />
+                      <span className="text-white/80 text-sm">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
+                <p className="text-white/60 text-sm">
+                  &quot;Más de 50 empresas en LATAM han iniciado con este diagnóstico gratuito. Satisfacción promedio: <strong className="text-turquesa">4.9/5</strong>&quot;
+                </p>
+              </div>
+            </AnimatedSection>
+
+            {/* Right content - Form */}
+            <AnimatedSection delay={0.2}>
+              <div className="bg-white dark:bg-card rounded-2xl p-8 shadow-2xl">
+                <h3 className="text-xl font-semibold text-azul-marino dark:text-white mb-6">
+                  Solicita tu diagnóstico gratuito
+                </h3>
+                <form className="space-y-4">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-foreground/70 mb-1">Nombre completo*</label>
+                      <input
+                        type="text"
+                        className="w-full px-4 py-3 rounded-xl border border-gris-arena/30 focus:border-turquesa focus:ring-2 focus:ring-turquesa/20 outline-none transition-all bg-white dark:bg-background"
+                        placeholder="Tu nombre"
+                        value={formData.nombre}
+                        onChange={(e) => setFormData({...formData, nombre: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-foreground/70 mb-1">Email corporativo*</label>
+                      <input
+                        type="email"
+                        className="w-full px-4 py-3 rounded-xl border border-gris-arena/30 focus:border-turquesa focus:ring-2 focus:ring-turquesa/20 outline-none transition-all bg-white dark:bg-background"
+                        placeholder="tu@empresa.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-foreground/70 mb-1">Teléfono (WhatsApp)*</label>
+                      <input
+                        type="tel"
+                        className="w-full px-4 py-3 rounded-xl border border-gris-arena/30 focus:border-turquesa focus:ring-2 focus:ring-turquesa/20 outline-none transition-all bg-white dark:bg-background"
+                        placeholder="+507 XXXX-XXXX"
+                        value={formData.telefono}
+                        onChange={(e) => setFormData({...formData, telefono: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-foreground/70 mb-1">Empresa*</label>
+                      <input
+                        type="text"
+                        className="w-full px-4 py-3 rounded-xl border border-gris-arena/30 focus:border-turquesa focus:ring-2 focus:ring-turquesa/20 outline-none transition-all bg-white dark:bg-background"
+                        placeholder="Nombre de tu empresa"
+                        value={formData.empresa}
+                        onChange={(e) => setFormData({...formData, empresa: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="industria-select" className="block text-sm font-medium text-foreground/70 mb-1">Industria*</label>
+                    <select
+                      id="industria-select"
+                      title="Selecciona tu industria"
+                      className="w-full px-4 py-3 rounded-xl border border-gris-arena/30 focus:border-turquesa focus:ring-2 focus:ring-turquesa/20 outline-none transition-all bg-white dark:bg-background text-foreground"
+                      value={formData.industria}
+                      onChange={(e) => setFormData({...formData, industria: e.target.value})}
+                    >
+                      <option value="">Selecciona tu industria</option>
+                      <option value="banca">Banca y Servicios Financieros</option>
+                      <option value="manufactura">Manufactura y Logística</option>
+                      <option value="retail">Retail y Comercio</option>
+                      <option value="tecnologia">Tecnología y Telecomunicaciones</option>
+                      <option value="servicios">Servicios Profesionales</option>
+                      <option value="gobierno">Gobierno y Sector Público</option>
+                      <option value="salud">Salud y Farmacéutica</option>
+                      <option value="energia">Energía y Utilities</option>
+                      <option value="otra">Otra</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground/70 mb-1">¿Cuál es tu mayor desafío operacional?*</label>
+                    <textarea
+                      className="w-full px-4 py-3 rounded-xl border border-gris-arena/30 focus:border-turquesa focus:ring-2 focus:ring-turquesa/20 outline-none transition-all bg-white dark:bg-background resize-none"
+                      rows={3}
+                      placeholder="Describe brevemente tu situación actual..."
+                      maxLength={250}
+                      value={formData.desafio}
+                      onChange={(e) => setFormData({...formData, desafio: e.target.value})}
+                    />
+                    <p className="text-xs text-foreground/40 mt-1">{formData.desafio.length}/250 caracteres</p>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full flex items-center justify-center gap-2 bg-turquesa text-azul-marino font-semibold px-6 py-4 rounded-xl hover:bg-menta transition-all hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    Solicitar Diagnóstico Gratuito
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </form>
+                <p className="text-center text-foreground/50 text-sm mt-4">
+                  ¿Prefieres WhatsApp? Escríbenos: <a href="https://wa.me/50769908906" className="text-turquesa hover:underline">+507 6990-8906</a>
+                </p>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== PROCESO (CÓMO TRABAJAMOS) ===================== */}
+      <section className="py-20 lg:py-32 bg-white dark:bg-card">
+        <div className="container-custom">
+          <AnimatedSection className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
+              Cómo Trabajamos
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white">
+              Nuestro Proceso
+            </h2>
+          </AnimatedSection>
+
+          <StaggerContainer className="grid md:grid-cols-4 gap-6">
+            {[
+              { step: '01', icon: Search, title: 'Diagnóstico', desc: 'Analizamos tu situación actual e identificamos oportunidades de mejora' },
+              { step: '02', icon: Lightbulb, title: 'Estrategia', desc: 'Diseñamos un plan personalizado alineado a tus objetivos de negocio' },
+              { step: '03', icon: Rocket, title: 'Implementación', desc: 'Ejecutamos con acompañamiento continuo y transferencia de conocimiento' },
+              { step: '04', icon: LineChart, title: 'Seguimiento', desc: 'Medimos resultados y optimizamos continuamente para asegurar sostenibilidad' }
+            ].map((phase, idx) => (
+              <StaggerItem key={idx}>
+                <div className="relative text-center">
+                  <div className="text-6xl font-bold text-turquesa/10 mb-4">{phase.step}</div>
+                  <div className="w-16 h-16 bg-turquesa/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <phase.icon className="w-8 h-8 text-turquesa" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-azul-marino dark:text-white mb-2">
+                    {phase.title}
+                  </h3>
+                  <p className="text-foreground/60 text-sm">
+                    {phase.desc}
+                  </p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
         </div>
       </section>
     </>

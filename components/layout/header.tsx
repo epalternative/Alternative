@@ -12,19 +12,248 @@ import {
   Sun,
   Moon,
   ChevronDown,
+  ChevronRight,
   Settings,
   Award,
   FolderKanban,
-  Monitor,
+  Cpu,
+  Target,
   Code,
   Globe,
-  ArrowRight
+  ArrowRight,
+  Building2,
+  BookOpen,
+  Users,
+  FileText,
+  Briefcase,
+  Sparkles,
+  Landmark,
+  Factory,
+  ShoppingCart,
+  Monitor,
+  UserCog,
+  Building,
+  HeartPulse,
+  Zap
 } from 'lucide-react';
+
+// Mega menu service categories - all 6 categories with their sub-services
+const serviceColumns = [
+  {
+    title: 'OPTIMIZACIÓN DE PROCESOS',
+    titleEn: 'PROCESS OPTIMIZATION',
+    href: '/servicios/optimizacion-procesos',
+    items: [
+      { label: 'BPM Empresarial', labelEn: 'Business BPM', desc: 'Business Process Management', descEn: 'Business Process Management', href: '/servicios/optimizacion-procesos/bpm-empresarial' },
+      { label: 'Lean Six Sigma', labelEn: 'Lean Six Sigma', desc: 'Reducción de desperdicio', descEn: 'Waste reduction', href: '/servicios/optimizacion-procesos/lean-six-sigma' },
+      { label: 'Diseño de Procesos', labelEn: 'Process Design', desc: 'As-Is / To-Be', descEn: 'As-Is / To-Be', href: '/servicios/optimizacion-procesos/diseno-procesos' },
+      { label: 'Automatización', labelEn: 'Automation', desc: 'RPA / Workflows', descEn: 'RPA / Workflows', href: '/servicios/optimizacion-procesos/automatizacion-procesos' },
+    ],
+  },
+  {
+    title: 'SISTEMAS DE CALIDAD',
+    titleEn: 'QUALITY SYSTEMS',
+    href: '/servicios/sistemas-calidad',
+    items: [
+      { label: 'ISO 9001', labelEn: 'ISO 9001', desc: 'Implementación', descEn: 'Implementation', href: '/servicios/sistemas-calidad/implementacion-iso-9001' },
+      { label: 'Auditoría de Calidad', labelEn: 'Quality Audit', desc: 'Evaluación integral', descEn: 'Comprehensive evaluation', href: '/servicios/sistemas-calidad/auditoria-calidad' },
+      { label: 'Certificación ISO', labelEn: 'ISO Certification', desc: 'Acompañamiento completo', descEn: 'Full support', href: '/servicios/sistemas-calidad/certificacion-iso' },
+      { label: 'Gestión de Calidad', labelEn: 'Quality Management', desc: 'Mejora continua', descEn: 'Continuous improvement', href: '/servicios/sistemas-calidad/gestion-calidad' },
+    ],
+  },
+  {
+    title: 'GESTIÓN DE PROYECTOS',
+    titleEn: 'PROJECT MANAGEMENT',
+    href: '/servicios/gestion-proyectos',
+    items: [
+      { label: 'PMP®', labelEn: 'PMP®', desc: 'Project Management', descEn: 'Project Management', href: '/servicios/gestion-proyectos/pmp-project-management' },
+      { label: 'Metodologías Ágiles', labelEn: 'Agile Methodologies', desc: 'Scrum / Kanban', descEn: 'Scrum / Kanban', href: '/servicios/gestion-proyectos/metodologias-agiles' },
+      { label: 'PMO Office', labelEn: 'PMO Office', desc: 'Gobernanza y control', descEn: 'Governance & control', href: '/servicios/gestion-proyectos/pmo-office' },
+      { label: 'Casos de Negocio', labelEn: 'Business Cases', desc: 'Análisis y viabilidad', descEn: 'Analysis & feasibility', href: '/servicios/gestion-proyectos/casos-negocio' },
+    ],
+  },
+  {
+    title: 'TRANSFORMACIÓN DIGITAL',
+    titleEn: 'DIGITAL TRANSFORMATION',
+    href: '/servicios/transformacion-digital',
+    items: [
+      { label: 'Estrategia Digital', labelEn: 'Digital Strategy', desc: 'Roadmap tecnológico', descEn: 'Technology roadmap', href: '/servicios/transformacion-digital/estrategia-digital' },
+      { label: 'Automatización Inteligente', labelEn: 'Intelligent Automation', desc: 'IA y Machine Learning', descEn: 'AI & Machine Learning', href: '/servicios/transformacion-digital/automatizacion-inteligente' },
+      { label: 'Desarrollo de Software', labelEn: 'Software Development', desc: 'Soluciones a medida', descEn: 'Custom solutions', href: '/servicios/transformacion-digital/desarrollo-software' },
+      { label: 'Infraestructura IT', labelEn: 'IT Infrastructure', desc: 'Cloud y servidores', descEn: 'Cloud & servers', href: '/servicios/transformacion-digital/infraestructura-it' },
+    ],
+  },
+  {
+    title: 'CONSULTORÍA ESTRATÉGICA',
+    titleEn: 'STRATEGIC CONSULTING',
+    href: '/servicios/consultoria-estrategica',
+    items: [
+      { label: 'Diagnóstico Organizacional', labelEn: 'Organizational Diagnosis', desc: 'Análisis 360°', descEn: '360° analysis', href: '/servicios/consultoria-estrategica/diagnostico-organizacional' },
+      { label: 'Estudios de Viabilidad', labelEn: 'Feasibility Studies', desc: 'ROI y factibilidad', descEn: 'ROI & feasibility', href: '/servicios/consultoria-estrategica/estudios-viabilidad' },
+      { label: 'Desarrollo de RFP', labelEn: 'RFP Development', desc: 'Licitaciones', descEn: 'Tenders', href: '/servicios/consultoria-estrategica/desarrollo-rfp' },
+    ],
+  },
+  {
+    title: 'DESARROLLO TECNOLOGÍA',
+    titleEn: 'TECHNOLOGY DEVELOPMENT',
+    href: '/servicios/desarrollo-tecnologia',
+    items: [
+      { label: 'Aplicaciones a Medida', labelEn: 'Custom Applications', desc: 'Software personalizado', descEn: 'Custom software', href: '/servicios/desarrollo-tecnologia/aplicaciones-medida' },
+      { label: 'Portales Corporativos', labelEn: 'Corporate Portals', desc: 'Intranets y extranets', descEn: 'Intranets & extranets', href: '/servicios/desarrollo-tecnologia/portales-corporativos' },
+      { label: 'Integraciones API', labelEn: 'API Integrations', desc: 'Conectividad de sistemas', descEn: 'System connectivity', href: '/servicios/desarrollo-tecnologia/integraciones-api' },
+      { label: 'Soporte Infraestructura', labelEn: 'Infrastructure Support', desc: 'Mantenimiento IT', descEn: 'IT maintenance', href: '/servicios/desarrollo-tecnologia/soporte-infraestructura' },
+    ],
+  },
+];
+
+// Industries data for mega menu
+const industryItems = [
+  { 
+    label: 'Banca & Servicios Financieros', 
+    labelEn: 'Banking & Financial Services',
+    desc: 'SBP, cumplimiento, operaciones',
+    descEn: 'SBP, compliance, operations',
+    href: '/industrias/banca-servicios-financieros',
+    icon: Landmark
+  },
+  { 
+    label: 'Manufactura & Logística', 
+    labelEn: 'Manufacturing & Logistics',
+    desc: 'costos, tiempos, calidad',
+    descEn: 'costs, time, quality',
+    href: '/industrias/manufactura-logistica',
+    icon: Factory
+  },
+  { 
+    label: 'Retail & Comercio', 
+    labelEn: 'Retail & Commerce',
+    desc: 'experiencia, inventario',
+    descEn: 'experience, inventory',
+    href: '/industrias/retail-comercio',
+    icon: ShoppingCart
+  },
+  { 
+    label: 'Tecnología & Telecom', 
+    labelEn: 'Technology & Telecom',
+    desc: 'escala, delivery, SLAs',
+    descEn: 'scale, delivery, SLAs',
+    href: '/industrias/tecnologia-telecomunicaciones',
+    icon: Monitor
+  },
+  { 
+    label: 'Servicios Profesionales', 
+    labelEn: 'Professional Services',
+    desc: 'operación, productividad',
+    descEn: 'operation, productivity',
+    href: '/industrias/servicios-profesionales',
+    icon: UserCog
+  },
+  { 
+    label: 'Gobierno & Sector Público', 
+    labelEn: 'Government & Public Sector',
+    desc: 'trámites, eficiencia',
+    descEn: 'procedures, efficiency',
+    href: '/industrias/gobierno-sector-publico',
+    icon: Building
+  },
+  { 
+    label: 'Salud & Farmacéutica', 
+    labelEn: 'Healthcare & Pharma',
+    desc: 'trazabilidad, calidad',
+    descEn: 'traceability, quality',
+    href: '/industrias/salud-farmaceutica',
+    icon: HeartPulse
+  },
+  { 
+    label: 'Energía & Utilities', 
+    labelEn: 'Energy & Utilities',
+    desc: 'operación, continuidad',
+    descEn: 'operation, continuity',
+    href: '/industrias/energia-utilities',
+    icon: Zap
+  },
+];
+
+// Keep original categories for mobile and other uses
+const serviceCategories = [
+  {
+    title: 'Optimización de Procesos',
+    titleEn: 'Process Optimization',
+    href: '/servicios/optimizacion-procesos',
+    icon: Settings,
+    items: [
+      { label: 'BPM empresarial', labelEn: 'Business BPM', href: '/servicios/optimizacion-procesos/bpm-empresarial' },
+      { label: 'Lean Six Sigma', labelEn: 'Lean Six Sigma', href: '/servicios/optimizacion-procesos/lean-six-sigma' },
+      { label: 'Diseño de procesos', labelEn: 'Process Design', href: '/servicios/optimizacion-procesos/diseno-procesos' },
+      { label: 'Automatización', labelEn: 'Automation', href: '/servicios/optimizacion-procesos/automatizacion-procesos' },
+    ],
+  },
+  {
+    title: 'Sistemas de Calidad',
+    titleEn: 'Quality Systems',
+    href: '/servicios/sistemas-calidad',
+    icon: Award,
+    items: [
+      { label: 'Implementación ISO 9001', labelEn: 'ISO 9001 Implementation', href: '/servicios/sistemas-calidad/implementacion-iso-9001' },
+      { label: 'Auditoría de calidad', labelEn: 'Quality Audit', href: '/servicios/sistemas-calidad/auditoria-calidad' },
+      { label: 'Certificación ISO', labelEn: 'ISO Certification', href: '/servicios/sistemas-calidad/certificacion-iso' },
+      { label: 'Gestión de calidad', labelEn: 'Quality Management', href: '/servicios/sistemas-calidad/gestion-calidad' },
+    ],
+  },
+  {
+    title: 'Gestión de Proyectos',
+    titleEn: 'Project Management',
+    href: '/servicios/gestion-proyectos',
+    icon: FolderKanban,
+    items: [
+      { label: 'PMP® Project Management', labelEn: 'PMP® Project Management', href: '/servicios/gestion-proyectos/pmp-project-management' },
+      { label: 'Metodologías Ágiles', labelEn: 'Agile Methodologies', href: '/servicios/gestion-proyectos/metodologias-agiles' },
+      { label: 'PMO Office', labelEn: 'PMO Office', href: '/servicios/gestion-proyectos/pmo-office' },
+      { label: 'Casos de negocio', labelEn: 'Business Cases', href: '/servicios/gestion-proyectos/casos-negocio' },
+    ],
+  },
+  {
+    title: 'Transformación Digital',
+    titleEn: 'Digital Transformation',
+    href: '/servicios/transformacion-digital',
+    icon: Cpu,
+    items: [
+      { label: 'Estrategia digital', labelEn: 'Digital Strategy', href: '/servicios/transformacion-digital/estrategia-digital' },
+      { label: 'Automatización inteligente', labelEn: 'Intelligent Automation', href: '/servicios/transformacion-digital/automatizacion-inteligente' },
+      { label: 'Desarrollo de software', labelEn: 'Software Development', href: '/servicios/transformacion-digital/desarrollo-software' },
+      { label: 'Infraestructura IT', labelEn: 'IT Infrastructure', href: '/servicios/transformacion-digital/infraestructura-it' },
+    ],
+  },
+  {
+    title: 'Consultoría Estratégica',
+    titleEn: 'Strategic Consulting',
+    href: '/servicios/consultoria-estrategica',
+    icon: Target,
+    items: [
+      { label: 'Diagnóstico organizacional', labelEn: 'Organizational Diagnosis', href: '/servicios/consultoria-estrategica/diagnostico-organizacional' },
+      { label: 'Estudios de viabilidad', labelEn: 'Feasibility Studies', href: '/servicios/consultoria-estrategica/estudios-viabilidad' },
+      { label: 'Desarrollo de RFP', labelEn: 'RFP Development', href: '/servicios/consultoria-estrategica/desarrollo-rfp' },
+    ],
+  },
+  {
+    title: 'Desarrollo Tecnología',
+    titleEn: 'Technology Development',
+    href: '/servicios/desarrollo-tecnologia',
+    icon: Code,
+    items: [
+      { label: 'Aplicaciones a medida', labelEn: 'Custom Applications', href: '/servicios/desarrollo-tecnologia/aplicaciones-medida' },
+      { label: 'Portales corporativos', labelEn: 'Corporate Portals', href: '/servicios/desarrollo-tecnologia/portales-corporativos' },
+      { label: 'Integraciones API', labelEn: 'API Integrations', href: '/servicios/desarrollo-tecnologia/integraciones-api' },
+      { label: 'Soporte infraestructura', labelEn: 'Infrastructure Support', href: '/servicios/desarrollo-tecnologia/soporte-infraestructura' },
+    ],
+  },
+];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isIndustriesOpen, setIsIndustriesOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const { t, language, setLanguage } = useI18n();
   const [mounted, setMounted] = useState(false);
@@ -36,21 +265,14 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const serviceLinks = [
-    { href: '/services/process-consulting', icon: Settings, label: t?.servicesDropdown?.processConsulting ?? 'Consultoría de Procesos' },
-    { href: '/services/quality-consulting', icon: Award, label: t?.servicesDropdown?.qualityConsulting ?? 'Consultoría de Calidad' },
-    { href: '/services/project-consulting', icon: FolderKanban, label: t?.servicesDropdown?.projectConsulting ?? 'Consultoría de Proyectos' },
-    { href: '/services/it-consulting', icon: Monitor, label: t?.servicesDropdown?.itConsulting ?? 'Consultoría de TI' },
-    { href: '/services/software-development', icon: Code, label: t?.servicesDropdown?.softwareDevelopment ?? 'Desarrollo de Software' },
-  ];
-
   const navLinks = [
-    { href: '/', label: t?.nav?.home ?? 'Inicio' },
-    { href: '/business-consultants', label: t?.nav?.businessConsultants ?? 'Consultores' },
-    { href: '#services', label: t?.nav?.services ?? 'Servicios', hasDropdown: true },
-    { href: '/success-stories', label: t?.nav?.successStories ?? 'Proyectos' },
-    { href: '/team-profile', label: t?.nav?.teamProfile ?? 'Perfil' },
-    { href: '/blog', label: t?.nav?.blog ?? 'Blog' },
+    { href: '/', label: language === 'es' ? 'Inicio' : 'Home' },
+    { href: '#services', label: language === 'es' ? 'Servicios' : 'Services', hasDropdown: 'services' },
+    { href: '/industrias', label: language === 'es' ? 'Industrias' : 'Industries', hasDropdown: 'industries' },
+    { href: '/casos-exito', label: language === 'es' ? 'Casos de Éxito' : 'Success Stories', icon: Briefcase },
+    { href: '/recursos', label: language === 'es' ? 'Recursos' : 'Resources', icon: BookOpen },
+    { href: '/nosotros', label: language === 'es' ? 'Nosotros' : 'About Us', icon: Users },
+    { href: '/blog', label: language === 'es' ? 'Blog' : 'Blog', icon: FileText },
   ];
 
   if (!mounted) return null;
@@ -91,8 +313,14 @@ export function Header() {
                   <div
                     key={link.href}
                     className="relative"
-                    onMouseEnter={() => setIsServicesOpen(true)}
-                    onMouseLeave={() => setIsServicesOpen(false)}
+                    onMouseEnter={() => {
+                      if (link.hasDropdown === 'services') setIsServicesOpen(true);
+                      if (link.hasDropdown === 'industries') setIsIndustriesOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                      if (link.hasDropdown === 'services') setIsServicesOpen(false);
+                      if (link.hasDropdown === 'industries') setIsIndustriesOpen(false);
+                    }}
                   >
                     <button
                       className={`flex items-center gap-1 px-4 py-2 rounded-lg font-medium transition-all ${
@@ -102,40 +330,188 @@ export function Header() {
                       }`}
                     >
                       {link.label}
-                      <ChevronDown className={`w-4 h-4 transition-transform ${isServicesOpen ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`w-4 h-4 transition-transform ${
+                        (link.hasDropdown === 'services' && isServicesOpen) || 
+                        (link.hasDropdown === 'industries' && isIndustriesOpen) 
+                          ? 'rotate-180' : ''
+                      }`} />
                     </button>
 
-                    <AnimatePresence>
-                      {isServicesOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute top-full left-0 mt-2 w-72 bg-white dark:bg-card rounded-2xl shadow-brand-lg border border-gris-arena/20 dark:border-white/10 overflow-hidden"
-                        >
-                          <div className="p-2">
-                            {serviceLinks.map((service) => {
-                              const Icon = service.icon;
-                              return (
-                                <Link
-                                  key={service.href}
-                                  href={service.href}
-                                  className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-beige dark:hover:bg-white/10 transition-colors group"
-                                >
-                                  <div className="w-10 h-10 bg-turquesa/10 rounded-lg flex items-center justify-center group-hover:bg-turquesa/20 transition-colors">
-                                    <Icon className="w-5 h-5 text-turquesa" />
+                    {/* SERVICES MEGA MENU */}
+                    {link.hasDropdown === 'services' && (
+                      <AnimatePresence>
+                        {isServicesOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[1100px] bg-azul-marino rounded-2xl shadow-2xl overflow-hidden border border-white/10"
+                          >
+                            {/* Header Section */}
+                            <div className="px-6 py-3 border-b border-white/10 flex items-center justify-between">
+                              <div className="flex items-center gap-4">
+                                <h3 className="text-white font-semibold">
+                                  {language === 'es' ? 'Servicios' : 'Services'}
+                                </h3>
+                                <span className="text-white/50 text-xs">
+                                  {language === 'es' 
+                                    ? 'problema → solución → evidencia → CTA' 
+                                    : 'problem → solution → evidence → CTA'}
+                                </span>
+                              </div>
+                              <span className="px-2.5 py-1 bg-white/10 border border-white/20 rounded-full text-[10px] text-white/70 font-medium">
+                                B2B
+                              </span>
+                            </div>
+
+                            {/* Content Grid - 3 columns x 2 rows + CTA */}
+                            <div className="p-4 flex gap-4">
+                              {/* Services Grid */}
+                              <div className="flex-1 grid grid-cols-3 gap-3">
+                                {serviceColumns.map((column, colIdx) => (
+                                  <div 
+                                    key={colIdx} 
+                                    className="bg-white/5 rounded-lg p-2.5 border border-white/10"
+                                  >
+                                    <Link 
+                                      href={column.href}
+                                      className="text-turquesa font-bold text-[9px] tracking-wider mb-2 block hover:text-menta transition-colors uppercase"
+                                    >
+                                      {language === 'es' ? column.title : column.titleEn}
+                                    </Link>
+                                    <ul className="space-y-0.5">
+                                      {column.items.map((item, itemIdx) => (
+                                        <li key={itemIdx}>
+                                          <Link
+                                            href={item.href}
+                                            className="group flex items-center justify-between py-1.5 px-1.5 -mx-1.5 rounded hover:bg-white/10 transition-colors"
+                                          >
+                                            <span className="text-white text-[11px]">
+                                              <span className="font-medium">{language === 'es' ? item.label : item.labelEn}</span>
+                                              <span className="text-white/40 ml-1">{language === 'es' ? item.desc : item.descEn}</span>
+                                            </span>
+                                            <ChevronRight className="w-3 h-3 text-white/20 group-hover:text-turquesa transition-colors flex-shrink-0 ml-1" />
+                                          </Link>
+                                        </li>
+                                      ))}
+                                    </ul>
                                   </div>
-                                  <span className="text-foreground/80 group-hover:text-azul-marino dark:group-hover:text-white font-medium text-sm">
-                                    {service.label}
+                                ))}
+                              </div>
+
+                              {/* CTA Sidebar */}
+                              <div className="w-[180px] bg-gradient-to-br from-gris-arena/20 to-white/5 rounded-lg p-3 border border-white/10 flex flex-col">
+                                <div className="flex items-center gap-1.5 mb-2">
+                                  <Sparkles className="w-3.5 h-3.5 text-turquesa" />
+                                  <h4 className="text-white font-semibold text-xs">
+                                    {language === 'es' ? '¿Qué necesitas?' : 'What do you need?'}
+                                  </h4>
+                                </div>
+                                <p className="text-white/50 text-[10px] mb-3 flex-1 leading-relaxed">
+                                  {language === 'es' 
+                                    ? 'Diagnóstico breve (15–20 min) para ubicar tu cuello de botella.' 
+                                    : 'Brief diagnosis (15-20 min) to find your bottleneck.'}
+                                </p>
+                                <div className="space-y-1.5">
+                                  <Link
+                                    href="/contacto"
+                                    className="flex items-center justify-center w-full bg-turquesa text-azul-marino font-semibold px-2 py-2 rounded-lg hover:bg-menta transition-all text-[10px]"
+                                  >
+                                    {language === 'es' ? 'Diagnóstico Gratuito' : 'Free Diagnosis'}
+                                  </Link>
+                                  <Link
+                                    href="/casos-exito"
+                                    className="flex items-center justify-center w-full bg-white/10 border border-white/20 text-white font-medium px-2 py-2 rounded-lg hover:bg-white/20 transition-all text-[10px]"
+                                  >
+                                    {language === 'es' ? 'Ver casos de éxito' : 'Success stories'}
+                                  </Link>
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    )}
+
+                    {/* INDUSTRIES MEGA MENU */}
+                    {link.hasDropdown === 'industries' && (
+                      <AnimatePresence>
+                        {isIndustriesOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[820px] bg-azul-marino rounded-2xl shadow-2xl overflow-hidden border border-white/10"
+                          >
+                            {/* Header Section */}
+                            <div className="px-6 py-3 border-b border-white/10 flex items-center justify-between">
+                              <div className="flex items-center gap-4">
+                                <h3 className="text-white font-semibold">
+                                  {language === 'es' ? 'Industrias' : 'Industries'}
+                                </h3>
+                                <span className="text-white/50 text-xs">
+                                  {language === 'es' 
+                                    ? 'Sector → problemas típicos → soluciones → prueba' 
+                                    : 'Sector → typical problems → solutions → proof'}
+                                </span>
+                              </div>
+                              <span className="px-2.5 py-1 bg-white/10 border border-white/20 rounded-full text-[10px] text-white/70 font-medium">
+                                {language === 'es' ? 'Landing pages por intención' : 'Intent landing pages'}
+                              </span>
+                            </div>
+
+                            {/* Industries Grid - 4 columns x 2 rows */}
+                            <div className="p-4">
+                              <div className="grid grid-cols-4 gap-3">
+                                {industryItems.map((item, idx) => {
+                                  const Icon = item.icon;
+                                  return (
+                                    <Link
+                                      key={idx}
+                                      href={item.href}
+                                      className="group bg-white/5 rounded-lg p-3 border border-white/10 hover:bg-white/10 transition-colors"
+                                    >
+                                      <div className="flex items-start gap-2.5">
+                                        <div className="w-8 h-8 bg-turquesa/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                          <Icon className="w-4 h-4 text-turquesa" />
+                                        </div>
+                                        <div>
+                                          <span className="text-white font-semibold text-xs block mb-0.5">
+                                            {language === 'es' ? item.label : item.labelEn}
+                                          </span>
+                                          <span className="text-white/40 text-[10px]">
+                                            {language === 'es' ? item.desc : item.descEn}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+
+                              {/* Footer message */}
+                              <div className="mt-4 pt-3 border-t border-white/10 border-dashed">
+                                <p className="text-white/60 text-xs text-center">
+                                  {language === 'es' 
+                                    ? '¿Tu industria no está? ' 
+                                    : "Your industry not listed? "}
+                                  <span className="text-white font-medium">
+                                    {language === 'es' 
+                                      ? 'Trabajamos con todos los sectores.' 
+                                      : 'We work with all sectors.'}
                                   </span>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                                  {language === 'es' 
+                                    ? ' Lo importante es el problema (tiempo, costo, riesgo, cumplimiento).' 
+                                    : ' What matters is the problem (time, cost, risk, compliance).'}
+                                </p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    )}
                   </div>
                 ) : (
                   <Link
@@ -184,10 +560,10 @@ export function Header() {
 
               {/* CTA Button - Desktop */}
               <Link
-                href="/contact"
+                href="/contacto"
                 className="hidden lg:inline-flex items-center gap-2 bg-turquesa text-azul-marino font-semibold px-5 py-2.5 rounded-xl hover:bg-menta transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
               >
-                {t?.nav?.contact ?? 'Contacto'}
+                {language === 'es' ? 'Contacto' : 'Contact'}
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
@@ -230,12 +606,13 @@ export function Header() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-azul-marino shadow-2xl"
+              className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-azul-marino shadow-2xl overflow-y-auto"
             >
               <div className="p-6">
                 {/* Close Button */}
                 <div className="flex justify-end mb-8">
                   <button
+                    title="Close Menu"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="p-2 rounded-lg text-foreground/70 hover:bg-beige dark:hover:bg-white/10"
                   >
@@ -249,40 +626,94 @@ export function Header() {
                     link.hasDropdown ? (
                       <div key={link.href}>
                         <button
-                          onClick={() => setIsServicesOpen(!isServicesOpen)}
+                          onClick={() => {
+                            if (link.hasDropdown === 'services') setIsServicesOpen(!isServicesOpen);
+                            if (link.hasDropdown === 'industries') setIsIndustriesOpen(!isIndustriesOpen);
+                          }}
                           className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-foreground/80 hover:bg-beige dark:hover:bg-white/10 font-medium"
                         >
                           {link.label}
-                          <ChevronDown className={`w-5 h-5 transition-transform ${isServicesOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-5 h-5 transition-transform ${
+                            (link.hasDropdown === 'services' && isServicesOpen) || 
+                            (link.hasDropdown === 'industries' && isIndustriesOpen) 
+                              ? 'rotate-180' : ''
+                          }`} />
                         </button>
                         
-                        <AnimatePresence>
-                          {isServicesOpen && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="pl-4 py-2 space-y-1">
-                                {serviceLinks.map((service) => {
-                                  const Icon = service.icon;
-                                  return (
-                                    <Link
-                                      key={service.href}
-                                      href={service.href}
-                                      onClick={() => setIsMobileMenuOpen(false)}
-                                      className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-foreground/70 hover:bg-beige dark:hover:bg-white/10"
-                                    >
-                                      <Icon className="w-5 h-5 text-turquesa" />
-                                      <span className="text-sm">{service.label}</span>
-                                    </Link>
-                                  );
-                                })}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        {/* Services Mobile Dropdown */}
+                        {link.hasDropdown === 'services' && (
+                          <AnimatePresence>
+                            {isServicesOpen && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden"
+                              >
+                                <div className="pl-4 py-2 space-y-3">
+                                  {serviceCategories.map((category) => {
+                                    const Icon = category.icon;
+                                    return (
+                                      <div key={category.href}>
+                                        <Link
+                                          href={category.href}
+                                          onClick={() => setIsMobileMenuOpen(false)}
+                                          className="flex items-center gap-2 px-4 py-2 font-medium text-foreground/80"
+                                        >
+                                          <Icon className="w-4 h-4 text-turquesa" />
+                                          {language === 'es' ? category.title : category.titleEn}
+                                        </Link>
+                                        <div className="pl-10 space-y-1">
+                                          {category.items.map((item) => (
+                                            <Link
+                                              key={item.href}
+                                              href={item.href}
+                                              onClick={() => setIsMobileMenuOpen(false)}
+                                              className="block py-1.5 text-sm text-foreground/60 hover:text-turquesa"
+                                            >
+                                              {language === 'es' ? item.label : item.labelEn}
+                                            </Link>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        )}
+
+                        {/* Industries Mobile Dropdown */}
+                        {link.hasDropdown === 'industries' && (
+                          <AnimatePresence>
+                            {isIndustriesOpen && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden"
+                              >
+                                <div className="pl-4 py-2 space-y-1">
+                                  {industryItems.map((item) => {
+                                    const Icon = item.icon;
+                                    return (
+                                      <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className="flex items-center gap-2 px-4 py-2 font-medium text-foreground/80"
+                                      >
+                                        <Icon className="w-4 h-4 text-turquesa" />
+                                        {language === 'es' ? item.label : item.labelEn}
+                                      </Link>
+                                    );
+                                  })}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        )}
                       </div>
                     ) : (
                       <Link
@@ -300,11 +731,11 @@ export function Header() {
                 {/* CTA */}
                 <div className="mt-8 pt-6 border-t border-gris-arena/30 dark:border-white/10">
                   <Link
-                    href="/contact"
+                    href="/contacto"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="flex items-center justify-center gap-2 w-full bg-turquesa text-azul-marino font-semibold px-6 py-4 rounded-xl hover:bg-menta transition-all"
                   >
-                    {t?.nav?.contact ?? 'Contacto'}
+                    {language === 'es' ? 'Contacto' : 'Contact'}
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                 </div>

@@ -11,26 +11,26 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXTAUTH_URL ?? 'https://grupoalternative.com'),
   title: {
-    default: 'Consultoría Empresarial en Panamá | Grupo Alternative',
-    template: '%s | Grupo Alternative'
+    default: 'Consultoría Empresarial que Genera Resultados | Alternative',
+    template: '%s | Alternative'
   },
-  description: 'Consultoría en optimización de procesos, gestión de proyectos y sistemas de calidad ISO 9001. Certificados PMP® e ISO 9001 Lead Auditor. Diagnóstico gratuito. 15+ años transformando empresas en Panamá y LATAM.',
-  keywords: ['consultoría empresarial panamá', 'consultoría de procesos', 'gestión de proyectos', 'ISO 9001 Panamá', 'BPM panamá', 'PMP panamá', 'optimización de procesos', 'Lean Six Sigma', 'transformación digital'],
-  authors: [{ name: 'Grupo Alternative' }],
+  description: 'Consultoría en optimización de procesos, gestión de proyectos y sistemas de calidad. Equipo certificado PMP®, ISO 9001 Lead Auditor y Lean Six Sigma. Experiencia en LATAM y el Caribe. Diagnóstico gratuito.',
+  keywords: ['consultoría empresarial', 'optimización de procesos', 'gestión de proyectos', 'sistemas de calidad', 'ISO 9001', 'consultoría BPM', 'transformación digital', 'Lean Six Sigma', 'PMP'],
+  authors: [{ name: 'Alternative' }],
   openGraph: {
-    title: 'Consultoría Empresarial en Panamá | Grupo Alternative',
-    description: 'Consultoría en optimización de procesos, gestión de proyectos y sistemas de calidad ISO 9001. Certificados PMP® e ISO 9001 Lead Auditor. 15+ años transformando empresas.',
+    title: 'Consultoría Empresarial que Genera Resultados | Alternative',
+    description: 'Consultoría en optimización de procesos, gestión de proyectos y sistemas de calidad. Equipo certificado PMP®, ISO 9001 Lead Auditor y Lean Six Sigma.',
     type: 'website',
     locale: 'es_PA',
     alternateLocale: 'en_US',
     url: 'https://grupoalternative.com',
-    siteName: 'Grupo Alternative',
+    siteName: 'Alternative',
     images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Consultoría Empresarial en Panamá | Grupo Alternative',
-    description: 'Consultoría en optimización de procesos, gestión de proyectos e ISO 9001. PMP® e ISO 9001 Lead Auditor certificados.',
+    title: 'Consultoría Empresarial que Genera Resultados | Alternative',
+    description: 'Consultoría en optimización de procesos, gestión de proyectos y sistemas de calidad. Experiencia en LATAM y el Caribe.',
     images: ['/og-image.png'],
   },
   icons: {
