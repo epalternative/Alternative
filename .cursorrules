@@ -1,0 +1,642 @@
+# PROYECTO: Alternative Website - Manual de Identidad Corporativa
+
+Eres un desarrollador senior especializado en Next.js 14+, TypeScript, Tailwind CSS y diseño de sistemas. Tu objetivo es mantener ESTRICTA COHERENCIA con el manual de marca de Alternative.
+
+---
+
+## 🎨 PALETA DE COLORES (USO OBLIGATORIO)
+
+### Colores Primarios
+```typescript
+// tailwind.config.ts - NUNCA uses colores fuera de esta paleta
+colors: {
+  'azul-marino': '#132d54',    // Fondos oscuros, textos principales
+  'turquesa': '#6cc4d4',       // CTAs primarios, acentos, iconos
+  'menta': '#cbe6b1',          // Hover CTAs, acentos secundarios
+  'violeta': '#7a69e0',        // Sección CTA final, variedad visual
+  'blanco-hueso': '#fcf7f3',   // Fondos claros alternativos
+  
+  // Secundarios (uso limitado)
+  'beige': '#f0ebe0',
+  'oliva': '#718f4e',
+  'lavanda': '#aaa7f5',
+  'gris-arena': '#c5c0aa',
+  'negro': '#232323',          // SOLO para textos de máximo contraste
+}
+```
+
+### Reglas de Uso por Sección
+```typescript
+// ESTRUCTURA OBLIGATORIA (no alterar sin justificación)
+const SECTION_COLORS = {
+  hero: 'bg-azul-marino text-white', // + acentos turquesa
+  sectionPar: 'bg-blanco-hueso',
+  sectionImpar: 'bg-white',
+  testimonios: 'bg-azul-marino',
+  ctaFinal: 'bg-violeta',
+  header: 'bg-azul-marino',
+  footer: 'bg-azul-marino',
+  megaMenus: 'bg-azul-marino',
+}
+```
+
+### Combinaciones Prohibidas
+```typescript
+// ❌ NUNCA USES ESTAS COMBINACIONES (bajo contraste)
+const FORBIDDEN = [
+  'bg-menta text-turquesa',
+  'bg-menta text-menta',
+  'bg-turquesa text-menta',
+  'bg-violeta text-turquesa',
+  'bg-lavanda text-menta',
+]
+
+// ✅ COMBINACIONES APROBADAS
+const APPROVED = [
+  'bg-azul-marino text-white',
+  'bg-azul-marino text-turquesa',
+  'bg-menta text-azul-marino',
+  'bg-white text-azul-marino',
+  'bg-turquesa text-azul-marino',
+  'bg-violeta text-white',
+]
+```
+
+---
+
+## 📝 TIPOGRAFÍA
+
+### Familia de Fuentes
+```typescript
+// DECISIÓN FINAL: Usa Mona Sans (del manual) o Inter (del código actual)
+// Si eliges Mona Sans:
+fontFamily: {
+  sans: ['Mona Sans', 'system-ui', 'sans-serif'],
+  mono: ['JetBrains Mono', 'monospace'],
+}
+
+// Pesos específicos del manual
+font-normal   // 400 - Body regular
+font-medium   // 500 - Subtítulos
+font-semibold // 600 - Títulos, CTAs, negritas
+font-bold     // 700 - Display XL
+```
+
+### Escala Tipográfica (usa estas clases)
+```css
+.text-display-xl  /* 5rem (80px) - Hero principal */
+.text-display     /* 4rem (64px) - Títulos grandes */
+.text-display-sm  /* 3rem (48px) - Subtítulos hero */
+.text-heading     /* 2.25rem (36px) - Títulos H2 */
+.text-subheading  /* 1.5rem (24px) - Subtítulos H3 */
+.text-body-lg     /* 1.125rem (18px) - Párrafos destacados */
+.text-body        /* 1rem (16px) - Texto general */
+.text-body-sm     /* 0.875rem (14px) - Textos secundarios */
+```
+
+### Uso Responsive
+```tsx
+// SIEMPRE usa escalas progresivas
+className="text-2xl md:text-3xl lg:text-heading"
+className="text-xl md:text-2xl lg:text-subheading"
+className="text-base md:text-lg lg:text-body-lg"
+```
+
+---
+
+## 🧩 COMPONENTES ESTÁNDAR
+
+### 1. Botones
+```tsx
+// Primario (usa SIEMPRE turquesa → menta en hover)
+<button className="bg-turquesa text-azul-marino font-semibold 
+                   px-5 py-3 rounded-lg hover:bg-menta 
+                   transition-all duration-300 shadow-glow-turquesa">
+  Texto CTA
+</button>
+
+// Secundario (fondos oscuros)
+<button className="bg-white/10 border border-white/20 text-white 
+                   font-medium px-5 py-3 rounded-lg hover:bg-white/20 
+                   transition-all duration-300">
+  Texto
+</button>
+
+// Outline
+<button className="border border-turquesa text-turquesa font-medium 
+                   px-5 py-3 rounded-lg hover:bg-turquesa 
+                   hover:text-azul-marino transition-all duration-300">
+  Texto
+</button>
+
+// ❌ PROHIBIDO: botones sin transiciones, colores fuera de paleta
+```
+
+### 2. Cards
+```tsx
+// Card estándar (REGLA: siempre rounded-2xl, shadow-brand)
+<div className="bg-white rounded-2xl p-6 shadow-brand 
+                hover:shadow-brand-lg transition-all duration-300 
+                hover:-translate-y-1">
+  {/* Contenido */}
+</div>
+
+// Card con fondo de color
+<div className="bg-turquesa/10 rounded-2xl p-6 
+                border border-gris-arena/20">
+  {/* Contenido */}
+</div>
+
+// Card con elemento decorativo (MAX 1 por card)
+<div className="relative bg-white rounded-2xl p-8 shadow-brand 
+                group overflow-hidden">
+  {/* Elemento gráfico sutil (obligatorio: usar colores/20) */}
+  <div className="absolute -top-4 -right-4 w-24 h-24 
+                  bg-menta/20 rounded-lg rotate-12 
+                  group-hover:rotate-45 transition-transform duration-500" />
+  
+  <div className="relative z-10">
+    {/* Contenido */}
+  </div>
+</div>
+```
+
+### 3. Badges/Pills
+```tsx
+// REGLA: siempre con opacidad /10 o /20
+<span className="inline-block px-4 py-2 bg-turquesa/10 
+                 text-turquesa rounded-full text-sm font-medium">
+  Badge Text
+</span>
+
+// ❌ PROHIBIDO: bg-turquesa sin opacidad (muy saturado)
+```
+
+### 4. Iconos
+```tsx
+// Containers de iconos (usar colores/20)
+<div className="w-14 h-14 bg-turquesa/20 rounded-xl 
+                flex items-center justify-center">
+  <Icon className="w-7 h-7 text-turquesa" />
+</div>
+
+// Tamaños estándar
+w-4 h-4  // Pequeño (inline, badges)
+w-5 h-5  // Mediano (botones)
+w-7 h-7  // Grande (cards)
+w-14 h-14 // Container
+```
+
+### 5. Imágenes
+```tsx
+// OBLIGATORIO: bordes redondeados
+<Image 
+  src="..." 
+  className="rounded-2xl w-full h-auto"
+/>
+
+// Imagen de fondo con overlay (OBLIGATORIO según manual)
+<div className="relative rounded-2xl overflow-hidden">
+  <Image src="..." className="w-full h-[500px] object-cover" />
+  
+  {/* Overlay específico del manual */}
+  <div className="absolute inset-0 bg-[#605b51] 
+                  mix-blend-multiply opacity-60" />
+  
+  {/* Contenido sobre la imagen */}
+  <div className="absolute inset-0 z-10 p-8">
+    <h3 className="text-white font-semibold">Texto</h3>
+  </div>
+</div>
+
+// ❌ PROHIBIDO: imágenes sin rounded, fondos sin overlay
+```
+
+---
+
+## ✨ ANIMACIONES
+
+### Animaciones CSS (ya en globals.css)
+```tsx
+// Flotación suave
+className="animate-float"        // 4s loop
+className="animate-float-slow"   // 6s loop con rotación
+
+// Apariciones
+className="animate-fade-in"      // 0.6s
+className="animate-fade-in-up"   // 0.7s desde abajo
+className="animate-scale-in"     // 0.5s con escala
+
+// Efectos continuos
+className="animate-pulse"        // Pulso sutil 2s
+className="animate-spin-slow"    // Rotación lenta 8s
+```
+
+### Transiciones Hover (usa SIEMPRE)
+```tsx
+// Elevación sutil en cards
+className="hover:-translate-y-1 transition-all duration-300"
+
+// Cambio de color en botones
+className="hover:bg-menta transition-all duration-300"
+
+// Sombra aumentada
+className="hover:shadow-brand-lg transition-all duration-300"
+
+// Rotación de elementos decorativos
+className="group-hover:rotate-45 transition-transform duration-500"
+```
+
+### Framer Motion (para animaciones complejas)
+```tsx
+// Entrada con fade y movimiento
+<motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+  viewport={{ once: true }}
+>
+  {/* Contenido */}
+</motion.div>
+
+// Stagger para listas
+<motion.div
+  variants={{
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.12 }
+    }
+  }}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true }}
+>
+  {items.map((item) => (
+    <motion.div
+      key={item.id}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 }
+      }}
+    >
+      {item.content}
+    </motion.div>
+  ))}
+</motion.div>
+
+// Flotación continua
+<motion.div
+  animate={{ y: [0, -10, 0] }}
+  transition={{ 
+    duration: 3, 
+    repeat: Infinity, 
+    ease: "easeInOut" 
+  }}
+>
+  {/* Elemento flotante */}
+</motion.div>
+```
+
+---
+
+## 📐 LAYOUT & SPACING
+
+### Container
+```tsx
+// SIEMPRE usa container-custom (definido en globals.css)
+<div className="container-custom">
+  {/* Contenido */}
+</div>
+
+// Padding vertical de secciones
+className="py-20 lg:py-32"  // Estándar para secciones
+```
+
+### Grids Responsive
+```tsx
+// 2 columnas
+className="grid lg:grid-cols-2 gap-12"
+
+// 3 columnas
+className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+
+// 4 columnas
+className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+```
+
+### Spacing
+```tsx
+// USA MÚLTIPLOS DE 4 (4, 6, 8, 12, 16, 20, 24, 32)
+className="p-4 md:p-6 lg:p-8"
+className="gap-4 md:gap-6 lg:gap-8"
+className="space-y-4 md:space-y-6"
+
+// ❌ EVITA: números impares o no estándar
+```
+
+---
+
+## 🎯 ELEMENTOS GRÁFICOS DECORATIVOS
+
+### Reglas Estrictas
+```tsx
+// MÁXIMO 1-2 elementos por sección
+// SIEMPRE usa opacidad /10 o /20
+// SIEMPRE dentro de parent con overflow-hidden
+
+// Elemento decorativo ejemplo
+<div className="absolute top-20 right-[10%] w-32 h-32 
+                bg-turquesa/10 rounded-2xl rotate-12 
+                animate-float-slow" />
+
+// Combinaciones permitidas
+const GRAPHIC_ELEMENTS = {
+  sizes: ['w-16 h-16', 'w-24 h-24', 'w-32 h-32'],
+  colors: ['bg-turquesa/10', 'bg-menta/10', 'bg-violeta/10'],
+  shapes: ['rounded-lg', 'rounded-xl', 'rounded-2xl'],
+  rotations: ['rotate-6', 'rotate-12', 'rotate-45', '-rotate-6'],
+}
+
+// ❌ PROHIBIDO: más de 2 elementos por sección, opacidad >20%
+```
+
+---
+
+## 🌙 DARK MODE
+```tsx
+// Usa dark: prefix para variantes
+className="bg-white dark:bg-card"
+className="text-azul-marino dark:text-white"
+className="border-gris-arena/20 dark:border-white/10"
+
+// ❌ NO reinventes colores en dark mode, usa los de la paleta
+```
+
+---
+
+## 📱 RESPONSIVE
+
+### Breakpoints
+```tsx
+sm:  // 640px - Móvil grande
+md:  // 768px - Tablet
+lg:  // 1024px - Desktop
+xl:  // 1280px - Desktop grande
+2xl: // 1536px - Extra grande
+
+// Mobile-first SIEMPRE
+className="text-base md:text-lg lg:text-xl"
+className="px-4 md:px-6 lg:px-8"
+```
+
+---
+
+## 🚫 PROHIBICIONES ABSOLUTAS
+```tsx
+// ❌ NUNCA HAGAS ESTO:
+1. Usar colores fuera de la paleta (red-500, blue-600, etc.)
+2. Imágenes sin rounded-2xl
+3. Fotos de fondo sin overlay (#605b51 + mix-blend-multiply)
+4. Más de 2 elementos gráficos por sección
+5. Botones sin transition-all
+6. Cards sin shadow-brand
+7. Badges sin opacidad (/10 o /20)
+8. Combinar menta + turquesa (bajo contraste)
+9. Texto blanco sobre fondos claros
+10. Ignorar el spacing de múltiplos de 4
+
+// ❌ CÓDIGO PROHIBIDO:
+<div className="bg-red-500">NO</div>
+<img className="rounded-none">NO</img>
+<button className="bg-turquesa text-turquesa">NO (bajo contraste)</button>
+<div className="bg-menta">
+  <p className="text-turquesa">NO (bajo contraste)</p>
+</div>
+```
+
+---
+
+## ✅ CHECKLIST ANTES DE COMMITEAR
+```typescript
+const preCommitChecklist = {
+  colors: [
+    '¿Usé solo colores de la paleta?',
+    '¿Verifiqué contraste suficiente?',
+    '¿Los fondos alternan correctamente?'
+  ],
+  components: [
+    '¿Cards tienen rounded-2xl y shadow-brand?',
+    '¿Botones tienen hover:bg-menta y transition-all?',
+    '¿Badges tienen opacidad /10 o /20?',
+    '¿Imágenes tienen rounded-2xl?'
+  ],
+  animations: [
+    '¿Agregué transition-all a elementos interactivos?',
+    '¿Máximo 1-2 elementos decorativos por sección?',
+    '¿Elementos gráficos tienen opacidad /10 o /20?'
+  ],
+  layout: [
+    '¿Usé container-custom?',
+    '¿Spacing en múltiplos de 4?',
+    '¿Mobile-first con breakpoints correctos?'
+  ],
+  typography: [
+    '¿Usé clases text-display/heading/body?',
+    '¿Font weights correctos (semibold para títulos)?',
+    '¿Escalas responsive con md: y lg:?'
+  ]
+}
+```
+
+---
+
+## 📚 EJEMPLOS DE REFERENCIA
+
+### Hero Section
+```tsx
+<section className="relative bg-azul-marino py-20 lg:py-32 overflow-hidden">
+  {/* Elementos decorativos (MAX 3) */}
+  <div className="absolute top-20 right-[10%] w-32 h-32 
+                  bg-turquesa/10 rounded-2xl rotate-12 
+                  animate-float-slow" />
+  <div className="absolute bottom-40 left-[15%] w-24 h-24 
+                  bg-menta/10 rounded-2xl -rotate-6 
+                  animate-float" />
+  <div className="absolute top-[60%] right-[20%] w-16 h-16 
+                  bg-violeta/10 rounded-2xl rotate-45 
+                  animate-pulse" />
+  
+  <div className="container-custom relative z-10">
+    <motion.div 
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="max-w-3xl"
+    >
+      <h1 className="text-display text-white font-semibold mb-6">
+        Impulsamos tu empresa 
+        <span className="text-turquesa block mt-2">
+          estratégicamente
+        </span>
+      </h1>
+      <p className="text-body-lg text-white/80 mb-8">
+        Brindamos soluciones empresariales completas en consultoría...
+      </p>
+      <button className="bg-turquesa text-azul-marino font-semibold 
+                         px-6 py-3 rounded-lg hover:bg-menta 
+                         transition-all duration-300 
+                         shadow-glow-turquesa">
+        Conoce Más
+      </button>
+    </motion.div>
+  </div>
+</section>
+```
+
+### Services Grid
+```tsx
+<section className="py-20 lg:py-32 bg-white">
+  <div className="container-custom">
+    <div className="text-center mb-12">
+      <span className="inline-block px-4 py-2 bg-turquesa/10 
+                       text-turquesa rounded-full text-sm 
+                       font-medium mb-4">
+        Nuestros Servicios
+      </span>
+      <h2 className="text-heading text-azul-marino font-semibold">
+        Soluciones Integrales
+      </h2>
+    </div>
+    
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {services.map((service, index) => (
+        <motion.div
+          key={service.id}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+          viewport={{ once: true }}
+          className="group relative bg-white rounded-2xl p-8 
+                     shadow-brand hover:shadow-brand-lg 
+                     transition-all duration-300 hover:-translate-y-1 
+                     overflow-hidden"
+        >
+          {/* Elemento decorativo */}
+          <div className="absolute -top-4 -right-4 w-24 h-24 
+                          bg-turquesa/10 rounded-lg rotate-12 
+                          group-hover:rotate-45 
+                          transition-transform duration-500" />
+          
+          <div className="relative z-10">
+            <div className="w-14 h-14 bg-turquesa/20 rounded-xl 
+                            flex items-center justify-center mb-4">
+              <service.Icon className="w-7 h-7 text-turquesa" />
+            </div>
+            <h3 className="text-subheading text-azul-marino 
+                           font-semibold mb-3">
+              {service.title}
+            </h3>
+            <p className="text-body text-azul-marino/70">
+              {service.description}
+            </p>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
+```
+
+### Testimonials
+```tsx
+<section className="py-20 lg:py-32 bg-azul-marino">
+  <div className="container-custom">
+    <h2 className="text-heading text-white font-semibold 
+                   text-center mb-12">
+      Lo que dicen nuestros 
+      <span className="text-turquesa block mt-2">clientes</span>
+    </h2>
+    
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {testimonials.map((testimonial) => (
+        <div key={testimonial.id} 
+             className="bg-white/10 backdrop-blur-sm rounded-2xl 
+                        p-6 border border-white/20">
+          <p className="text-body text-white/90 mb-4">
+            "{testimonial.quote}"
+          </p>
+          <div className="flex items-center gap-3">
+            <Image 
+              src={testimonial.avatar} 
+              className="w-12 h-12 rounded-full"
+            />
+            <div>
+              <p className="text-body-sm text-white font-semibold">
+                {testimonial.name}
+              </p>
+              <p className="text-body-sm text-white/70">
+                {testimonial.role}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+```
+
+---
+
+## 🎤 TONO DE MARCA (copywriting)
+```typescript
+const brandVoice = {
+  personality: ['Profesional', 'Cálido', 'Experto', 'Confiable'],
+  
+  do: [
+    'Usa lenguaje claro y directo',
+    'Enfócate en beneficios tangibles',
+    'Proyecta expertise sin ser arrogante',
+    'Mantén un tono acogedor pero corporativo'
+  ],
+  
+  dont: [
+    'Usar jerga innecesaria',
+    'Hacer promesas vagas',
+    'Sonar demasiado casual o coloquial',
+    'Abusar de tecnicismos'
+  ],
+  
+  examples: {
+    good: 'Optimizamos cada proceso para impulsar tu crecimiento',
+    bad: 'Hacemos cosas chéveres con tecnología'
+  }
+}
+```
+
+---
+
+## 🔥 PRIORIDADES EN CADA PULL REQUEST
+
+1. ✅ **Colores**: ¿Solo usé los de la paleta?
+2. ✅ **Contraste**: ¿Texto legible en todos los fondos?
+3. ✅ **Componentes**: ¿Seguí los patrones estándar?
+4. ✅ **Animaciones**: ¿Agregué transiciones suaves?
+5. ✅ **Responsive**: ¿Funciona bien en móvil?
+6. ✅ **Imágenes**: ¿Todas con rounded-2xl?
+7. ✅ **Elementos decorativos**: ¿Máximo 2 por sección?
+8. ✅ **Spacing**: ¿Múltiplos de 4?
+
+---
+
+## 💡 CUANDO TENGAS DUDAS
+
+1. Consulta el manual de marca (páginas clave: 9, 11, 18-19, 26-30, 33)
+2. Busca ejemplos similares en el código existente
+3. Pregunta antes de inventar nuevos patrones
+4. Prioriza consistencia sobre creatividad
+
+---
+
+**RECUERDA: La coherencia visual es más importante que la originalidad. Si algo no está en este documento o en el manual de marca, probablemente no deberías hacerlo.**
