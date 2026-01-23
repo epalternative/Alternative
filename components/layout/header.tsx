@@ -346,29 +346,29 @@ export function Header() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[1100px] bg-azul-marino rounded-2xl shadow-2xl overflow-hidden border border-white/10"
+                            className="fixed top-[70px] left-4 right-4 bg-azul-marino rounded-2xl shadow-2xl overflow-hidden border border-white/10 max-h-[calc(100vh-100px)] overflow-y-auto"
                           >
                             {/* Header Section */}
-                            <div className="px-6 py-3 border-b border-white/10 flex items-center justify-between">
+                            <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
                               <div className="flex items-center gap-4">
-                                <h3 className="text-white font-semibold">
+                                <h3 className="text-white font-semibold text-lg">
                                   {language === 'es' ? 'Servicios' : 'Services'}
                                 </h3>
-                                <span className="text-white/50 text-xs">
+                                <span className="text-white/50 text-sm">
                                   {language === 'es' 
                                     ? 'problema → solución → evidencia → CTA' 
                                     : 'problem → solution → evidence → CTA'}
                                 </span>
                               </div>
-                              <span className="px-2.5 py-1 bg-white/10 border border-white/20 rounded-full text-[10px] text-white/70 font-medium">
+                              <span className="px-3 py-1.5 bg-white/10 border border-white/20 rounded-full text-xs text-white/70 font-medium">
                                 B2B
                               </span>
                             </div>
 
-                            {/* Content Grid - 3 columns x 2 rows + CTA */}
-                            <div className="p-4 flex gap-4">
+                            {/* Content Grid - responsive columns + CTA */}
+                            <div className="p-4 flex flex-col lg:flex-row gap-4">
                               {/* Services Grid */}
-                              <div className="flex-1 grid grid-cols-3 gap-3">
+                              <div className="flex-1 grid grid-cols-2 lg:grid-cols-3 gap-3">
                                 {serviceColumns.map((column, colIdx) => (
                                   <div 
                                     key={colIdx} 
@@ -376,22 +376,22 @@ export function Header() {
                                   >
                                     <Link 
                                       href={column.href}
-                                      className="text-turquesa font-bold text-[9px] tracking-wider mb-2 block hover:text-menta transition-colors uppercase"
+                                      className="text-turquesa font-bold text-xs tracking-wider mb-2 block hover:text-menta transition-colors uppercase"
                                     >
                                       {language === 'es' ? column.title : column.titleEn}
                                     </Link>
-                                    <ul className="space-y-0.5">
+                                    <ul className="space-y-1">
                                       {column.items.map((item, itemIdx) => (
                                         <li key={itemIdx}>
                                           <Link
                                             href={item.href}
-                                            className="group flex items-center justify-between py-1.5 px-1.5 -mx-1.5 rounded hover:bg-white/10 transition-colors"
+                                            className="group flex items-center justify-between py-2 px-2 -mx-2 rounded hover:bg-white/10 transition-colors"
                                           >
-                                            <span className="text-white text-[11px]">
+                                            <span className="text-white text-sm">
                                               <span className="font-medium">{language === 'es' ? item.label : item.labelEn}</span>
-                                              <span className="text-white/40 ml-1">{language === 'es' ? item.desc : item.descEn}</span>
+                                              <span className="text-white/50 ml-1.5 text-xs">{language === 'es' ? item.desc : item.descEn}</span>
                                             </span>
-                                            <ChevronRight className="w-3 h-3 text-white/20 group-hover:text-turquesa transition-colors flex-shrink-0 ml-1" />
+                                            <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-turquesa transition-colors flex-shrink-0 ml-2" />
                                           </Link>
                                         </li>
                                       ))}
@@ -401,28 +401,28 @@ export function Header() {
                               </div>
 
                               {/* CTA Sidebar */}
-                              <div className="w-[180px] bg-gradient-to-br from-gris-arena/20 to-white/5 rounded-lg p-3 border border-white/10 flex flex-col">
-                                <div className="flex items-center gap-1.5 mb-2">
-                                  <Sparkles className="w-3.5 h-3.5 text-turquesa" />
-                                  <h4 className="text-white font-semibold text-xs">
+                              <div className="w-full lg:w-[200px] bg-white/5 rounded-lg p-4 border border-white/10 flex flex-col">
+                                <div className="flex items-center gap-2 mb-3">
+                                  <Sparkles className="w-4 h-4 text-turquesa" />
+                                  <h4 className="text-white font-semibold text-sm">
                                     {language === 'es' ? '¿Qué necesitas?' : 'What do you need?'}
                                   </h4>
                                 </div>
-                                <p className="text-white/50 text-[10px] mb-3 flex-1 leading-relaxed">
+                                <p className="text-white/60 text-xs mb-4 flex-1 leading-relaxed">
                                   {language === 'es' 
                                     ? 'Diagnóstico breve (15–20 min) para ubicar tu cuello de botella.' 
                                     : 'Brief diagnosis (15-20 min) to find your bottleneck.'}
                                 </p>
-                                <div className="space-y-1.5">
+                                <div className="space-y-2">
                                   <Link
                                     href="/contacto"
-                                    className="flex items-center justify-center w-full bg-turquesa text-azul-marino font-semibold px-2 py-2 rounded-lg hover:bg-menta transition-all text-[10px]"
+                                    className="flex items-center justify-center w-full bg-turquesa text-azul-marino font-semibold px-3 py-2.5 rounded-lg hover:bg-menta transition-all text-xs"
                                   >
                                     {language === 'es' ? 'Diagnóstico Gratuito' : 'Free Diagnosis'}
                                   </Link>
                                   <Link
                                     href="/casos-exito"
-                                    className="flex items-center justify-center w-full bg-white/10 border border-white/20 text-white font-medium px-2 py-2 rounded-lg hover:bg-white/20 transition-all text-[10px]"
+                                    className="flex items-center justify-center w-full bg-white/10 border border-white/20 text-white font-medium px-3 py-2.5 rounded-lg hover:bg-white/20 transition-all text-xs"
                                   >
                                     {language === 'es' ? 'Ver casos de éxito' : 'Success stories'}
                                   </Link>
@@ -443,45 +443,45 @@ export function Header() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[820px] bg-azul-marino rounded-2xl shadow-2xl overflow-hidden border border-white/10"
+                            className="fixed top-[70px] left-4 right-4 bg-azul-marino rounded-2xl shadow-2xl overflow-hidden border border-white/10 max-h-[calc(100vh-100px)] overflow-y-auto"
                           >
                             {/* Header Section */}
-                            <div className="px-6 py-3 border-b border-white/10 flex items-center justify-between">
+                            <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
                               <div className="flex items-center gap-4">
-                                <h3 className="text-white font-semibold">
+                                <h3 className="text-white font-semibold text-lg">
                                   {language === 'es' ? 'Industrias' : 'Industries'}
                                 </h3>
-                                <span className="text-white/50 text-xs">
+                                <span className="text-white/50 text-sm">
                                   {language === 'es' 
                                     ? 'Sector → problemas típicos → soluciones → prueba' 
                                     : 'Sector → typical problems → solutions → proof'}
                                 </span>
                               </div>
-                              <span className="px-2.5 py-1 bg-white/10 border border-white/20 rounded-full text-[10px] text-white/70 font-medium">
-                                {language === 'es' ? 'Landing pages por intención' : 'Intent landing pages'}
+                              <span className="px-3 py-1.5 bg-white/10 border border-white/20 rounded-full text-xs text-white/70 font-medium">
+                                {language === 'es' ? 'Landing pages' : 'Landing pages'}
                               </span>
                             </div>
 
-                            {/* Industries Grid - 4 columns x 2 rows */}
-                            <div className="p-4">
-                              <div className="grid grid-cols-4 gap-3">
+                            {/* Industries Grid - responsive columns */}
+                            <div className="p-5">
+                              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                                 {industryItems.map((item, idx) => {
                                   const Icon = item.icon;
                                   return (
                                     <Link
                                       key={idx}
                                       href={item.href}
-                                      className="group bg-white/5 rounded-lg p-3 border border-white/10 hover:bg-white/10 transition-colors"
+                                      className="group bg-white/5 rounded-lg p-4 border border-white/10 hover:bg-white/10 transition-colors"
                                     >
-                                      <div className="flex items-start gap-2.5">
-                                        <div className="w-8 h-8 bg-turquesa/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                                          <Icon className="w-4 h-4 text-turquesa" />
+                                      <div className="flex items-start gap-3">
+                                        <div className="w-10 h-10 bg-turquesa/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                          <Icon className="w-5 h-5 text-turquesa" />
                                         </div>
                                         <div>
-                                          <span className="text-white font-semibold text-xs block mb-0.5">
+                                          <span className="text-white font-semibold text-sm block mb-1">
                                             {language === 'es' ? item.label : item.labelEn}
                                           </span>
-                                          <span className="text-white/40 text-[10px]">
+                                          <span className="text-white/50 text-xs">
                                             {language === 'es' ? item.desc : item.descEn}
                                           </span>
                                         </div>
@@ -492,8 +492,8 @@ export function Header() {
                               </div>
 
                               {/* Footer message */}
-                              <div className="mt-4 pt-3 border-t border-white/10 border-dashed">
-                                <p className="text-white/60 text-xs text-center">
+                              <div className="mt-5 pt-4 border-t border-white/10 border-dashed">
+                                <p className="text-white/60 text-sm text-center">
                                   {language === 'es' 
                                     ? '¿Tu industria no está? ' 
                                     : "Your industry not listed? "}
