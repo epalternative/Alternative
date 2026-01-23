@@ -266,7 +266,6 @@ export function Header() {
   }, []);
 
   const navLinks = [
-    { href: '/', label: language === 'es' ? 'Inicio' : 'Home' },
     { href: '#services', label: language === 'es' ? 'Servicios' : 'Services', hasDropdown: 'services' },
     { href: '/industrias', label: language === 'es' ? 'Industrias' : 'Industries', hasDropdown: 'industries' },
     { href: '/casos-exito', label: language === 'es' ? 'Casos de Éxito' : 'Success Stories', icon: Briefcase },
@@ -289,21 +288,15 @@ export function Header() {
         <div className="container-custom">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-10 h-10 rounded-xl overflow-hidden">
-                <Image
-                  src="/logo_3.jpeg"
-                  alt="Alternative Logo"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-              <span className={`font-semibold text-xl hidden sm:block transition-colors ${
-                isScrolled ? 'text-azul-marino dark:text-white' : 'text-azul-marino dark:text-white'
-              }`}>
-                Alternative
-              </span>
+            <Link href="/" className="flex items-center group">
+              <Image
+                src="/logo_alternative_horizontal.webp"
+                alt="Alternative Logo"
+                width={160}
+                height={40}
+                className="h-10 w-auto object-contain"
+                priority
+              />
             </Link>
 
             {/* Desktop Navigation */}

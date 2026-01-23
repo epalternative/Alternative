@@ -13,22 +13,13 @@ import {
   Award,
   ArrowRight,
   CheckCircle2,
-  Search,
-  Lightbulb,
-  Rocket,
-  LineChart,
   Quote,
-  Monitor,
   Code,
   FolderKanban,
   TrendingUp,
-  Users,
   Clock,
-  Shield,
   Zap,
-  ArrowUpRight,
   Star,
-  ChevronRight,
   X,
   Check,
   Building2,
@@ -37,17 +28,8 @@ import {
   Laptop,
   GraduationCap,
   BarChart3,
-  FileCheck,
-  Cog,
-  Download,
-  Calculator,
-  FileText,
   BadgeCheck,
-  Globe,
-  Timer,
-  Handshake,
-  BookOpen,
-  Calendar
+  Handshake
 } from 'lucide-react';
 
 // Animated section wrapper
@@ -290,62 +272,6 @@ export default function Home() {
     }
   ];
 
-  // Resources data
-  const resources = [
-    {
-      icon: FileCheck,
-      title: 'Guía de Implementación de Sistemas de Calidad',
-      description: 'Guía paso a paso para implementar un sistema de gestión de calidad alineado a ISO 9001. Incluye plantillas de documentos obligatorios, checklist de requisitos y timeline realista de implementación.',
-      format: 'PDF descargable (22 páginas) + plantillas Excel editables',
-      benefit: 'Estructura tu sistema de calidad en 3-6 meses',
-      audience: 'Gerentes de calidad, COOs, directores de operaciones',
-      cta: 'Descargar guía gratuita'
-    },
-    {
-      icon: Calculator,
-      title: 'Calculadora de ROI en Optimización de Procesos',
-      description: 'Herramienta interactiva para calcular el costo real de tus procesos ineficientes. Identifica dónde están los mayores desperdicios operacionales en tu empresa y cuantifica oportunidades de ahorro.',
-      format: 'Herramienta web interactiva (5 minutos)',
-      benefit: 'Cuantifica ahorros potenciales en 5 minutos',
-      audience: 'CFOs, gerentes de operaciones, directores financieros',
-      cta: 'Calcular mi ROI'
-    },
-    {
-      icon: FileText,
-      title: 'Plantilla de Casos de Negocio para Proyectos',
-      description: 'Plantilla profesional para desarrollar casos de negocio robustos que justifiquen inversiones en proyectos. Incluye análisis financiero, evaluación de riesgos, alineación estratégica y métricas de éxito.',
-      format: 'Excel descargable + guía de uso (PDF 8 páginas)',
-      benefit: 'Presenta proyectos con justificación ejecutiva sólida',
-      audience: 'Project managers, gerentes de proyectos, directores de PMO',
-      cta: 'Descargar plantilla'
-    }
-  ];
-
-  // Blog posts data
-  const blogPosts = [
-    {
-      title: '5 Señales de que tus Procesos Están Destruyendo Rentabilidad (Y Cómo Solucionarlo)',
-      excerpt: 'La mayoría de empresas pierden entre 20-30% de su rentabilidad en procesos ineficientes que ni siquiera pueden cuantificar. Estas son las 5 señales de alerta más comunes y cómo empezar a corregirlas hoy mismo...',
-      category: 'Optimización de Procesos',
-      readTime: '8 min lectura',
-      href: '/blog/senales-procesos-destruyen-rentabilidad'
-    },
-    {
-      title: 'Sistemas de Calidad ISO 9001: Más Allá del Certificado',
-      excerpt: 'Muchas empresas buscan certificación ISO 9001 por requisito de clientes o licitaciones, pero el verdadero valor está en usar el marco como sistema de mejora continua sostenible. Aquí cómo diferenciarse...',
-      category: 'Sistemas de Calidad',
-      readTime: '12 min lectura',
-      href: '/blog/sistemas-calidad-iso-9001-mas-alla-certificado'
-    },
-    {
-      title: 'Metodologías Ágiles vs PMP: Cuándo Usar Cada Enfoque en Gestión de Proyectos',
-      excerpt: 'No existe una metodología universal para todos los proyectos. PMP es ideal para proyectos predecibles con alcance definido. Scrum/Kanban para entornos cambiantes. Aquí cómo decidir cuál usar...',
-      category: 'Gestión de Proyectos',
-      readTime: '10 min lectura',
-      href: '/blog/metodologias-agiles-vs-pmp'
-    }
-  ];
-
   // Why Alternative differentiators
   const differentiators = [
     {
@@ -483,8 +409,12 @@ export default function Home() {
                   <div className="absolute inset-0 bg-azul-marino/30" />
                 </div>
 
-                {/* Team photo overlay */}
-                <div className="absolute -bottom-6 -left-6 w-32 h-32 rounded-2xl overflow-hidden border-4 border-azul-marino shadow-xl">
+                {/* Team photo overlay - floating */}
+                <motion.div 
+                  className="absolute -bottom-6 -left-6 w-32 h-32 rounded-2xl overflow-hidden border-4 border-azul-marino shadow-xl"
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                >
                   <Image
                     src="/images/team-working.jpg"
                     alt="Equipo Alternative"
@@ -492,10 +422,14 @@ export default function Home() {
                     height={128}
                     className="w-full h-full object-cover"
                   />
-                </div>
+                </motion.div>
 
-                {/* Stats overlay */}
-                <div className="absolute top-6 -right-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 shadow-xl">
+                {/* Stats overlay - floating */}
+                <motion.div 
+                  className="absolute top-6 -right-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 shadow-xl"
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-turquesa/20 rounded-lg flex items-center justify-center">
                       <TrendingUp className="w-5 h-5 text-turquesa" />
@@ -507,12 +441,16 @@ export default function Home() {
                       <p className="text-white/60 text-sm">Proyectos Exitosos</p>
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="absolute bottom-16 -right-4 bg-turquesa rounded-xl p-4 shadow-xl">
+                <motion.div 
+                  className="absolute bottom-16 -right-4 bg-turquesa rounded-xl p-4 shadow-xl"
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                >
                   <p className="text-2xl font-bold text-azul-marino">35%</p>
                   <p className="text-azul-marino/70 text-sm">Reducción costos promedio</p>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -896,66 +834,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===================== RECURSOS GRATUITOS ===================== */}
-      <section className="py-20 lg:py-32 bg-white dark:bg-card">
-        <div className="container-custom">
-          <AnimatedSection className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
-              Recursos Gratuitos
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white mb-4">
-              Recursos gratuitos para optimizar tu empresa hoy mismo
-            </h2>
-            <p className="text-foreground/60 max-w-2xl mx-auto">
-              Guías, checklists y herramientas descargables sin costo. Empieza a generar valor antes de conversar con nosotros.
-            </p>
-          </AnimatedSection>
-
-          <StaggerContainer className="grid lg:grid-cols-3 gap-6">
-            {resources.map((resource, idx) => (
-              <StaggerItem key={idx}>
-                <div className="bg-blanco-hueso dark:bg-card rounded-2xl p-6 h-full border border-gris-arena/20 flex flex-col">
-                  <div className="w-14 h-14 bg-turquesa/20 rounded-xl flex items-center justify-center mb-4">
-                    <resource.icon className="w-7 h-7 text-turquesa" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-azul-marino dark:text-white mb-3">
-                    {resource.title}
-                  </h3>
-                  <p className="text-foreground/60 text-sm mb-4 flex-1">
-                    {resource.description}
-                  </p>
-                  <div className="space-y-2 mb-4">
-                    <p className="text-xs text-foreground/50">
-                      <strong>Formato:</strong> {resource.format}
-                    </p>
-                    <p className="text-xs text-turquesa font-medium">
-                      <CheckCircle2 className="w-3 h-3 inline mr-1" />
-                      {resource.benefit}
-                    </p>
-                  </div>
-                  <button className="w-full flex items-center justify-center gap-2 bg-azul-marino text-white font-medium px-4 py-3 rounded-xl hover:bg-azul-marino/90 transition-all">
-                    <Download className="w-4 h-4" />
-                    {resource.cta}
-                  </button>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-
-          <AnimatedSection delay={0.3} className="mt-12 text-center">
-            <p className="text-foreground/60 mb-4">
-              ¿Necesitas asesoría personalizada para tu situación específica? Nuestro diagnóstico gratuito analiza tu empresa en 15 minutos.
-            </p>
-            <Link
-              href="/contacto"
-              className="inline-flex items-center gap-2 text-turquesa font-semibold hover:text-menta transition-colors"
-            >
-              Agendar diagnóstico gratuito
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </AnimatedSection>
-        </div>
-      </section>
 
       {/* ===================== TESTIMONIALES ===================== */}
       <section className="py-20 lg:py-32 bg-azul-marino">
@@ -1021,64 +899,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===================== BLOG RECIENTE ===================== */}
-      <section className="py-20 lg:py-32 bg-blanco-hueso dark:bg-background">
-        <div className="container-custom">
-          <AnimatedSection className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
-              Blog
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white mb-4">
-              Últimas publicaciones del blog
-            </h2>
-            <p className="text-foreground/60 max-w-2xl mx-auto">
-              Insights prácticos sobre optimización empresarial, gestión de proyectos y sistemas de calidad
-            </p>
-          </AnimatedSection>
-
-          <StaggerContainer className="grid lg:grid-cols-3 gap-6">
-            {blogPosts.map((post, idx) => (
-              <StaggerItem key={idx}>
-                <Link href={post.href}>
-                  <div className="group bg-white dark:bg-card rounded-2xl overflow-hidden shadow-brand hover:shadow-brand-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
-                    <div className="h-48 bg-azul-marino flex items-center justify-center">
-                      <BookOpen className="w-16 h-16 text-white/30" />
-                    </div>
-                    <div className="p-6 flex-1 flex flex-col">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="px-2 py-1 bg-turquesa/10 text-turquesa text-xs rounded-full">
-                          {post.category}
-                        </span>
-                        <span className="text-foreground/40 text-xs">{post.readTime}</span>
-                      </div>
-                      <h3 className="text-lg font-semibold text-azul-marino dark:text-white mb-3 group-hover:text-turquesa transition-colors">
-                        {post.title}
-                      </h3>
-                      <p className="text-foreground/60 text-sm flex-1">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center gap-2 text-turquesa font-medium text-sm mt-4 group-hover:gap-3 transition-all">
-                        <span>Leer artículo completo</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-
-          <AnimatedSection delay={0.3} className="mt-12 text-center">
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 text-turquesa font-semibold hover:text-menta transition-colors"
-            >
-              Ver todos los artículos del blog
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </AnimatedSection>
-        </div>
-      </section>
 
       {/* ===================== CTA FINAL ===================== */}
       <section className="py-20 lg:py-32 bg-azul-marino">
@@ -1218,43 +1038,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===================== PROCESO (CÓMO TRABAJAMOS) ===================== */}
-      <section className="py-20 lg:py-32 bg-white dark:bg-card">
-        <div className="container-custom">
-          <AnimatedSection className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-turquesa/10 text-turquesa rounded-full text-sm font-medium mb-4">
-              Cómo Trabajamos
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white">
-              Nuestro Proceso
-            </h2>
-          </AnimatedSection>
-
-          <StaggerContainer className="grid md:grid-cols-4 gap-6">
-            {[
-              { step: '01', icon: Search, title: 'Diagnóstico', desc: 'Analizamos tu situación actual e identificamos oportunidades de mejora' },
-              { step: '02', icon: Lightbulb, title: 'Estrategia', desc: 'Diseñamos un plan personalizado alineado a tus objetivos de negocio' },
-              { step: '03', icon: Rocket, title: 'Implementación', desc: 'Ejecutamos con acompañamiento continuo y transferencia de conocimiento' },
-              { step: '04', icon: LineChart, title: 'Seguimiento', desc: 'Medimos resultados y optimizamos continuamente para asegurar sostenibilidad' }
-            ].map((phase, idx) => (
-              <StaggerItem key={idx}>
-                <div className="relative text-center">
-                  <div className="text-6xl font-bold text-turquesa/10 mb-4">{phase.step}</div>
-                  <div className="w-16 h-16 bg-turquesa/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <phase.icon className="w-8 h-8 text-turquesa" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-azul-marino dark:text-white mb-2">
-                    {phase.title}
-                  </h3>
-                  <p className="text-foreground/60 text-sm">
-                    {phase.desc}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
     </>
   );
 }
