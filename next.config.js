@@ -1,13 +1,10 @@
-const path = require('path');
+const createNextIntlPlugin = require('next-intl/plugin');
+const withNextIntl = createNextIntlPlugin('./i18n.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || '.next',
   output: process.env.NEXT_OUTPUT_MODE,
-  // Temporarily disabled outputFileTracingRoot to debug webpack error
-  // experimental: {
-  //   outputFileTracingRoot: path.join(__dirname, '../'),
-  // },
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -16,7 +13,6 @@ const nextConfig = {
   },
   images: { unoptimized: true },
   webpack: (config, { isServer }) => {
-    // Fix for webpack module resolution issues
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
@@ -27,4 +23,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

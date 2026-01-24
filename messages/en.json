@@ -1,0 +1,288 @@
+{
+  "metadata": {
+    "title": "Business Consulting that Delivers Results | Alternative",
+    "description": "Consulting in process optimization, project management, and quality systems. Team certified in PMP®, ISO 9001 Lead Auditor, and Lean Six Sigma. Experience in LATAM and the Caribbean.",
+    "keywords": "business consulting, process optimization, project management, quality systems, ISO 9001, BPM consulting, digital transformation"
+  },
+  "nav": {
+    "services": "Services",
+    "industries": "Industries",
+    "cases": "Success Stories",
+    "resources": "Resources",
+    "about": "About",
+    "blog": "Blog",
+    "contact": "Contact",
+    "freeDiagnosis": "Free Diagnosis"
+  },
+  "hero": {
+    "badge": "Business Consulting",
+    "title": "Business consulting",
+    "titleHighlight": "strategically",
+    "tagline": "Business consulting that delivers measurable results",
+    "description": "We provide complete business solutions in consulting, software development, and technology infrastructure.",
+    "cta": {
+      "primary": "Request Free Diagnosis",
+      "primaryBadge": "15 min",
+      "secondary": "Discover our services"
+    },
+    "stats": {
+      "projects": "50+ successful projects",
+      "costReduction": "35% average cost reduction"
+    },
+    "badges": {
+      "pmp": "PMP® Certified Team",
+      "iso": "ISO 9001 Lead Auditors",
+      "lean": "Lean Six Sigma Certified",
+      "experience": "15+ years of experience"
+    }
+  },
+  "about": {
+    "badge": "About Us",
+    "title": "Your strategic partner in",
+    "titleHighlight": "business transformation",
+    "description1": "At Alternative, we accompany business growth with strategy and precision. We offer comprehensive solutions that optimize every process, ensuring solid and sustainable progress.",
+    "description2": "Each solution is custom-designed, addressing the specific needs of each client and guaranteeing results that drive their growth.",
+    "values": {
+      "commitment": {
+        "title": "Commitment",
+        "description": "We accompany our clients throughout the entire process"
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "We seek practical and effective solutions"
+      },
+      "trust": {
+        "title": "Trust",
+        "description": "We build relationships based on transparency"
+      }
+    },
+    "cta": "Learn More About Us",
+    "rating": "Average Rating"
+  },
+  "services": {
+    "badge": "Our Services",
+    "title": "Comprehensive solutions to",
+    "titleHighlight": "drive your business",
+    "subtitle": "From strategic consulting to technology development, we have everything you need to transform your company.",
+    "learnMore": "Learn more",
+    "viewAll": "View All Services",
+    "items": {
+      "processOptimization": {
+        "title": "Process Optimization",
+        "description": "Business BPM, Lean Six Sigma, and process design. We reduce operating costs by 25-40% with proven methodologies and measurable results.",
+        "benefit": "More efficient and profitable operations"
+      },
+      "projectManagement": {
+        "title": "Project Management",
+        "description": "PMP Project Management, agile methodologies, and PMO Office. Projects that finish on time, on budget, and deliver expected value.",
+        "benefit": "Predictable and successful projects"
+      },
+      "qualitySystems": {
+        "title": "Quality Systems",
+        "description": "Implementation, audit, and management of quality systems based on ISO 9001 and other reference frameworks.",
+        "benefit": "Structured and sustainable quality"
+      },
+      "digitalTransformation": {
+        "title": "Digital Transformation",
+        "description": "Transformation roadmap, intelligent automation, and technology enablement. We optimize first, then digitize.",
+        "benefit": "Digitalization with measurable impact"
+      },
+      "strategicConsulting": {
+        "title": "Strategic Consulting",
+        "description": "Organizational diagnosis, feasibility studies, and RFP development. We identify what to optimize first for maximum impact.",
+        "benefit": "Data-driven decisions"
+      },
+      "technologyDevelopment": {
+        "title": "Development & Technology",
+        "description": "Custom software solutions, corporate portals, and infrastructure support for optimized processes.",
+        "benefit": "Tailored technology solutions"
+      }
+    }
+  },
+  "whyUs": {
+    "badge": "Why Choose Us",
+    "title": "Why leading companies",
+    "titleHighlight": "trust us",
+    "subtitle": "Our indicators speak for themselves",
+    "stats": {
+      "experience": {
+        "value": "15+ Years",
+        "label": "Experience leading transformations"
+      },
+      "costReduction": {
+        "value": "35% Reduction",
+        "label": "Average operating costs"
+      },
+      "implementation": {
+        "value": "90 Days",
+        "label": "Fast implementation"
+      },
+      "transfer": {
+        "value": "100%",
+        "label": "Real knowledge transfer"
+      },
+      "projects": {
+        "value": "50+",
+        "label": "Successful projects"
+      }
+    }
+  },
+  "cases": {
+    "badge": "Success Stories",
+    "title": "Real results for",
+    "titleHighlight": "real companies",
+    "subtitle": "Success stories with proven metrics and verified client testimonials",
+    "cta": "Want results like these for your company?",
+    "items": {
+      "banking": {
+        "industry": "Banking",
+        "title": "Regional Financial Institution",
+        "description": "Credit process optimization, approval time reduction, and regulatory compliance.",
+        "metric": "40%",
+        "stat1": "25% Prod.",
+        "stat2": "100% SLA",
+        "quote": "Today we are a more agile and competitive institution."
+      },
+      "manufacturing": {
+        "industry": "Manufacturing",
+        "title": "Manufacturing and Logistics Company",
+        "description": "Lean Manufacturing implementation, inventory reduction, and on-time delivery improvement.",
+        "metric": "$180K",
+        "stat1": "30% Inv.",
+        "stat2": "92% Delivery",
+        "quote": "The consulting ROI was recovered in 4 months."
+      },
+      "technology": {
+        "industry": "Technology",
+        "title": "Technology Company (PMO Implementation)",
+        "description": "PMO implementation, agile methodologies, and portfolio visibility improvement.",
+        "metric": "85%",
+        "stat1": "50% Rework",
+        "stat2": "4.5/5 Satisf.",
+        "quote": "A PMO that truly adds strategic value."
+      }
+    }
+  },
+  "testimonials": {
+    "badge": "Testimonials",
+    "title": "What our",
+    "titleHighlight": "clients say",
+    "subtitle": "Verified testimonials from executives who have worked with Alternative",
+    "trustedBy": "Companies that trust us",
+    "items": {
+      "item1": {
+        "quote": "Alternative completely transformed our credit operation. In 6 months we reduced costs by 32% and structured a robust quality system. The team not only consulted, they trained us to be self-sufficient.",
+        "role": "CFO, Regional Financial Institution",
+        "badge": "Banking | Process Optimization"
+      },
+      "item2": {
+        "quote": "We had 15 projects running simultaneously, all with delays. They implemented a structured PMO and today 85% finish on time. It completely changed our execution capacity.",
+        "role": "CTO, Technology Company",
+        "badge": "Technology | PMO"
+      },
+      "item3": {
+        "quote": "I was skeptical at first about consulting, but the results are undeniable: 40% less time in key operational processes. Our clients notice it, our team is more motivated and productive.",
+        "role": "COO, Regional Bank",
+        "badge": "Banking | BPM"
+      },
+      "item4": {
+        "quote": "We were going to implement an expensive ERP without fixing our processes first. Alternative stopped us, optimized processes, and then we digitized. They saved us more than $200,000 in software we didn't need.",
+        "role": "CEO, Manufacturing Company",
+        "badge": "Manufacturing | Digital Transformation"
+      },
+      "item5": {
+        "quote": "The knowledge transfer approach is real. They not only left us with optimized processes, they trained us to continue improving without depending on external consultants.",
+        "role": "Operations Manager, Retail Company",
+        "badge": "Retail | Lean Six Sigma"
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to optimize your business?",
+    "subtitle": "Schedule a free 15-minute diagnosis. No commitment, no sales presentations. We only identify your most urgent improvement opportunities and give you actionable recommendations.",
+    "formTitle": "Request your free diagnosis",
+    "formSubtitle": "Fill out the form and we'll contact you within 24 hours",
+    "form": {
+      "name": "Full name",
+      "email": "Corporate email",
+      "phone": "Phone (WhatsApp)",
+      "company": "Company",
+      "industry": "Industry",
+      "challenge": "What is your biggest operational challenge?",
+      "submit": "Request Free Diagnosis",
+      "whatsapp": "Prefer WhatsApp?"
+    },
+    "benefits": {
+      "title": "In 15 minutes we cover:",
+      "item1": "Identification of your most critical operational challenge",
+      "item2": "Preliminary quantification of the impact on your business",
+      "item3": "3 immediate actionable recommendations",
+      "item4": "Preliminary solution roadmap (if applicable)"
+    },
+    "trust": "Over 50 companies in LATAM have started with this free diagnosis. Average satisfaction: 4.9/5"
+  },
+  "footer": {
+    "tagline": "Business consulting that delivers measurable results",
+    "slogan": "We strategically drive your business",
+    "rights": "All rights reserved",
+    "terms": "Terms and Conditions",
+    "privacy": "Privacy Policy",
+    "columns": {
+      "services": "Services",
+      "industries": "Industries",
+      "resources": "Resources",
+      "company": "Company"
+    }
+  },
+  "industries": {
+    "badge": "Industries",
+    "title": "Proven experience in",
+    "titleHighlight": "high-complexity sectors",
+    "subtitle": "We understand the specific challenges of your industry and adapt our solutions to your regulatory and operational requirements.",
+    "viewAll": "View all industries",
+    "items": {
+      "banking": {
+        "title": "Banking & Financial Services",
+        "description": "Regulatory compliance, core process optimization, and banking digital transformation."
+      },
+      "manufacturing": {
+        "title": "Manufacturing & Logistics",
+        "description": "Supply chain optimization, Lean Manufacturing, and quality systems."
+      },
+      "retail": {
+        "title": "Retail & Commerce",
+        "description": "Operational efficiency, inventory optimization, and customer experience."
+      },
+      "technology": {
+        "title": "Technology & Telecommunications",
+        "description": "Operational scaling, project governance, and agile methodologies."
+      },
+      "professional": {
+        "title": "Professional Services",
+        "description": "Service process optimization and complex project management."
+      },
+      "government": {
+        "title": "Government & Public Sector",
+        "description": "Process modernization, transparency, and government efficiency."
+      },
+      "healthcare": {
+        "title": "Healthcare & Pharma",
+        "description": "Regulatory compliance, quality, and healthcare operations optimization."
+      },
+      "energy": {
+        "title": "Energy & Utilities",
+        "description": "Operational efficiency, asset management, and digital transformation."
+      }
+    }
+  },
+  "common": {
+    "learnMore": "Learn more",
+    "viewMore": "View more",
+    "contactUs": "Contact us",
+    "readMore": "Read more",
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  }
+}

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useI18n } from '@/lib/i18n/context';
+import { useLocale } from 'next-intl';
 import {
   MapPin,
   Phone,
@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 export function Footer() {
-  const { t, language } = useI18n();
+  const locale = useLocale();
   const [email, setEmail] = useState('');
   const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
@@ -34,20 +34,21 @@ export function Footer() {
   };
 
   const quickLinks = [
-    { href: '/', label: t?.nav?.home ?? 'Inicio' },
-    { href: '/business-consultants', label: t?.nav?.businessConsultants ?? 'Consultores' },
-    { href: '/success-stories', label: t?.nav?.successStories ?? 'Proyectos' },
-    { href: '/team-profile', label: t?.nav?.teamProfile ?? 'Perfil' },
-    { href: '/blog', label: t?.nav?.blog ?? 'Blog' },
-    { href: '/contact', label: t?.nav?.contact ?? 'Contacto' },
+    { href: `/${locale}`, label: locale === 'es' ? 'Inicio' : 'Home' },
+    { href: `/${locale}/nosotros`, label: locale === 'es' ? 'Nosotros' : 'About Us' },
+    { href: `/${locale}/casos-exito`, label: locale === 'es' ? 'Casos de Éxito' : 'Success Stories' },
+    { href: `/${locale}/recursos`, label: locale === 'es' ? 'Recursos' : 'Resources' },
+    { href: `/${locale}/blog`, label: locale === 'es' ? 'Blog' : 'Blog' },
+    { href: `/${locale}/contacto`, label: locale === 'es' ? 'Contacto' : 'Contact' },
   ];
 
   const serviceLinks = [
-    { href: '/services/process-consulting', label: t?.servicesDropdown?.processConsulting ?? 'Consultoría de Procesos' },
-    { href: '/services/quality-consulting', label: t?.servicesDropdown?.qualityConsulting ?? 'Consultoría de Calidad' },
-    { href: '/services/project-consulting', label: t?.servicesDropdown?.projectConsulting ?? 'Consultoría de Proyectos' },
-    { href: '/services/it-consulting', label: t?.servicesDropdown?.itConsulting ?? 'Consultoría de TI' },
-    { href: '/services/software-development', label: t?.servicesDropdown?.softwareDevelopment ?? 'Desarrollo de Software' },
+    { href: `/${locale}/servicios/optimizacion-procesos`, label: locale === 'es' ? 'Optimización de Procesos' : 'Process Optimization' },
+    { href: `/${locale}/servicios/sistemas-calidad`, label: locale === 'es' ? 'Sistemas de Calidad' : 'Quality Systems' },
+    { href: `/${locale}/servicios/gestion-proyectos`, label: locale === 'es' ? 'Gestión de Proyectos' : 'Project Management' },
+    { href: `/${locale}/servicios/transformacion-digital`, label: locale === 'es' ? 'Transformación Digital' : 'Digital Transformation' },
+    { href: `/${locale}/servicios/consultoria-estrategica`, label: locale === 'es' ? 'Consultoría Estratégica' : 'Strategic Consulting' },
+    { href: `/${locale}/servicios/desarrollo-tecnologia`, label: locale === 'es' ? 'Desarrollo & Tecnología' : 'Development & Technology' },
   ];
 
   return (
@@ -62,7 +63,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
           {/* Brand Column */}
           <div className="lg:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-3 mb-6">
+            <Link href={`/${locale}`} className="inline-flex items-center gap-3 mb-6">
               <div className="relative w-12 h-12 rounded-xl overflow-hidden">
                 <Image
                   src="/logo_8.jpeg"
@@ -74,7 +75,7 @@ export function Footer() {
               <span className="text-white font-semibold text-xl">Alternative</span>
             </Link>
             <p className="text-white/60 mb-6 leading-relaxed">
-              {language === 'es' 
+              {locale === 'es' 
                 ? 'Impulsamos tu empresa estratégicamente con soluciones integrales en consultoría, desarrollo de software e infraestructura tecnológica.'
                 : 'We strategically boost your business with comprehensive solutions in consulting, software development, and technological infrastructure.'}
             </p>
@@ -103,7 +104,7 @@ export function Footer() {
           {/* Quick Links */}
           <div>
             <h4 className="text-white font-semibold text-lg mb-6">
-              {language === 'es' ? 'Enlaces Rápidos' : 'Quick Links'}
+              {locale === 'es' ? 'Enlaces Rápidos' : 'Quick Links'}
             </h4>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
@@ -123,7 +124,7 @@ export function Footer() {
           {/* Services */}
           <div>
             <h4 className="text-white font-semibold text-lg mb-6">
-              {language === 'es' ? 'Servicios' : 'Services'}
+              {locale === 'es' ? 'Servicios' : 'Services'}
             </h4>
             <ul className="space-y-3">
               {serviceLinks.map((link) => (
@@ -143,7 +144,7 @@ export function Footer() {
           {/* Contact Info */}
           <div>
             <h4 className="text-white font-semibold text-lg mb-6">
-              {language === 'es' ? 'Contacto' : 'Contact'}
+              {locale === 'es' ? 'Contacto' : 'Contact'}
             </h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
@@ -167,7 +168,7 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <Clock className="w-5 h-5 text-turquesa flex-shrink-0 mt-0.5" />
                 <span className="text-white/60">
-                  {language === 'es' ? 'Lun-Sáb: 08:00 a.m. - 05:00 p.m.' : 'Mon-Sat: 08:00 AM - 05:00 PM'}
+                  {locale === 'es' ? 'Lun-Sáb: 08:00 a.m. - 05:00 p.m.' : 'Mon-Sat: 08:00 AM - 05:00 PM'}
                 </span>
               </li>
             </ul>
@@ -179,10 +180,10 @@ export function Footer() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div>
               <h4 className="text-white font-semibold text-lg mb-2">
-                {language === 'es' ? 'Suscríbete a Nuestro Newsletter' : 'Subscribe to Our Newsletter'}
+                {locale === 'es' ? 'Suscríbete a Nuestro Newsletter' : 'Subscribe to Our Newsletter'}
               </h4>
               <p className="text-white/60">
-                {language === 'es' 
+                {locale === 'es' 
                   ? 'Recibe insights y tendencias de consultoría directamente en tu correo.'
                   : 'Get consulting insights and trends delivered directly to your inbox.'}
               </p>
@@ -193,7 +194,7 @@ export function Footer() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={language === 'es' ? 'Tu correo electrónico' : 'Your email address'}
+                  placeholder={locale === 'es' ? 'Tu correo electrónico' : 'Your email address'}
                   className="bg-white/10 border border-white/20 rounded-xl px-5 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-turquesa w-full lg:w-72"
                 />
                 <button 
@@ -201,14 +202,14 @@ export function Footer() {
                   className="bg-turquesa text-azul-marino font-semibold px-6 py-3 rounded-xl hover:bg-menta transition-all duration-300 flex items-center gap-2 flex-shrink-0"
                 >
                   <Send className="w-5 h-5" />
-                  <span className="hidden sm:inline">{language === 'es' ? 'Suscribir' : 'Subscribe'}</span>
+                  <span className="hidden sm:inline">{locale === 'es' ? 'Suscribir' : 'Subscribe'}</span>
                 </button>
               </div>
               {subscribeStatus === 'success' && (
-                <p className="text-menta text-sm">{language === 'es' ? '¡Gracias por suscribirte!' : 'Thanks for subscribing!'}</p>
+                <p className="text-menta text-sm">{locale === 'es' ? '¡Gracias por suscribirte!' : 'Thanks for subscribing!'}</p>
               )}
               {subscribeStatus === 'error' && (
-                <p className="text-red-400 text-sm">{language === 'es' ? 'Por favor ingresa un email válido' : 'Please enter a valid email'}</p>
+                <p className="text-red-400 text-sm">{locale === 'es' ? 'Por favor ingresa un email válido' : 'Please enter a valid email'}</p>
               )}
             </div>
           </div>
@@ -218,10 +219,10 @@ export function Footer() {
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <p className="text-white/50 text-sm">
-              © {new Date().getFullYear()} Grupo Alternative. {language === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+              © {new Date().getFullYear()} Grupo Alternative. {locale === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
             </p>
             <p className="text-white/50 text-sm">
-              {language === 'es' ? 'Consultores Tecnológicos Empresariales' : 'Enterprise Technology Consultants'}
+              {locale === 'es' ? 'Consultores Tecnológicos Empresariales' : 'Enterprise Technology Consultants'}
             </p>
           </div>
         </div>

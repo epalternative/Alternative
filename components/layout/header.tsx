@@ -5,7 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useI18n } from '@/lib/i18n/context';
+import { useLocale, useTranslations } from 'next-intl';
+import { useRouter, usePathname } from 'next/navigation';
 import {
   Menu,
   X,
@@ -255,8 +256,18 @@ export function Header() {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isIndustriesOpen, setIsIndustriesOpen] = useState(false);
   const { theme, setTheme } = useTheme();
-  const { t, language, setLanguage } = useI18n();
+  const locale = useLocale();
+  const t = useTranslations('nav');
+  const router = useRouter();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
+  
+  // Function to switch locale
+  const switchLocale = () => {
+    const newLocale = locale === 'es' ? 'en' : 'es';
+    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
+    router.push(newPath);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -266,12 +277,12 @@ export function Header() {
   }, []);
 
   const navLinks = [
-    { href: '#services', label: language === 'es' ? 'Servicios' : 'Services', hasDropdown: 'services' },
-    { href: '/industrias', label: language === 'es' ? 'Industrias' : 'Industries', hasDropdown: 'industries' },
-    { href: '/casos-exito', label: language === 'es' ? 'Casos de Éxito' : 'Success Stories', icon: Briefcase },
-    { href: '/recursos', label: language === 'es' ? 'Recursos' : 'Resources', icon: BookOpen },
-    { href: '/nosotros', label: language === 'es' ? 'Nosotros' : 'About Us', icon: Users },
-    { href: '/blog', label: language === 'es' ? 'Blog' : 'Blog', icon: FileText },
+    { href: '#services', label: locale === 'es' ? 'Servicios' : 'Services', hasDropdown: 'services' },
+    { href: `/${locale}/industrias`, label: locale === 'es' ? 'Industrias' : 'Industries', hasDropdown: 'industries' },
+    { href: `/${locale}/casos-exito`, label: locale === 'es' ? 'Casos de Éxito' : 'Success Stories', icon: Briefcase },
+    { href: `/${locale}/recursos`, label: locale === 'es' ? 'Recursos' : 'Resources', icon: BookOpen },
+    { href: `/${locale}/nosotros`, label: locale === 'es' ? 'Nosotros' : 'About Us', icon: Users },
+    { href: `/${locale}/blog`, label: locale === 'es' ? 'Blog' : 'Blog', icon: FileText },
   ];
 
   if (!mounted) return null;
@@ -288,7 +299,7 @@ export function Header() {
         <div className="container-custom">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center group">
+            <Link href={`/${locale}`} className="flex items-center group">
               <Image
                 src="/logo_alternative_horizontal.webp"
                 alt="Alternative Logo"
@@ -345,10 +356,10 @@ export function Header() {
                             <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
                               <div className="flex items-center gap-4">
                                 <h3 className="text-white font-semibold text-lg">
-                                  {language === 'es' ? 'Servicios' : 'Services'}
+                                  {locale === 'es' ? 'Servicios' : 'Services'}
                                 </h3>
                                 <span className="text-white/50 text-sm">
-                                  {language === 'es' 
+                                  {locale === 'es' 
                                     ? 'problema → solución → evidencia → CTA' 
                                     : 'problem → solution → evidence → CTA'}
                                 </span>
@@ -368,21 +379,21 @@ export function Header() {
                                     className="bg-white/5 rounded-lg p-2.5 border border-white/10"
                                   >
                                     <Link 
-                                      href={column.href}
+                                      href={`/${locale}${column.href}`}
                                       className="text-turquesa font-bold text-xs tracking-wider mb-2 block hover:text-menta transition-colors uppercase"
                                     >
-                                      {language === 'es' ? column.title : column.titleEn}
+                                      {locale === 'es' ? column.title : column.titleEn}
                                     </Link>
                                     <ul className="space-y-1">
                                       {column.items.map((item, itemIdx) => (
                                         <li key={itemIdx}>
                                           <Link
-                                            href={item.href}
+                                            href={`/${locale}${item.href}`}
                                             className="group flex items-center justify-between py-2 px-2 -mx-2 rounded hover:bg-white/10 transition-colors"
                                           >
                                             <span className="text-white text-sm">
-                                              <span className="font-medium">{language === 'es' ? item.label : item.labelEn}</span>
-                                              <span className="text-white/50 ml-1.5 text-xs">{language === 'es' ? item.desc : item.descEn}</span>
+                                              <span className="font-medium">{locale === 'es' ? item.label : item.labelEn}</span>
+                                              <span className="text-white/50 ml-1.5 text-xs">{locale === 'es' ? item.desc : item.descEn}</span>
                                             </span>
                                             <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-turquesa transition-colors flex-shrink-0 ml-2" />
                                           </Link>
@@ -398,26 +409,26 @@ export function Header() {
                                 <div className="flex items-center gap-2 mb-3">
                                   <Sparkles className="w-4 h-4 text-turquesa" />
                                   <h4 className="text-white font-semibold text-sm">
-                                    {language === 'es' ? '¿Qué necesitas?' : 'What do you need?'}
+                                    {locale === 'es' ? '¿Qué necesitas?' : 'What do you need?'}
                                   </h4>
                                 </div>
                                 <p className="text-white/60 text-xs mb-4 flex-1 leading-relaxed">
-                                  {language === 'es' 
+                                  {locale === 'es' 
                                     ? 'Diagnóstico breve (15–20 min) para ubicar tu cuello de botella.' 
                                     : 'Brief diagnosis (15-20 min) to find your bottleneck.'}
                                 </p>
                                 <div className="space-y-2">
                                   <Link
-                                    href="/contacto"
+                                    href={`/${locale}/contacto`}
                                     className="flex items-center justify-center w-full bg-turquesa text-azul-marino font-semibold px-3 py-2.5 rounded-lg hover:bg-menta transition-all text-xs"
                                   >
-                                    {language === 'es' ? 'Diagnóstico Gratuito' : 'Free Diagnosis'}
+                                    {locale === 'es' ? 'Diagnóstico Gratuito' : 'Free Diagnosis'}
                                   </Link>
                                   <Link
-                                    href="/casos-exito"
+                                    href={`/${locale}/casos-exito`}
                                     className="flex items-center justify-center w-full bg-white/10 border border-white/20 text-white font-medium px-3 py-2.5 rounded-lg hover:bg-white/20 transition-all text-xs"
                                   >
-                                    {language === 'es' ? 'Ver casos de éxito' : 'Success stories'}
+                                    {locale === 'es' ? 'Ver casos de éxito' : 'Success stories'}
                                   </Link>
                                 </div>
                               </div>
@@ -442,16 +453,16 @@ export function Header() {
                             <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
                               <div className="flex items-center gap-4">
                                 <h3 className="text-white font-semibold text-lg">
-                                  {language === 'es' ? 'Industrias' : 'Industries'}
+                                  {locale === 'es' ? 'Industrias' : 'Industries'}
                                 </h3>
                                 <span className="text-white/50 text-sm">
-                                  {language === 'es' 
+                                  {locale === 'es' 
                                     ? 'Sector → problemas típicos → soluciones → prueba' 
                                     : 'Sector → typical problems → solutions → proof'}
                                 </span>
                               </div>
                               <span className="px-3 py-1.5 bg-white/10 border border-white/20 rounded-full text-xs text-white/70 font-medium">
-                                {language === 'es' ? 'Landing pages' : 'Landing pages'}
+                                {locale === 'es' ? 'Landing pages' : 'Landing pages'}
                               </span>
                             </div>
 
@@ -463,7 +474,7 @@ export function Header() {
                                   return (
                                     <Link
                                       key={idx}
-                                      href={item.href}
+                                      href={`/${locale}${item.href}`}
                                       className="group bg-white/5 rounded-lg p-4 border border-white/10 hover:bg-white/10 transition-colors"
                                     >
                                       <div className="flex items-start gap-3">
@@ -472,10 +483,10 @@ export function Header() {
                                         </div>
                                         <div>
                                           <span className="text-white font-semibold text-sm block mb-1">
-                                            {language === 'es' ? item.label : item.labelEn}
+                                            {locale === 'es' ? item.label : item.labelEn}
                                           </span>
                                           <span className="text-white/50 text-xs">
-                                            {language === 'es' ? item.desc : item.descEn}
+                                            {locale === 'es' ? item.desc : item.descEn}
                                           </span>
                                         </div>
                                       </div>
@@ -487,15 +498,15 @@ export function Header() {
                               {/* Footer message */}
                               <div className="mt-5 pt-4 border-t border-white/10 border-dashed">
                                 <p className="text-white/60 text-sm text-center">
-                                  {language === 'es' 
+                                  {locale === 'es' 
                                     ? '¿Tu industria no está? ' 
                                     : "Your industry not listed? "}
                                   <span className="text-white font-medium">
-                                    {language === 'es' 
+                                    {locale === 'es' 
                                       ? 'Trabajamos con todos los sectores.' 
                                       : 'We work with all sectors.'}
                                   </span>
-                                  {language === 'es' 
+                                  {locale === 'es' 
                                     ? ' Lo importante es el problema (tiempo, costo, riesgo, cumplimiento).' 
                                     : ' What matters is the problem (time, cost, risk, compliance).'}
                                 </p>
@@ -526,16 +537,16 @@ export function Header() {
             <div className="flex items-center gap-2">
               {/* Language Toggle */}
               <button
-                onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
+                onClick={switchLocale}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg font-medium text-sm transition-all ${
                   isScrolled
                     ? 'text-foreground/70 hover:text-azul-marino dark:hover:text-turquesa hover:bg-beige/50 dark:hover:bg-white/10'
                     : 'text-azul-marino/80 dark:text-white/80 hover:text-azul-marino dark:hover:text-white hover:bg-azul-marino/5 dark:hover:bg-white/10'
                 }`}
-                title={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
+                title={locale === 'es' ? 'Switch to English' : 'Cambiar a Español'}
               >
                 <Globe className="w-4 h-4" />
-                <span className="uppercase">{language}</span>
+                <span className="uppercase">{locale === 'es' ? 'EN' : 'ES'}</span>
               </button>
 
               {/* Theme Toggle */}
@@ -553,10 +564,10 @@ export function Header() {
 
               {/* CTA Button - Desktop */}
               <Link
-                href="/contacto"
+                href={`/${locale}/contacto`}
                 className="hidden lg:inline-flex items-center gap-2 bg-turquesa text-azul-marino font-semibold px-5 py-2.5 rounded-xl hover:bg-menta transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
               >
-                {language === 'es' ? 'Contacto' : 'Contact'}
+                {locale === 'es' ? 'Contacto' : 'Contact'}
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
@@ -649,22 +660,22 @@ export function Header() {
                                     return (
                                       <div key={category.href}>
                                         <Link
-                                          href={category.href}
+                                          href={`/${locale}${category.href}`}
                                           onClick={() => setIsMobileMenuOpen(false)}
                                           className="flex items-center gap-2 px-4 py-2 font-medium text-foreground/80"
                                         >
                                           <Icon className="w-4 h-4 text-turquesa" />
-                                          {language === 'es' ? category.title : category.titleEn}
+                                          {locale === 'es' ? category.title : category.titleEn}
                                         </Link>
                                         <div className="pl-10 space-y-1">
                                           {category.items.map((item) => (
                                             <Link
                                               key={item.href}
-                                              href={item.href}
+                                              href={`/${locale}${item.href}`}
                                               onClick={() => setIsMobileMenuOpen(false)}
                                               className="block py-1.5 text-sm text-foreground/60 hover:text-turquesa"
                                             >
-                                              {language === 'es' ? item.label : item.labelEn}
+                                              {locale === 'es' ? item.label : item.labelEn}
                                             </Link>
                                           ))}
                                         </div>
@@ -693,12 +704,12 @@ export function Header() {
                                     return (
                                       <Link
                                         key={item.href}
-                                        href={item.href}
+                                        href={`/${locale}${item.href}`}
                                         onClick={() => setIsMobileMenuOpen(false)}
                                         className="flex items-center gap-2 px-4 py-2 font-medium text-foreground/80"
                                       >
                                         <Icon className="w-4 h-4 text-turquesa" />
-                                        {language === 'es' ? item.label : item.labelEn}
+                                        {locale === 'es' ? item.label : item.labelEn}
                                       </Link>
                                     );
                                   })}
@@ -724,11 +735,11 @@ export function Header() {
                 {/* CTA */}
                 <div className="mt-8 pt-6 border-t border-gris-arena/30 dark:border-white/10">
                   <Link
-                    href="/contacto"
+                    href={`/${locale}/contacto`}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="flex items-center justify-center gap-2 w-full bg-turquesa text-azul-marino font-semibold px-6 py-4 rounded-xl hover:bg-menta transition-all"
                   >
-                    {language === 'es' ? 'Contacto' : 'Contact'}
+                    {locale === 'es' ? 'Contacto' : 'Contact'}
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                 </div>

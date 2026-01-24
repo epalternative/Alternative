@@ -1,0 +1,179 @@
+{
+  "redirects": [
+    {
+      "source": "/inicio",
+      "destination": "/es",
+      "permanent": true
+    },
+    {
+      "source": "/service/consultoria-de-procesos",
+      "destination": "/es/servicios/optimizacion-procesos",
+      "permanent": true
+    },
+    {
+      "source": "/service/consultoria-de-proyectos",
+      "destination": "/es/servicios/gestion-proyectos",
+      "permanent": true
+    },
+    {
+      "source": "/service/consultoria-de-calidad",
+      "destination": "/es/servicios/sistemas-calidad",
+      "permanent": true
+    },
+    {
+      "source": "/service/consultoria-de-tecnologia-informacion",
+      "destination": "/es/servicios/transformacion-digital",
+      "permanent": true
+    },
+    {
+      "source": "/service/desarrollo-software",
+      "destination": "/es/servicios/desarrollo-tecnologia/aplicaciones-medida",
+      "permanent": true
+    },
+    {
+      "source": "/consultoria-de-gestion-de-proyectos-pmi-panama",
+      "destination": "/es/servicios/gestion-proyectos/pmp-project-management",
+      "permanent": true
+    },
+    {
+      "source": "/consultores-de-empresas",
+      "destination": "/es/nosotros",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/es/contacto",
+      "permanent": true
+    },
+    {
+      "source": "/servicios",
+      "destination": "/es/servicios",
+      "permanent": true
+    },
+    {
+      "source": "/proyectos-exitosos",
+      "destination": "/es/casos-exito",
+      "permanent": true
+    },
+    {
+      "source": "/blog-grupo-alternative",
+      "destination": "/es/blog",
+      "permanent": true
+    },
+    {
+      "source": "/profile",
+      "destination": "/es/nosotros",
+      "permanent": true
+    },
+    {
+      "source": "/profilekg",
+      "destination": "/es/nosotros",
+      "permanent": true
+    },
+    {
+      "source": "/ia-en-gestion-de-proyectos",
+      "destination": "/es/blog/ia-gestion-proyectos",
+      "permanent": true
+    },
+    {
+      "source": "/diagramas-de-flujo-de-proces-llave-maestra-la-eficiencia-laboral",
+      "destination": "/es/blog/diagramas-flujo-procesos",
+      "permanent": true
+    },
+    {
+      "source": "/la-columna-vertebral-del-exito-empresarial",
+      "destination": "/es/blog/columna-vertebral-exito",
+      "permanent": true
+    },
+    {
+      "source": "/codigo-impecable-la-importancia-de-la-calidad-en-el-desarrollo-de-software-empresarial",
+      "destination": "/es/blog/calidad-desarrollo-software",
+      "permanent": true
+    },
+    {
+      "source": "/services/it-consulting",
+      "destination": "/en/servicios/transformacion-digital",
+      "permanent": true
+    },
+    {
+      "source": "/services/process-consulting",
+      "destination": "/en/servicios/optimizacion-procesos",
+      "permanent": true
+    },
+    {
+      "source": "/services/project-consulting",
+      "destination": "/en/servicios/gestion-proyectos",
+      "permanent": true
+    },
+    {
+      "source": "/services/quality-consulting",
+      "destination": "/en/servicios/sistemas-calidad",
+      "permanent": true
+    },
+    {
+      "source": "/services/software-development",
+      "destination": "/en/servicios/desarrollo-tecnologia/aplicaciones-medida",
+      "permanent": true
+    },
+    {
+      "source": "/industrias",
+      "destination": "/es/industrias",
+      "permanent": true
+    },
+    {
+      "source": "/industrias/:path*",
+      "destination": "/es/industrias/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/nosotros",
+      "destination": "/es/nosotros",
+      "permanent": true
+    },
+    {
+      "source": "/recursos",
+      "destination": "/es/recursos",
+      "permanent": true
+    },
+    {
+      "source": "/recursos/:path*",
+      "destination": "/es/recursos/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/casos-exito",
+      "destination": "/es/casos-exito",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "destination": "/es/blog",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/es/blog/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/contacto",
+      "destination": "/es/contacto",
+      "permanent": true
+    },
+    {
+      "source": "/success-stories",
+      "destination": "/en/casos-exito",
+      "permanent": true
+    },
+    {
+      "source": "/team-profile",
+      "destination": "/es/nosotros",
+      "permanent": true
+    },
+    {
+      "source": "/business-consultants",
+      "destination": "/en/nosotros",
+      "permanent": true
+    }
+  ]
+}

@@ -1,0 +1,288 @@
+{
+  "metadata": {
+    "title": "Consultoría Empresarial que Genera Resultados | Alternative",
+    "description": "Consultoría en optimización de procesos, gestión de proyectos y sistemas de calidad. Equipo certificado PMP®, ISO 9001 Lead Auditor y Lean Six Sigma. Experiencia en LATAM y el Caribe.",
+    "keywords": "consultoría empresarial, optimización de procesos, gestión de proyectos, sistemas de calidad, ISO 9001, consultoría BPM, transformación digital"
+  },
+  "nav": {
+    "services": "Servicios",
+    "industries": "Industrias",
+    "cases": "Casos de Éxito",
+    "resources": "Recursos",
+    "about": "Nosotros",
+    "blog": "Blog",
+    "contact": "Contacto",
+    "freeDiagnosis": "Diagnóstico Gratuito"
+  },
+  "hero": {
+    "badge": "Consultoría Empresarial",
+    "title": "Consultoría empresarial",
+    "titleHighlight": "estratégicamente",
+    "tagline": "Impulsamos tu empresa estratégicamente",
+    "description": "Brindamos soluciones empresariales completas en consultoría, desarrollo de software e infraestructura tecnológica.",
+    "cta": {
+      "primary": "Solicita Diagnóstico Gratuito",
+      "primaryBadge": "15 min",
+      "secondary": "Conoce nuestros servicios"
+    },
+    "stats": {
+      "projects": "50+ proyectos exitosos",
+      "costReduction": "35% reducción de costos promedio"
+    },
+    "badges": {
+      "pmp": "Equipo PMP® Certified",
+      "iso": "ISO 9001 Lead Auditors",
+      "lean": "Lean Six Sigma Certified",
+      "experience": "15+ años de experiencia"
+    }
+  },
+  "about": {
+    "badge": "Sobre Nosotros",
+    "title": "Tu aliado estratégico en",
+    "titleHighlight": "transformación empresarial",
+    "description1": "En Alternative, acompañamos el crecimiento de las empresas con estrategia y precisión. Ofrecemos soluciones integrales que optimizan cada proceso, asegurando un avance sólido y sostenible.",
+    "description2": "Cada solución se diseña de manera personalizada, atendiendo las necesidades específicas de cada cliente y garantizando resultados que impulsan su crecimiento.",
+    "values": {
+      "commitment": {
+        "title": "Compromiso",
+        "description": "Acompañamos a nuestros clientes en todo el proceso"
+      },
+      "innovation": {
+        "title": "Innovación",
+        "description": "Buscamos soluciones prácticas y efectivas"
+      },
+      "trust": {
+        "title": "Confianza",
+        "description": "Construimos relaciones basadas en transparencia"
+      }
+    },
+    "cta": "Conoce Más Sobre Nosotros",
+    "rating": "Calificación Promedio"
+  },
+  "services": {
+    "badge": "Nuestros Servicios",
+    "title": "Soluciones integrales para",
+    "titleHighlight": "impulsar tu negocio",
+    "subtitle": "Desde la consultoría estratégica hasta el desarrollo tecnológico, tenemos todo lo que necesitas para transformar tu empresa.",
+    "learnMore": "Saber más",
+    "viewAll": "Ver Todos los Servicios",
+    "items": {
+      "processOptimization": {
+        "title": "Optimización de Procesos",
+        "description": "BPM empresarial, Lean Six Sigma y diseño de procesos. Reducimos costos operativos entre 25-40% con metodologías probadas y resultados medibles.",
+        "benefit": "Operaciones más eficientes y rentables"
+      },
+      "projectManagement": {
+        "title": "Gestión de Proyectos",
+        "description": "PMP Project Management, metodologías ágiles y PMO Office. Proyectos que terminan a tiempo, en presupuesto y generan el valor esperado.",
+        "benefit": "Proyectos predecibles y exitosos"
+      },
+      "qualitySystems": {
+        "title": "Sistemas de Calidad",
+        "description": "Implementación, auditoría y gestión de sistemas de calidad basados en ISO 9001 y otros marcos de referencia.",
+        "benefit": "Calidad estructurada y sostenible"
+      },
+      "digitalTransformation": {
+        "title": "Transformación Digital",
+        "description": "Roadmap de transformación, automatización inteligente y habilitación tecnológica. Primero optimizamos, luego digitalizamos.",
+        "benefit": "Digitalización con impacto medible"
+      },
+      "strategicConsulting": {
+        "title": "Consultoría Estratégica",
+        "description": "Diagnóstico organizacional, estudios de viabilidad y desarrollo de RFP. Identificamos qué optimizar primero para máximo impacto.",
+        "benefit": "Decisiones basadas en datos"
+      },
+      "technologyDevelopment": {
+        "title": "Desarrollo & Tecnología",
+        "description": "Soluciones de software a medida, portales corporativos y soporte de infraestructura para procesos optimizados.",
+        "benefit": "Soluciones tecnológicas adaptadas"
+      }
+    }
+  },
+  "whyUs": {
+    "badge": "Por Qué Elegirnos",
+    "title": "Por qué empresas líderes",
+    "titleHighlight": "confían en nosotros",
+    "subtitle": "Nuestros indicadores hablan por sí mismos",
+    "stats": {
+      "experience": {
+        "value": "15+ Años",
+        "label": "Experiencia liderando transformaciones"
+      },
+      "costReduction": {
+        "value": "35% Reducción",
+        "label": "Promedio de costos operativos"
+      },
+      "implementation": {
+        "value": "90 Días",
+        "label": "Implementación rápida"
+      },
+      "transfer": {
+        "value": "100%",
+        "label": "Transferencia real"
+      },
+      "projects": {
+        "value": "50+",
+        "label": "Proyectos exitosos"
+      }
+    }
+  },
+  "cases": {
+    "badge": "Casos de Éxito",
+    "title": "Resultados reales para",
+    "titleHighlight": "empresas reales",
+    "subtitle": "Casos de éxito con métricas comprobadas y testimoniales de clientes verificados",
+    "cta": "¿Quieres resultados como estos en tu empresa?",
+    "items": {
+      "banking": {
+        "industry": "Banca",
+        "title": "Institución Financiera Regional",
+        "description": "Optimización de procesos de crédito, reducción de tiempos de aprobación y cumplimiento regulatorio.",
+        "metric": "40%",
+        "stat1": "25% Prod.",
+        "stat2": "100% SLA",
+        "quote": "Hoy somos una institución más ágil y competitiva."
+      },
+      "manufacturing": {
+        "industry": "Manufactura",
+        "title": "Empresa de Manufactura y Logística",
+        "description": "Implementación Lean Manufacturing, reducción de inventario y mejora de entregas a tiempo.",
+        "metric": "$180K",
+        "stat1": "30% Inv.",
+        "stat2": "92% Entregas",
+        "quote": "El ROI de la consultoría se recuperó en 4 meses."
+      },
+      "technology": {
+        "industry": "Tecnología",
+        "title": "Empresa de Tecnología (PMO Implementation)",
+        "description": "Implementación de PMO, metodologías ágiles y mejora de la visibilidad del portafolio.",
+        "metric": "85%",
+        "stat1": "50% Retrabajo",
+        "stat2": "4.5/5 Satisf.",
+        "quote": "Un PMO que realmente agrega valor estratégico."
+      }
+    }
+  },
+  "testimonials": {
+    "badge": "Testimonios",
+    "title": "Lo que dicen",
+    "titleHighlight": "nuestros clientes",
+    "subtitle": "Testimoniales verificados de ejecutivos que han trabajado con Alternative",
+    "trustedBy": "Empresas que confían en nosotros",
+    "items": {
+      "item1": {
+        "quote": "Alternative transformó completamente nuestra operación crediticia. En 6 meses redujimos costos en 32% y estructuramos un sistema de calidad robusto. El equipo no solo consultó, nos capacitó para ser autosuficientes.",
+        "role": "CFO, Institución Financiera Regional",
+        "badge": "Banca | Optimización de Procesos"
+      },
+      "item2": {
+        "quote": "Teníamos 15 proyectos corriendo simultáneamente, todos con retrasos. Implementaron un PMO estructurado y hoy el 85% termina a tiempo. Cambió completamente nuestra capacidad de ejecución.",
+        "role": "CTO, Empresa de Tecnología",
+        "badge": "Tecnología | PMO"
+      },
+      "item3": {
+        "quote": "Era escéptico al inicio sobre consultoría, pero los resultados son innegables: 40% menos tiempo en procesos operativos clave. Nuestros clientes lo notan, nuestro equipo está más motivado y productivo.",
+        "role": "COO, Banco Regional",
+        "badge": "Banca | BPM"
+      },
+      "item4": {
+        "quote": "Íbamos a implementar un ERP costoso sin arreglar nuestros procesos primero. Alternative nos detuvo, optimizó procesos, y luego sí digitalizamos. Nos ahorraron más de $200,000 en software que no necesitábamos.",
+        "role": "CEO, Empresa de Manufactura",
+        "badge": "Manufactura | Transformación Digital"
+      },
+      "item5": {
+        "quote": "El enfoque de transferencia de conocimiento es real. No solo nos dejaron procesos optimizados, nos capacitaron para continuar mejorando sin depender de consultores externos.",
+        "role": "Gerente de Operaciones, Empresa de Retail",
+        "badge": "Retail | Lean Six Sigma"
+      }
+    }
+  },
+  "cta": {
+    "title": "¿Listo para optimizar tu empresa?",
+    "subtitle": "Agenda un diagnóstico gratuito de 15 minutos. Sin compromiso, sin presentaciones comerciales. Solo identificamos tus oportunidades de mejora más urgentes y te damos recomendaciones accionables.",
+    "formTitle": "Solicita tu diagnóstico gratuito",
+    "formSubtitle": "Completa el formulario y te contactaremos en menos de 24 horas",
+    "form": {
+      "name": "Nombre completo",
+      "email": "Email corporativo",
+      "phone": "Teléfono (WhatsApp)",
+      "company": "Empresa",
+      "industry": "Industria",
+      "challenge": "¿Cuál es tu mayor desafío operacional?",
+      "submit": "Solicitar Diagnóstico Gratuito",
+      "whatsapp": "¿Prefieres WhatsApp?"
+    },
+    "benefits": {
+      "title": "En 15 minutos cubrimos:",
+      "item1": "Identificación de tu desafío operacional más crítico",
+      "item2": "Cuantificación preliminar del impacto en tu negocio",
+      "item3": "3 recomendaciones accionables inmediatas",
+      "item4": "Roadmap preliminar de solución (si aplica)"
+    },
+    "trust": "Más de 50 empresas en LATAM han iniciado con este diagnóstico gratuito. Satisfacción promedio: 4.9/5"
+  },
+  "footer": {
+    "tagline": "Consultoría empresarial que genera resultados medibles",
+    "slogan": "Impulsamos tu empresa estratégicamente",
+    "rights": "Todos los derechos reservados",
+    "terms": "Términos y Condiciones",
+    "privacy": "Política de Privacidad",
+    "columns": {
+      "services": "Servicios",
+      "industries": "Industrias",
+      "resources": "Recursos",
+      "company": "Empresa"
+    }
+  },
+  "industries": {
+    "badge": "Industrias",
+    "title": "Experiencia comprobada en sectores de",
+    "titleHighlight": "alta complejidad",
+    "subtitle": "Entendemos los desafíos específicos de tu industria y adaptamos nuestras soluciones a tus requisitos regulatorios y operacionales.",
+    "viewAll": "Ver todas las industrias",
+    "items": {
+      "banking": {
+        "title": "Banca y Servicios Financieros",
+        "description": "Cumplimiento regulatorio, optimización de procesos core y transformación digital bancaria."
+      },
+      "manufacturing": {
+        "title": "Manufactura y Logística",
+        "description": "Optimización de cadena de suministro, Lean Manufacturing y sistemas de calidad."
+      },
+      "retail": {
+        "title": "Retail y Comercio",
+        "description": "Eficiencia operacional, optimización de inventarios y experiencia de cliente."
+      },
+      "technology": {
+        "title": "Tecnología y Telecomunicaciones",
+        "description": "Escalamiento operacional, gobierno de proyectos y metodologías ágiles."
+      },
+      "professional": {
+        "title": "Servicios Profesionales",
+        "description": "Optimización de procesos de servicios y gestión de proyectos complejos."
+      },
+      "government": {
+        "title": "Gobierno y Sector Público",
+        "description": "Modernización de procesos, transparencia y eficiencia gubernamental."
+      },
+      "healthcare": {
+        "title": "Salud y Farmacéutica",
+        "description": "Cumplimiento regulatorio, calidad y optimización de operaciones de salud."
+      },
+      "energy": {
+        "title": "Energía y Utilities",
+        "description": "Eficiencia operacional, gestión de activos y transformación digital."
+      }
+    }
+  },
+  "common": {
+    "learnMore": "Saber más",
+    "viewMore": "Ver más",
+    "contactUs": "Contáctanos",
+    "readMore": "Leer más",
+    "back": "Volver",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito"
+  }
+}
