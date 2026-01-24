@@ -691,37 +691,96 @@ export default function OptimizacionProcesosPage() {
               </h3>
               <table className="w-full min-w-[600px] border-collapse">
                 <thead>
-                  <tr className="border-b-2 border-gris-arena/40 bg-blanco-hueso/50 dark:bg-card/50">
-                    <th className="text-left py-4 px-4 text-foreground/60 font-medium border-r border-gris-arena/20">
+                  <tr>
+                    <th className="text-left py-4 px-4 text-foreground/60 font-medium bg-gris-arena/10 
+                                   border-b-2 border-gris-arena/30 rounded-tl-lg">
                       {isEs ? 'Necesidad' : 'Need'}
                     </th>
-                    <th className="py-4 px-4 text-center text-turquesa font-semibold border-r border-gris-arena/20">BPM</th>
-                    <th className="py-4 px-4 text-center text-menta font-semibold border-r border-gris-arena/20">Lean</th>
-                    <th className="py-4 px-4 text-center text-violeta font-semibold border-r border-gris-arena/20">
-                      {isEs ? 'Diseño' : 'Design'}
+                    <th className="py-4 px-4 text-center font-semibold bg-turquesa/10 text-turquesa 
+                                   border-b-2 border-turquesa/30">
+                      <div className="flex flex-col items-center gap-1">
+                        <RefreshCw className="w-5 h-5" />
+                        <span>BPM</span>
+                      </div>
                     </th>
-                    <th className="py-4 px-4 text-center text-turquesa font-semibold">
-                      {isEs ? 'Automatización' : 'Automation'}
+                    <th className="py-4 px-4 text-center font-semibold bg-menta/10 text-menta 
+                                   border-b-2 border-menta/30">
+                      <div className="flex flex-col items-center gap-1">
+                        <Zap className="w-5 h-5" />
+                        <span>Lean</span>
+                      </div>
+                    </th>
+                    <th className="py-4 px-4 text-center font-semibold bg-violeta/10 text-violeta 
+                                   border-b-2 border-violeta/30">
+                      <div className="flex flex-col items-center gap-1">
+                        <PenTool className="w-5 h-5" />
+                        <span>{isEs ? 'Diseño' : 'Design'}</span>
+                      </div>
+                    </th>
+                    <th className="py-4 px-4 text-center font-semibold bg-lavanda/10 text-violeta 
+                                   border-b-2 border-lavanda/30 rounded-tr-lg">
+                      <div className="flex flex-col items-center gap-1">
+                        <Bot className="w-5 h-5" />
+                        <span>{isEs ? 'Auto' : 'Auto'}</span>
+                      </div>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {comparisonTable.map((row, idx) => (
-                    <tr key={idx} className="border-b border-gris-arena/30 hover:bg-turquesa/5 dark:hover:bg-turquesa/10 transition-colors">
-                      <td className="py-4 px-4 text-azul-marino dark:text-white font-medium border-r border-gris-arena/20">
+                    <tr key={idx} className={`border-b border-gris-arena/20 hover:bg-blanco-hueso/50 
+                                              dark:hover:bg-card/50 transition-colors
+                                              ${idx === comparisonTable.length - 1 ? 'border-b-0' : ''}`}>
+                      <td className="py-4 px-4 text-azul-marino dark:text-white font-medium bg-gris-arena/5">
                         {row.need}
                       </td>
-                      <td className="py-4 px-4 text-center border-r border-gris-arena/20">
-                        {row.bpm && <CheckCircle2 className="w-5 h-5 text-turquesa mx-auto" />}
+                      <td className="py-4 px-4 text-center bg-turquesa/5">
+                        {row.bpm && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
+                            transition={{ type: "spring", delay: idx * 0.1 }}
+                            viewport={{ once: true }}
+                          >
+                            <CheckCircle2 className="w-6 h-6 text-turquesa mx-auto" />
+                          </motion.div>
+                        )}
                       </td>
-                      <td className="py-4 px-4 text-center border-r border-gris-arena/20">
-                        {row.lean && <CheckCircle2 className="w-5 h-5 text-menta mx-auto" />}
+                      <td className="py-4 px-4 text-center bg-menta/5">
+                        {row.lean && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
+                            transition={{ type: "spring", delay: idx * 0.1 }}
+                            viewport={{ once: true }}
+                          >
+                            <CheckCircle2 className="w-6 h-6 text-menta mx-auto" />
+                          </motion.div>
+                        )}
                       </td>
-                      <td className="py-4 px-4 text-center border-r border-gris-arena/20">
-                        {row.design && <CheckCircle2 className="w-5 h-5 text-violeta mx-auto" />}
+                      <td className="py-4 px-4 text-center bg-violeta/5">
+                        {row.design && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
+                            transition={{ type: "spring", delay: idx * 0.1 }}
+                            viewport={{ once: true }}
+                          >
+                            <CheckCircle2 className="w-6 h-6 text-violeta mx-auto" />
+                          </motion.div>
+                        )}
                       </td>
-                      <td className="py-4 px-4 text-center">
-                        {row.auto && <CheckCircle2 className="w-5 h-5 text-turquesa mx-auto" />}
+                      <td className="py-4 px-4 text-center bg-lavanda/5">
+                        {row.auto && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
+                            transition={{ type: "spring", delay: idx * 0.1 }}
+                            viewport={{ once: true }}
+                          >
+                            <CheckCircle2 className="w-6 h-6 text-violeta mx-auto" />
+                          </motion.div>
+                        )}
                       </td>
                     </tr>
                   ))}
