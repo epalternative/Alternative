@@ -286,40 +286,40 @@ export default function OptimizacionProcesosPage() {
 
   const faqs = [
     {
-      question: isEs ? '¿Cuánto tiempo toma un proyecto de optimización?' : 'How long does an optimization project take?',
+      question: isEs ? '¿Cómo determinan el alcance y costo de un proyecto?' : 'How do you determine the scope and cost of a project?',
       answer: isEs
-        ? 'Depende del alcance. Un proceso simple: 4-6 semanas. Un proceso complejo: 8-12 semanas. Proyecto integral de 10-15 procesos: 4-6 meses. Incluimos quick wins en primeras semanas para generar momentum.'
-        : 'It depends on the scope. A simple process: 4-6 weeks. A complex process: 8-12 weeks. Comprehensive project of 10-15 processes: 4-6 months. We include quick wins in the first weeks to build momentum.'
+        ? 'Depende de: cantidad de procesos críticos, complejidad (simples vs interdepartamentales), documentación existente, necesidad de automatización y alcance de capacitación. Realizamos diagnóstico inicial gratuito para dimensionar y presentar propuesta personalizada con ROI proyectado.'
+        : 'It depends on: number of critical processes, complexity (simple vs interdepartmental), existing documentation, automation needs, and training scope. We conduct a free initial diagnosis to size and present a personalized proposal with projected ROI.'
     },
     {
-      question: isEs ? '¿Cuánto cuesta optimizar procesos?' : 'How much does it cost to optimize processes?',
+      question: isEs ? '¿Qué factores influyen en el tiempo de implementación?' : 'What factors influence implementation time?',
       answer: isEs
-        ? 'Varía según complejidad. Proyectos pequeños (1-2 procesos): $8K-15K. Proyectos medianos (5-7 procesos): $25K-45K. Proyectos grandes (10+ procesos): $50K-100K. ROI típico: 300-500% primer año.'
-        : 'It varies by complexity. Small projects (1-2 processes): $8K-15K. Medium projects (5-7 processes): $25K-45K. Large projects (10+ processes): $50K-100K. Typical ROI: 300-500% first year.'
+        ? 'Varía según complejidad de procesos, disponibilidad de stakeholders, madurez actual y cambios organizacionales requeridos. El diagnóstico inicial establece cronograma realista con hitos claros y entregables progresivos.'
+        : 'It varies according to process complexity, stakeholder availability, current maturity, and required organizational changes. The initial diagnosis establishes a realistic schedule with clear milestones and progressive deliverables.'
     },
     {
       question: isEs ? '¿Necesito parar operaciones para optimizar?' : 'Do I need to stop operations to optimize?',
       answer: isEs
-        ? 'No. Trabajamos en paralelo con tu operación sin interrumpir el día a día. Implementamos cambios gradualmente en horarios que minimizan impacto.'
-        : 'No. We work in parallel with your operation without interrupting daily activities. We implement changes gradually during times that minimize impact.'
+        ? 'No. Trabajamos en paralelo sin interrumpir el día a día. Implementamos cambios gradualmente en horarios que minimizan impacto. Solo en casos de cambios tecnológicos puede haber ventanas planificadas.'
+        : 'No. We work in parallel without interrupting daily operations. We implement changes gradually at times that minimize impact. Only in cases of technological changes may there be planned windows.'
     },
     {
       question: isEs ? '¿Qué tan rápido vemos resultados?' : 'How quickly do we see results?',
       answer: isEs
-        ? 'Quick wins en 2-4 semanas. Resultados significativos en 2-3 meses. ROI completo típicamente en 6-12 meses. Beneficios sostenibles que se acumulan año tras año.'
-        : 'Quick wins in 2-4 weeks. Significant results in 2-3 months. Full ROI typically in 6-12 months. Sustainable benefits that accumulate year after year.'
+        ? 'Quick wins en 2-4 semanas (mejoras de alto impacto y bajo esfuerzo). Resultados significativos en 2-3 meses. ROI completo típicamente en 6-12 meses. Beneficios sostenibles que se acumulan año tras año.'
+        : 'Quick wins in 2-4 weeks (high impact, low effort improvements). Significant results in 2-3 months. Full ROI typically in 6-12 months. Sustainable benefits that accumulate year after year.'
+    },
+    {
+      question: isEs ? '¿Cómo miden el éxito de la optimización?' : 'How do you measure optimization success?',
+      answer: isEs
+        ? 'Establecemos KPIs baseline antes de iniciar: tiempo de ciclo, costo por transacción, tasa de error, productividad. Medimos durante y después. Reportamos mejoras cuantificadas: "redujimos tiempo 40%, de 15 a 9 días", no "mejoramos el proceso".'
+        : 'We establish baseline KPIs before starting: cycle time, cost per transaction, error rate, productivity. We measure during and after. We report quantified improvements: "we reduced time 40%, from 15 to 9 days", not "we improved the process".'
     },
     {
       question: isEs ? '¿Qué diferencia a Alternative de otras consultoras?' : 'What differentiates Alternative from other consultancies?',
       answer: isEs
-        ? 'Implementación real (no solo recomendaciones), transferencia genuina de capacidad, enfoque en ROI medible, experiencia en múltiples industrias LATAM y Caribe.'
-        : 'Real implementation (not just recommendations), genuine capacity transfer, focus on measurable ROI, experience in multiple LATAM and Caribbean industries.'
-    },
-    {
-      question: isEs ? '¿Mi equipo se resiste al cambio?' : 'What if my team resists change?',
-      answer: isEs
-        ? 'Es normal. Lo manejamos con: involucramiento temprano de equipos, comunicación clara de beneficios, quick wins que generen confianza, capacitación hands-on.'
-        : 'It\'s normal. We manage it with: early team involvement, clear communication of benefits, quick wins that build trust, hands-on training.'
+        ? 'Implementación real (no solo recomendaciones), transferencia genuina de capacidad, enfoque en ROI medible, experiencia en múltiples industrias LATAM y Caribe. No creamos dependencia: capacitamos a tu equipo para continuar mejorando.'
+        : 'Real implementation (not just recommendations), genuine capacity transfer, focus on measurable ROI, experience in multiple LATAM and Caribbean industries. We don\'t create dependency: we train your team to continue improving.'
     }
   ];
 
