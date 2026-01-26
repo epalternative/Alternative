@@ -64,15 +64,15 @@ export function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <Link href={`/${locale}`} className="inline-flex items-center gap-3 mb-6">
-              <div className="relative w-12 h-12 rounded-xl overflow-hidden">
+              <div className="relative w-48 h-12 rounded-xl overflow-hidden">
                 <Image
-                  src="/logo_8.jpeg"
+                  src="/logo_alternative_horizontal_footer.webp"
                   alt="Alternative Logo"
                   fill
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
-              <span className="text-white font-semibold text-xl">Alternative</span>
+               
             </Link>
             <p className="text-white/60 mb-6 leading-relaxed">
               {locale === 'es' 
