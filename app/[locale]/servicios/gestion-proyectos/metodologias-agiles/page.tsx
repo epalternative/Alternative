@@ -4,6 +4,8 @@ import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
+import { ReadingProgress } from '@/components/ui/reading-progress';
+import { ServiceSidebar } from '@/components/ui/service-sidebar';
 import {
   Zap,
   ArrowRight,
@@ -448,6 +450,15 @@ export default function MetodologiasAgilesPage() {
 
   return (
     <>
+      {/* Reading Progress Indicator */}
+      <ReadingProgress />
+
+      {/* Service Sidebar */}
+      <ServiceSidebar 
+        locale={locale} 
+        currentService="gestion-proyectos"
+      />
+
       {/* =====================================================
           HERO SECTION
           ===================================================== */}

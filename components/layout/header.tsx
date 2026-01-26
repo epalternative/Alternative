@@ -78,10 +78,10 @@ const serviceColumns = [
     titleEn: 'DIGITAL TRANSFORMATION',
     href: '/servicios/transformacion-digital',
     items: [
-      { label: 'Estrategia Digital', labelEn: 'Digital Strategy', desc: 'Roadmap tecnológico', descEn: 'Technology roadmap', href: '/servicios/transformacion-digital/estrategia-digital' },
-      { label: 'Automatización Inteligente', labelEn: 'Intelligent Automation', desc: 'IA y Machine Learning', descEn: 'AI & Machine Learning', href: '/servicios/transformacion-digital/automatizacion-inteligente' },
-      { label: 'Desarrollo de Software', labelEn: 'Software Development', desc: 'Soluciones a medida', descEn: 'Custom solutions', href: '/servicios/transformacion-digital/desarrollo-software' },
-      { label: 'Infraestructura IT', labelEn: 'IT Infrastructure', desc: 'Cloud y servidores', descEn: 'Cloud & servers', href: '/servicios/transformacion-digital/infraestructura-it' },
+      { label: 'Estrategia Digital', labelEn: 'Digital Strategy', desc: 'Roadmap y priorización', descEn: 'Roadmap & prioritization', href: '/servicios/transformacion-digital/estrategia-digital' },
+      { label: 'Digitalización de Procesos', labelEn: 'Process Digitization', desc: 'RPA y automatización', descEn: 'RPA & automation', href: '/servicios/transformacion-digital/digitalizacion-procesos' },
+      { label: 'Change Management', labelEn: 'Change Management', desc: 'Gestión del cambio', descEn: 'Change management', href: '/servicios/transformacion-digital/change-management' },
+      { label: 'Análisis de Datos', labelEn: 'Data Analysis', desc: 'BI y dashboards', descEn: 'BI & dashboards', href: '/servicios/transformacion-digital/analisis-datos' },
     ],
   },
   {
@@ -89,9 +89,9 @@ const serviceColumns = [
     titleEn: 'STRATEGIC CONSULTING',
     href: '/servicios/consultoria-estrategica',
     items: [
-      { label: 'Diagnóstico Organizacional', labelEn: 'Organizational Diagnosis', desc: 'Análisis 360°', descEn: '360° analysis', href: '/servicios/consultoria-estrategica/diagnostico-organizacional' },
-      { label: 'Estudios de Viabilidad', labelEn: 'Feasibility Studies', desc: 'ROI y factibilidad', descEn: 'ROI & feasibility', href: '/servicios/consultoria-estrategica/estudios-viabilidad' },
-      { label: 'Desarrollo de RFP', labelEn: 'RFP Development', desc: 'Licitaciones', descEn: 'Tenders', href: '/servicios/consultoria-estrategica/desarrollo-rfp' },
+      { label: 'Planificación Estratégica', labelEn: 'Strategic Planning', desc: 'Plan estratégico ejecutable', descEn: 'Executable strategic plan', href: '/servicios/consultoria-estrategica/planificacion-estrategica' },
+      { label: 'Diagnóstico Organizacional', labelEn: 'Organizational Diagnosis', desc: 'Evaluación 360°', descEn: '360° evaluation', href: '/servicios/consultoria-estrategica/diagnostico-organizacional' },
+      { label: 'Diseño Organizacional', labelEn: 'Organizational Design', desc: 'Estructura optimizada', descEn: 'Optimized structure', href: '/servicios/consultoria-estrategica/diseno-organizacional' },
     ],
   },
   {
@@ -99,10 +99,10 @@ const serviceColumns = [
     titleEn: 'TECHNOLOGY DEVELOPMENT',
     href: '/servicios/desarrollo-tecnologia',
     items: [
-      { label: 'Aplicaciones a Medida', labelEn: 'Custom Applications', desc: 'Software personalizado', descEn: 'Custom software', href: '/servicios/desarrollo-tecnologia/aplicaciones-medida' },
-      { label: 'Portales Corporativos', labelEn: 'Corporate Portals', desc: 'Intranets y extranets', descEn: 'Intranets & extranets', href: '/servicios/desarrollo-tecnologia/portales-corporativos' },
-      { label: 'Integraciones API', labelEn: 'API Integrations', desc: 'Conectividad de sistemas', descEn: 'System connectivity', href: '/servicios/desarrollo-tecnologia/integraciones-api' },
-      { label: 'Soporte Infraestructura', labelEn: 'Infrastructure Support', desc: 'Mantenimiento IT', descEn: 'IT maintenance', href: '/servicios/desarrollo-tecnologia/soporte-infraestructura' },
+      { label: 'Desarrollo de Software', labelEn: 'Software Development', desc: 'Software a medida', descEn: 'Custom software', href: '/servicios/desarrollo-tecnologia/desarrollo-software' },
+      { label: 'Aplicaciones Web y Móviles', labelEn: 'Web and Mobile Applications', desc: 'Apps y portales', descEn: 'Apps and portals', href: '/servicios/desarrollo-tecnologia/aplicaciones-web-moviles' },
+      { label: 'Integración de Sistemas', labelEn: 'System Integration', desc: 'Conectividad entre sistemas', descEn: 'System connectivity', href: '/servicios/desarrollo-tecnologia/integracion-sistemas' },
+      { label: 'Consultoría Tecnológica', labelEn: 'Technology Consulting', desc: 'Asesoría estratégica', descEn: 'Strategic advisory', href: '/servicios/desarrollo-tecnologia/consultoria-tecnologica' },
     ],
   },
 ];

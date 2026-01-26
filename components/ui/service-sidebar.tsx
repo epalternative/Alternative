@@ -30,7 +30,12 @@ import {
   Handshake,
   ChevronLeft,
   PanelRightClose,
-  PanelRightOpen
+  PanelRightOpen,
+  Users,
+  BarChart3,
+  Smartphone,
+  Network,
+  Building2
 } from 'lucide-react';
 
 // Service structure mapping
@@ -123,21 +128,79 @@ const serviceStructure = {
     title: { es: 'Transformación Digital', en: 'Digital Transformation' },
     icon: Cpu,
     color: 'turquesa',
-    subServices: [],
+    subServices: [
+      { 
+        title: { es: 'Estrategia Digital', en: 'Digital Strategy' },
+        href: 'estrategia-digital',
+        icon: Target
+      },
+      { 
+        title: { es: 'Digitalización de Procesos', en: 'Process Digitization' },
+        href: 'digitalizacion-procesos',
+        icon: Zap
+      },
+      { 
+        title: { es: 'Change Management', en: 'Change Management' },
+        href: 'change-management',
+        icon: Users
+      },
+      { 
+        title: { es: 'Análisis de Datos', en: 'Data Analysis' },
+        href: 'analisis-datos',
+        icon: BarChart3
+      }
+    ],
     related: ['desarrollo-tecnologia', 'optimizacion-procesos']
   },
   'consultoria-estrategica': {
     title: { es: 'Consultoría Estratégica', en: 'Strategic Consulting' },
     icon: Target,
     color: 'menta',
-    subServices: [],
+    subServices: [
+      { 
+        title: { es: 'Planificación Estratégica', en: 'Strategic Planning' },
+        href: 'planificacion-estrategica',
+        icon: Target
+      },
+      { 
+        title: { es: 'Diagnóstico Organizacional', en: 'Organizational Diagnosis' },
+        href: 'diagnostico-organizacional',
+        icon: Search
+      },
+      { 
+        title: { es: 'Diseño Organizacional', en: 'Organizational Design' },
+        href: 'diseno-organizacional',
+        icon: Building2
+      }
+    ],
     related: ['gestion-proyectos', 'optimizacion-procesos']
   },
   'desarrollo-tecnologia': {
     title: { es: 'Desarrollo & Tecnología', en: 'Development & Technology' },
     icon: Code,
     color: 'violeta',
-    subServices: [],
+    subServices: [
+      { 
+        title: { es: 'Desarrollo de Software', en: 'Software Development' },
+        href: 'desarrollo-software',
+        icon: Code
+      },
+      { 
+        title: { es: 'Aplicaciones Web y Móviles', en: 'Web and Mobile Applications' },
+        href: 'aplicaciones-web-moviles',
+        icon: Smartphone
+      },
+      { 
+        title: { es: 'Integración de Sistemas', en: 'System Integration' },
+        href: 'integracion-sistemas',
+        icon: Network
+      },
+      { 
+        title: { es: 'Consultoría Tecnológica', en: 'Technology Consulting' },
+        href: 'consultoria-tecnologica',
+        icon: Target
+      }
+    ],
     related: ['transformacion-digital', 'optimizacion-procesos']
   }
 };
