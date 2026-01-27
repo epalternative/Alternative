@@ -18,10 +18,10 @@ const industryData: Record<string, {
     icon: Building2,
     hasSubPages: true,
     subPages: [
+      { title: 'Gestión de Proyectos Bancarios', titleEn: 'Banking Project Management', href: '/industrias/banca-servicios-financieros/gestion-proyectos-bancarios' },
       { title: 'Cumplimiento Regulatorio SBP', titleEn: 'SBP Regulatory Compliance', href: '/industrias/banca-servicios-financieros/cumplimiento-regulatorio-sbp' },
       { title: 'Transformación Digital Bancaria', titleEn: 'Banking Digital Transformation', href: '/industrias/banca-servicios-financieros/transformacion-digital-bancaria' },
-      { title: 'Optimización Operaciones Bancarias', titleEn: 'Banking Operations Optimization', href: '/industrias/banca-servicios-financieros/optimizacion-operaciones-bancarias' },
-      { title: 'Sistemas de Calidad Sector Financiero', titleEn: 'Financial Sector Quality Systems', href: '/industrias/banca-servicios-financieros/sistemas-calidad-sector-financiero' },
+      { title: 'ISO 9001 Sector Financiero', titleEn: 'ISO 9001 Financial Sector', href: '/industrias/banca-servicios-financieros/iso-9001-sector-financiero' },
     ]
   },
   'manufactura-logistica': { title: 'Manufactura y Logística', titleEn: 'Manufacturing & Logistics', icon: Factory },

@@ -5,18 +5,19 @@ import { useLocale } from 'next-intl';
 import { Building2, Factory, ShoppingCart, Laptop, Briefcase, Landmark, Heart, Zap, ArrowRight } from 'lucide-react';
 
 const industries = [
-  { icon: Building2, title: 'Banca y Servicios Financieros', titleEn: 'Banking & Financial Services', href: '/industrias/banca-servicios-financieros' },
-  { icon: Factory, title: 'Manufactura y Logística', titleEn: 'Manufacturing & Logistics', href: '/industrias/manufactura-logistica' },
-  { icon: ShoppingCart, title: 'Retail y Comercio', titleEn: 'Retail & Commerce', href: '/industrias/retail-comercio' },
-  { icon: Laptop, title: 'Tecnología y Telecomunicaciones', titleEn: 'Technology & Telecom', href: '/industrias/tecnologia-telecomunicaciones' },
-  { icon: Briefcase, title: 'Servicios Profesionales', titleEn: 'Professional Services', href: '/industrias/servicios-profesionales' },
-  { icon: Landmark, title: 'Gobierno y Sector Público', titleEn: 'Government & Public Sector', href: '/industrias/gobierno-sector-publico' },
-  { icon: Heart, title: 'Salud y Farmacéutica', titleEn: 'Healthcare & Pharma', href: '/industrias/salud-farmaceutica' },
-  { icon: Zap, title: 'Energía y Utilities', titleEn: 'Energy & Utilities', href: '/industrias/energia-utilities' },
+  { icon: Building2, title: 'Banca y Servicios Financieros', titleEn: 'Banking & Financial Services', slug: 'banca-servicios-financieros' },
+  { icon: Factory, title: 'Manufactura y Logística', titleEn: 'Manufacturing & Logistics', slug: 'manufactura-logistica' },
+  { icon: ShoppingCart, title: 'Retail y Comercio', titleEn: 'Retail & Commerce', slug: 'retail-comercio' },
+  { icon: Laptop, title: 'Tecnología y Telecomunicaciones', titleEn: 'Technology & Telecom', slug: 'tecnologia-telecomunicaciones' },
+  { icon: Briefcase, title: 'Servicios Profesionales', titleEn: 'Professional Services', slug: 'servicios-profesionales' },
+  { icon: Landmark, title: 'Gobierno y Sector Público', titleEn: 'Government & Public Sector', slug: 'gobierno-sector-publico' },
+  { icon: Heart, title: 'Salud y Farmacéutica', titleEn: 'Healthcare & Pharma', slug: 'salud-farmaceutica' },
+  { icon: Zap, title: 'Energía y Utilities', titleEn: 'Energy & Utilities', slug: 'energia-utilities' },
 ];
 
 export default function IndustriasPage() {
   const language = useLocale();
+  const locale = language;
   
   return (
     <div className="min-h-screen bg-blanco-hueso dark:bg-background py-24">
@@ -34,7 +35,7 @@ export default function IndustriasPage() {
           {industries.map((industry) => {
             const Icon = industry.icon;
             return (
-              <Link key={industry.href} href={industry.href}>
+              <Link key={industry.slug} href={`/${locale}/industrias/${industry.slug}`}>
                 <div className="bg-white dark:bg-card p-6 rounded-2xl shadow-brand hover:shadow-brand-lg transition-all hover:-translate-y-1 h-full">
                   <div className="w-12 h-12 bg-turquesa/20 rounded-xl flex items-center justify-center mb-4">
                     <Icon className="w-6 h-6 text-turquesa" />
