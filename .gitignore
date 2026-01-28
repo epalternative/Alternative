@@ -40,5 +40,8 @@ next-env.d.ts
 .DS_Store
 Thumbs.db
 
+# Sanity Studio (studio-app) – build output
+studio-app/.sanity/
+
 # Misc
 *.log
