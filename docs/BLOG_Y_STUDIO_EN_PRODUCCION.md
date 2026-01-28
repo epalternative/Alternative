@@ -64,6 +64,18 @@ Despliegas el Studio **una vez** en los servidores de Sanity. Quien quieras que 
    ```
    - Te pedirá nombre para el Studio (ej. `alternative-blog`) y te dará una URL tipo `https://alternative-blog.sanity.studio`.
 
+   **Nota:** En Sanity CLI no existe el comando `whoami`. Para ver con qué usuario/proyecto está autenticada la CLI usa: `npx sanity debug`.
+
+   **Si sale "User is missing required grant sanity.project.read" (o Unauthorized):**
+   - Aunque seas administrador en sanity.io, la sesión del CLI puede ser antigua o de otra cuenta. Refresca la sesión: `npx sanity logout` y luego `npx sanity login` (entra con la cuenta que es **Administrator** del proyecto).
+   - Si el proyecto está bajo una **organización** en [manage.sanity.io](https://manage.sanity.io), entra en la org → **Members** y comprueba que tu usuario tenga permisos de administrador sobre el proyecto.
+   - **Alternativa:** Crea un **Deploy token** en [manage.sanity.io](https://manage.sanity.io) → tu proyecto → **API** → **Tokens** → **Add API token** (tipo "Deploy" o con permisos de deploy). Luego en la carpeta `studio-app` ejecuta:
+     ```bash
+     set SANITY_AUTH_TOKEN=tu_token_aqui
+     npx sanity deploy
+     ```
+     (En PowerShell usa `$env:SANITY_AUTH_TOKEN="tu_token_aqui"` antes del deploy.)
+
 5. **Dar acceso a la otra persona:**
    - Entra en [sanity.io/manage](https://sanity.io/manage).
    - Elige el proyecto (mismo `projectId` que usas en el sitio).

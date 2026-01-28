@@ -6,4 +6,6 @@ const dataset = process.env.SANITY_STUDIO_DATASET || process.env.NEXT_PUBLIC_SAN
 export default defineCliConfig({
   api: { projectId, dataset },
   reactCompiler: { target: '19' },
+  // Hostname para deploy (solo minúsculas, guiones; sin espacios). URL: https://grupo-alternative-blog.sanity.studio
+  studioHost: 'grupo-alternative-blog',
 });
