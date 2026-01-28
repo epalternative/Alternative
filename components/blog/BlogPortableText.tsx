@@ -1,6 +1,7 @@
 'use client';
 
 import { PortableText, type PortableTextComponents } from '@portabletext/react';
+import type { PortableTextBlock } from '@portabletext/types';
 import { client } from '@/sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
 
@@ -79,7 +80,7 @@ export function BlogPortableText({ value }: BlogPortableTextProps) {
   if (!value || !Array.isArray(value) || value.length === 0) return null;
   return (
     <div className="blog-prose">
-      <PortableText value={value} components={components} />
+      <PortableText value={value as PortableTextBlock[]} components={components} />
     </div>
   );
 }
