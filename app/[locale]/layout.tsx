@@ -3,8 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { locales, Locale } from '@/i18n';
 import { ThemeProvider } from '@/components/theme-provider';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
+import { ConditionalShell } from '@/components/layout/conditional-shell';
 
 type Props = {
   children: React.ReactNode;
@@ -90,11 +89,7 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
           disableTransitionOnChange={false}
         >
           <NextIntlClientProvider messages={messages} locale={locale}>
-            <Header />
-            <main className="pt-16 lg:pt-20">
-              {children}
-            </main>
-            <Footer />
+            <ConditionalShell>{children}</ConditionalShell>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

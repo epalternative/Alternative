@@ -185,6 +185,25 @@ p, .body-text {
   }
 }
 
+/* Cuadrícula violeta sutil para fondos (ej. Helpdesk IT) */
+.bg-grid-violet-subtle {
+  background-image: linear-gradient(rgba(122, 105, 224, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(122, 105, 224, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Input file: botón "Choose files" con espacio para no pegar al borde */
+.input-file-spaced {
+  min-height: 3.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.input-file-spaced::file-selector-button {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-right: 1rem;
+}
+
 /* Brand colors as utilities - NO GRADIENTS */
 .bg-azul-marino { background-color: var(--color-azul-marino); }
 .bg-menta { background-color: var(--color-menta); }
