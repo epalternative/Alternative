@@ -284,5 +284,23 @@
     "loading": "Cargando...",
     "error": "Error",
     "success": "Éxito"
+  },
+  "blog": {
+    "badge": "Blog",
+    "title": "Insights y",
+    "titleHighlight": "Tendencias",
+    "subtitle": "Artículos, guías y recursos para impulsar tu empresa.",
+    "searchPlaceholder": "Buscar artículos...",
+    "allPosts": "Todos los artículos",
+    "categories": "Categorías",
+    "newsletterTitle": "Suscríbete al Newsletter",
+    "newsletterSubtitle": "Recibe los mejores artículos sobre consultoría y estrategia empresarial directamente en tu correo.",
+    "newsletterEmailPlaceholder": "Tu correo electrónico",
+    "newsletterSubmit": "Suscribir",
+    "readingTime": "{minutes} min lectura",
+    "publishedOn": "Publicado el",
+    "byAuthor": "Por",
+    "noResults": "No hay artículos que coincidan con tu búsqueda.",
+    "comingSoon": "Más artículos en camino."
   }
 }

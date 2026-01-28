@@ -284,5 +284,23 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success"
+  },
+  "blog": {
+    "badge": "Blog",
+    "title": "Insights and",
+    "titleHighlight": "Trends",
+    "subtitle": "Articles, guides, and resources to boost your business.",
+    "searchPlaceholder": "Search articles...",
+    "allPosts": "All articles",
+    "categories": "Categories",
+    "newsletterTitle": "Subscribe to Newsletter",
+    "newsletterSubtitle": "Receive the best articles on consulting and business strategy directly in your inbox.",
+    "newsletterEmailPlaceholder": "Your email address",
+    "newsletterSubmit": "Subscribe",
+    "readingTime": "{minutes} min read",
+    "publishedOn": "Published on",
+    "byAuthor": "By",
+    "noResults": "No articles match your search.",
+    "comingSoon": "More articles coming soon."
   }
 }

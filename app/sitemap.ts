@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { getAllPosts } from '@/lib/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://grupoalternative.com';
@@ -125,6 +126,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
+    });
+  });
+
+  // Blog posts (es + en)
+  const blogPosts = getAllPosts();
+  const blogSlugs = [...new Set(blogPosts.map((p) => p.slug))];
+  blogSlugs.forEach((slug) => {
+    routes.push({
+      url: `${baseUrl}/es/blog/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+      alternates: {
+        languages: {
+          es: `${baseUrl}/es/blog/${slug}`,
+          en: `${baseUrl}/en/blog/${slug}`,
+        },
+      },
+    });
+    routes.push({
+      url: `${baseUrl}/en/blog/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+      alternates: {
+        languages: {
+          es: `${baseUrl}/es/blog/${slug}`,
+          en: `${baseUrl}/en/blog/${slug}`,
+        },
+      },
     });
   });
 

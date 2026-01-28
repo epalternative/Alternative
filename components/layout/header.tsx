@@ -350,7 +350,7 @@ export function Header() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed top-[70px] left-4 right-4 bg-azul-marino rounded-2xl shadow-2xl overflow-hidden border border-white/10 max-h-[calc(100vh-100px)] overflow-y-auto"
+                            className="fixed top-[70px] left-4 right-4 bg-azul-marino/75 dark:bg-azul-marino/80 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/10 max-h-[calc(100vh-100px)] overflow-y-auto"
                           >
                             {/* Header Section */}
                             <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
@@ -447,7 +447,7 @@ export function Header() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed top-[70px] left-4 right-4 bg-azul-marino rounded-2xl shadow-2xl overflow-hidden border border-white/10 max-h-[calc(100vh-100px)] overflow-y-auto"
+                            className="fixed top-[70px] left-4 right-4 bg-azul-marino/75 dark:bg-azul-marino/80 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/10 max-h-[calc(100vh-100px)] overflow-y-auto"
                           >
                             {/* Header Section */}
                             <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
