@@ -37,6 +37,10 @@
     ".build/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "sanity/schemaTypes",
+    "sanity/sanity.config.ts",
+    "sanity/sanity.cli.ts",
+    "studio-app"
   ]
 }
