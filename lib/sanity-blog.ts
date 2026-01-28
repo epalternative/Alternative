@@ -56,6 +56,8 @@ interface SanityPost {
   keywords?: string[];
   author?: SanityAuthor;
   category?: SanityCategory;
+  body?: unknown[];
+  bodyEn?: unknown[];
 }
 
 function mapAuthor(a?: SanityAuthor): BlogAuthor {
