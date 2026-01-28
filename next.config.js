@@ -12,7 +12,7 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   images: { unoptimized: true },
-  webpack: (config, { isServer }) => {
+  webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,

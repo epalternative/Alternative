@@ -4,6 +4,7 @@ import { getMessages } from 'next-intl/server';
 import { locales, Locale } from '@/i18n';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ConditionalShell } from '@/components/layout/conditional-shell';
+import { SetHtmlLang } from '@/components/layout/set-html-lang';
 
 type Props = {
   children: React.ReactNode;
@@ -80,20 +81,19 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className="min-h-screen bg-background text-foreground antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-          disableTransitionOnChange={false}
-        >
-          <NextIntlClientProvider messages={messages} locale={locale}>
-            <ConditionalShell>{children}</ConditionalShell>
-          </NextIntlClientProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <>
+      <SetHtmlLang locale={locale} />
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem={false}
+        disableTransitionOnChange={false}
+      >
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <ConditionalShell>{children}</ConditionalShell>
+        </NextIntlClientProvider>
+      </ThemeProvider>
+    </>
   );
 }
 

@@ -254,8 +254,18 @@ export function BlogPostLayout({ post, locale, tocItems, children }: BlogPostLay
                 className="mt-16 p-8 bg-white dark:bg-card rounded-2xl border border-gris-arena/20 dark:border-white/10 shadow-brand"
               >
                 <div className="flex flex-col sm:flex-row gap-6">
-                  <div className="w-20 h-20 bg-turquesa/20 rounded-2xl flex items-center justify-center shrink-0">
-                    <User className="w-10 h-10 text-turquesa" />
+                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center shrink-0 overflow-hidden bg-turquesa/20">
+                    {post.author.image ? (
+                      <img
+                        src={post.author.image}
+                        alt={locale === 'es' ? post.author.name : post.author.nameEn}
+                        className="w-full h-full object-cover"
+                        width={80}
+                        height={80}
+                      />
+                    ) : (
+                      <User className="w-10 h-10 text-turquesa" />
+                    )}
                   </div>
                   <div>
                     <p className="text-body-sm text-turquesa font-medium mb-1">

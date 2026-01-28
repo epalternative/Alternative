@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
-import { getPostBySlug, getAllSlugs } from '@/lib/blog';
+import { getPostBySlugAsync, getAllSlugsAsync } from '@/lib/blog';
+import type { BlogPost } from '@/lib/blog';
 import { BlogPostLayout } from '@/components/blog/BlogPostLayout';
+import { BlogPortableText } from '@/components/blog/BlogPortableText';
 import { BpmArticleContent, BPM_TOC } from '@/components/blog/contents/BpmArticleContent';
 import { BancoRegionalCaseContent, BANCO_REGIONAL_TOC } from '@/components/blog/contents/BancoRegionalCaseContent';
 import type { TocItem } from '@/components/blog/BlogPostLayout';
@@ -11,7 +13,7 @@ function ArticleJsonLd({
   locale,
   slug,
 }: {
-  post: NonNullable<ReturnType<typeof getPostBySlug>>;
+  post: BlogPost;
   locale: string;
   slug: string;
 }) {
@@ -67,7 +69,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlugAsync(slug);
   if (!post) return { title: 'Blog | Alternative' };
 
   const isEn = locale === 'en';
@@ -111,32 +113,39 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export function generateStaticParams() {
-  const slugs = getAllSlugs();
+export async function generateStaticParams() {
+  const slugs = await getAllSlugsAsync();
   const locales = ['es', 'en'] as const;
   return slugs.flatMap((slug) => locales.map((locale) => ({ locale, slug })));
 }
 
-export default function BlogPostPage({ params }: PageProps) {
+export default async function BlogPostPage({ params }: PageProps) {
   const { locale, slug } = params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlugAsync(slug);
   if (!post) notFound();
 
   const localeTyped = (locale === 'en' ? 'en' : 'es') as 'es' | 'en';
   const contentConfig = BLOG_SLUG_TO_CONTENT[slug];
 
   if (!contentConfig) {
-    // Fallback: render minimal post (e.g. when content comes from Sanity later)
+    // Content from Sanity (body/bodyEn) or fallback
+    const bodyContent = localeTyped === 'en' ? post.bodyEn : post.body;
+    const hasSanityBody = Array.isArray(bodyContent) && bodyContent.length > 0;
+
     return (
       <>
         <ArticleJsonLd post={post} locale={locale} slug={slug} />
         <BlogPostLayout post={post} locale={localeTyped} tocItems={[]}>
-          <div className="blog-prose">
-            <p>{localeTyped === 'es' ? post.excerpt : post.excerptEn}</p>
-            <p className="text-azul-marino/70 dark:text-white/70">
-              {localeTyped === 'es' ? 'Contenido en preparación.' : 'Content coming soon.'}
-            </p>
-          </div>
+          {hasSanityBody ? (
+            <BlogPortableText value={bodyContent} />
+          ) : (
+            <div className="blog-prose">
+              <p>{localeTyped === 'es' ? post.excerpt : post.excerptEn}</p>
+              <p className="text-azul-marino/70 dark:text-white/70">
+                {localeTyped === 'es' ? 'Contenido en preparación.' : 'Content coming soon.'}
+              </p>
+            </div>
+          )}
         </BlogPostLayout>
       </>
     );

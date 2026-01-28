@@ -51,6 +51,9 @@ export interface BlogPost {
   readingTimeMinutes: number;
   /** Keywords for internal linking */
   keywords?: string[];
+  /** Body from Sanity (Portable Text blocks) – only when fetched from Sanity */
+  body?: unknown[];
+  bodyEn?: unknown[];
 }
 
 /** All blog posts - single source of truth. Add more posts here or replace with Sanity fetch. */
@@ -125,13 +128,46 @@ export const BLOG_POSTS: BlogPost[] = [
   },
 ];
 
-/** Get all posts for listing and sitemap */
+const SANITY_ENABLED =
+  typeof process !== 'undefined' &&
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID &&
+  process.env.NEXT_PUBLIC_SANITY_DATASET;
+
+/** Get all posts (sync) - uses static data. For server-side use getAllPostsAsync(). */
 export function getAllPosts(): BlogPost[] {
   return BLOG_POSTS;
 }
 
-/** Get a single post by slug */
+/** Get all posts - from Sanity if configured, else static. Use in server components. */
+export async function getAllPostsAsync(): Promise<BlogPost[]> {
+  if (SANITY_ENABLED) {
+    try {
+      const { fetchAllPostsFromSanity } = await import('@/lib/sanity-blog');
+      const posts = await fetchAllPostsFromSanity();
+      if (posts.length > 0) return posts;
+    } catch (_) {
+      // fallback to static
+    }
+  }
+  return BLOG_POSTS;
+}
+
+/** Get a single post by slug (sync). For server use getPostBySlugAsync(). */
 export function getPostBySlug(slug: string): BlogPost | undefined {
+  return BLOG_POSTS.find((p) => p.slug === slug);
+}
+
+/** Get a single post by slug - from Sanity if configured, else static. Use in server components. */
+export async function getPostBySlugAsync(slug: string): Promise<BlogPost | undefined> {
+  if (SANITY_ENABLED) {
+    try {
+      const { fetchPostBySlugFromSanity } = await import('@/lib/sanity-blog');
+      const post = await fetchPostBySlugFromSanity(slug);
+      if (post) return post;
+    } catch (_) {
+      // fallback to static
+    }
+  }
   return BLOG_POSTS.find((p) => p.slug === slug);
 }
 
@@ -145,7 +181,21 @@ export function getRelatedPosts(currentSlug: string, limit = 3): BlogPost[] {
   return [...byCategory, ...rest].slice(0, limit);
 }
 
-/** Get all slugs for generateStaticParams */
+/** Get all slugs (sync). For generateStaticParams use getAllSlugsAsync(). */
 export function getAllSlugs(): string[] {
+  return BLOG_POSTS.map((p) => p.slug);
+}
+
+/** Get all slugs - from Sanity if configured, else static. Use in generateStaticParams. */
+export async function getAllSlugsAsync(): Promise<string[]> {
+  if (SANITY_ENABLED) {
+    try {
+      const { fetchAllSlugsFromSanity } = await import('@/lib/sanity-blog');
+      const slugs = await fetchAllSlugsFromSanity();
+      if (slugs.length > 0) return slugs;
+    } catch (_) {
+      // fallback to static
+    }
+  }
   return BLOG_POSTS.map((p) => p.slug);
 }

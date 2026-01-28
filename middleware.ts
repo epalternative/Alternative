@@ -1,13 +1,22 @@
 import createMiddleware from 'next-intl/middleware';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { locales, defaultLocale } from './i18n';
 
-export default createMiddleware({
+const intlMiddleware = createMiddleware({
   locales,
   defaultLocale,
-  localePrefix: 'always' // Siempre incluir /es/ o /en/ en la URL
+  localePrefix: 'always',
 });
 
+export function middleware(req: NextRequest) {
+  // Sanity Studio: servir sin layout de locale (evita pantalla en blanco por ThemeProvider/context)
+  if (req.nextUrl.pathname.startsWith('/studio')) {
+    return NextResponse.next();
+  }
+  return intlMiddleware(req);
+}
+
 export const config = {
-  // Excluir rutas de API, archivos estáticos, y assets
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 };

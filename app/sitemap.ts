@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
-import { getAllPosts } from '@/lib/blog';
+import { getAllSlugsAsync } from '@/lib/blog';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://grupoalternative.com';
   
   // Servicios principales
@@ -129,9 +129,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   });
 
-  // Blog posts (es + en)
-  const blogPosts = getAllPosts();
-  const blogSlugs = [...new Set(blogPosts.map((p) => p.slug))];
+  // Blog posts (es + en) — from Sanity if configured, else static
+  const blogSlugs = await getAllSlugsAsync();
   blogSlugs.forEach((slug) => {
     routes.push({
       url: `${baseUrl}/es/blog/${slug}`,

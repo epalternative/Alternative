@@ -5,11 +5,13 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 
 const HELPDESK_PATH = 'helpdesk-it';
+const STUDIO_PATH = 'studio';
 
 export function ConditionalShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? '';
 
-  const isLandingWithoutShell = pathname.includes(HELPDESK_PATH);
+  const isLandingWithoutShell =
+    pathname.includes(HELPDESK_PATH) || pathname.includes(STUDIO_PATH);
 
   if (isLandingWithoutShell) {
     return <div className="min-h-screen">{children}</div>;
