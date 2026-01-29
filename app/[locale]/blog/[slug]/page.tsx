@@ -17,7 +17,7 @@ function ArticleJsonLd({
   locale: string;
   slug: string;
 }) {
-  const baseUrl = 'https://grupoalternative.com';
+  const baseUrl = 'https://www.grupoalternative.com';
   const url = `${baseUrl}/${locale}/blog/${slug}`;
   const title = locale === 'en' ? post.titleEn : post.title;
   const description = locale === 'en' ? post.metaDescriptionEn : post.metaDescription;
@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = isEn ? post.metaTitleEn : post.metaTitle;
   const description = isEn ? post.metaDescriptionEn : post.metaDescription;
 
-  const baseUrl = 'https://grupoalternative.com';
+  const baseUrl = 'https://www.grupoalternative.com';
   const path = `/${locale}/blog/${slug}`;
   const canonical = `${baseUrl}${path}`;
 
