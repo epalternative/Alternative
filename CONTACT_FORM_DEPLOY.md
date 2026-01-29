@@ -1,20 +1,20 @@
 # Formularios de correo – Deploy y checklist
 
-Usan **nodemailer** y el mismo bloque SMTP: **formulario de contacto** (`/api/contact`) y **Helpdesk IT** (`/api/helpdesk`, página `/es/helpdesk-it`).
+Usan **nodemailer** y el mismo bloque SMTP: **formulario de contacto** (`/api/contact`), **Helpdesk IT** (`/api/helpdesk`, página `/es/helpdesk-it`), **Madurez Digital** (`/api/madurez-digital`, calculadora `/es/recursos/calculadoras/madurez-digital`), y **ROI Calculator** (`/api/roi-calculator`, calculadora `/es/recursos/calculadoras/roi-optimizacion-procesos`).
 
 ## 1. Variables de entorno (.env.local)
 
 Copia este bloque en `.env.local` (nunca lo subas a git) y sustituye los placeholders:
 
 ```env
-# ——— SMTP (nodemailer): contacto + Helpdesk IT ———
+# ——— SMTP (nodemailer): contacto + Helpdesk IT + Calculadoras ———
 SMTP_HOST=smtp.hostinger.com
 SMTP_PORT=465
 SMTP_SECURE=true
 SMTP_USER=forms@midominio.com
 SMTP_PASS=tu_contraseña_del_buzon
 MAIL_FROM=forms@midominio.com
-# Contacto: destinatario de /api/contact
+# Contacto y Madurez Digital: destinatario de /api/contact y /api/madurez-digital
 MAIL_TO=katherine@grupoalternative.com
 # Helpdesk IT: destinatarios de /api/helpdesk (varios separados por coma). Si no existe, se usa MAIL_TO.
 HELPDESK_MAIL_TO=katherine@grupoalternative.com,support@grupoalternative.com
@@ -26,7 +26,7 @@ MAIL_SUBJECT_PREFIX=[Web Form]
 - **SMTP_SECURE**: `true` si usas 465, `false` si usas 587.
 - **SMTP_USER** / **SMTP_PASS**: usuario y contraseña del buzón (usuario = correo completo).
 - **MAIL_FROM**: remitente visible (mismo usuario o alias permitido).
-- **MAIL_TO**: destinatario del formulario de **contacto**.
+- **MAIL_TO**: destinatario del formulario de **contacto**, **Madurez Digital** y **ROI Calculator**.
 - **HELPDESK_MAIL_TO**: destinatarios del formulario **Helpdesk IT** (varios con coma). Opcional; si no se define, se usa **MAIL_TO**.
 
 ---
@@ -47,8 +47,10 @@ MAIL_SUBJECT_PREFIX=[Web Form]
 3. Arranca: `npm run dev`.
 4. Prueba **contacto**: abre `/es/contacto`, envía y comprueba que llega a **MAIL_TO** con asunto `[Web Form] Nombre`.
 5. Prueba **Helpdesk IT**: abre `/es/helpdesk-it`, envía (con o sin adjuntos) y comprueba que llega a **HELPDESK_MAIL_TO** (o **MAIL_TO** si no está definido) con asunto `[Web Form] Asunto – Nombre`.
+6. Prueba **Madurez Digital**: abre `/es/recursos/calculadoras/madurez-digital`, completa el cuestionario, llena el formulario de descarga y comprueba que llega a **MAIL_TO** con asunto `[Madurez Digital] Nombre - Empresa (Score/100)`.
+7. Prueba **ROI Calculator**: abre `/es/recursos/calculadoras/roi-optimizacion-procesos`, completa el formulario, descarga el PDF y comprueba que llega a **MAIL_TO** con asunto `[ROI Calculator] Proceso - ROI X%`.
 
-Errores SMTP: en la consola de `next dev`, contact usa el prefijo `[contact]` y helpdesk `[helpdesk]`.
+Errores SMTP: en la consola de `next dev`, contact usa el prefijo `[contact]`, helpdesk `[helpdesk]`, madurez digital `[madurez-digital]` y roi calculator `[roi-calculator]`.
 
 ---
 
@@ -82,6 +84,8 @@ Sin entrar en detalle: configura SPF y DKIM para el dominio desde el que envías
 - [ ] En Vercel, todas las vars configuradas para el entorno que uses (Production/Preview).
 - [ ] Contacto: prueba en producción y comprueba que llega a **MAIL_TO**.
 - [ ] Helpdesk IT: prueba en producción y comprueba que llega a **HELPDESK_MAIL_TO** (o **MAIL_TO**).
-- [ ] Comprobar que Reply-To es el email del usuario en ambos formularios.
+- [ ] Madurez Digital: prueba en producción y comprueba que llega a **MAIL_TO** con información del lead y resultados.
+- [ ] ROI Calculator: prueba en producción y comprueba que llega a **MAIL_TO** con parámetros y resultados del análisis.
+- [ ] Comprobar que Reply-To es el email del usuario en todos los formularios.
 - [ ] Probar rate limit: 6º envío en 10 min desde la misma IP debe devolver 429.
 - [ ] Honeypot: si en el cuerpo del POST envías `"website":"http://spam"` no debe enviarse correo y la API debe responder 200.

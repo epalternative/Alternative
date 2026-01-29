@@ -129,6 +129,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   });
 
+  // Calculadoras (recursos)
+  const calculatorRoutes = [
+    { path: 'calculadoras', pathEn: 'calculadoras' },
+    { path: 'calculadoras/roi-optimizacion-procesos', pathEn: 'calculadoras/roi-optimizacion-procesos' },
+    { path: 'calculadoras/madurez-digital', pathEn: 'calculadoras/madurez-digital' },
+  ];
+  calculatorRoutes.forEach(({ path, pathEn }) => {
+    routes.push({
+      url: `${baseUrl}/es/recursos/${path}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+      alternates: {
+        languages: {
+          es: `${baseUrl}/es/recursos/${path}`,
+          en: `${baseUrl}/en/recursos/${pathEn}`,
+        },
+      },
+    });
+    routes.push({
+      url: `${baseUrl}/en/recursos/${pathEn}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+      alternates: {
+        languages: {
+          es: `${baseUrl}/es/recursos/${path}`,
+          en: `${baseUrl}/en/recursos/${pathEn}`,
+        },
+      },
+    });
+  });
+
   // Blog posts (es + en) — from Sanity if configured, else static
   const blogSlugs = await getAllSlugsAsync();
   blogSlugs.forEach((slug) => {
