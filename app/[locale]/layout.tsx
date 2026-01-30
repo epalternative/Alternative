@@ -52,13 +52,13 @@ export async function generateMetadata({ params }: { params: { locale: string } 
       siteName: 'Alternative',
       title: meta.title,
       description: meta.description,
-      images: ['/og-image.png'],
+      images: ['/logo_alternative_horizontal.webp'],
     },
     twitter: {
       card: 'summary_large_image',
       title: meta.title,
       description: meta.description,
-      images: ['/og-image.png'],
+      images: ['/logo_alternative_horizontal.webp'],
     },
     robots: {
       index: true,
