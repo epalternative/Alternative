@@ -189,6 +189,19 @@ p, .body-text {
   }
 }
 
+/* Cuadrícula blanca sutil para hero oliva/oscuros */
+.bg-grid-hero-subtle {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Números en flujo de procesos (SVG Nosotros) */
+.svg-step-text {
+  font-size: 8px;
+  font-weight: 600;
+}
+
 /* Cuadrícula violeta sutil para fondos (ej. Helpdesk IT) */
 .bg-grid-violet-subtle {
   background-image: linear-gradient(rgba(122, 105, 224, 0.06) 1px, transparent 1px),
