@@ -22,7 +22,7 @@ export default async function Image() {
       >
         {/* Logo centrado con padding para que no se recorte en ninguna plataforma */}
         <img
-          src={`${SITE_URL}/logo_alternative_horizontal.webp`}
+          src={`${SITE_URL}/logo_24.webp`}
           alt="Alternative"
           style={{
             maxWidth: '85%',
