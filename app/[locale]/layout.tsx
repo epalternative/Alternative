@@ -28,9 +28,10 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   };
 
   const meta = metadata[locale as keyof typeof metadata] || metadata.es;
+  const baseUrl = 'https://grupoalternative.com';
 
   return {
-    metadataBase: new URL('https://grupoalternative.com'),
+    metadataBase: new URL(baseUrl),
     title: {
       default: meta.title,
       template: `%s | Alternative`
@@ -48,17 +49,24 @@ export async function generateMetadata({ params }: { params: { locale: string } 
     openGraph: {
       type: 'website',
       locale: locale === 'es' ? 'es_PA' : 'en_US',
-      url: `https://grupoalternative.com/${locale}`,
+      url: `${baseUrl}/${locale}`,
       siteName: 'Alternative',
       title: meta.title,
       description: meta.description,
-      images: ['/logo_alternative_horizontal.webp'],
+      images: [
+        {
+          url: `${baseUrl}/logo_24.webp`,
+          width: 1200,
+          height: 630,
+          alt: 'Alternative - Consultoría Empresarial',
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: meta.title,
       description: meta.description,
-      images: ['/logo_alternative_horizontal.webp'],
+      images: [`${baseUrl}/logo_24.webp`],
     },
     robots: {
       index: true,
