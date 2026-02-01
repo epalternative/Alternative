@@ -306,7 +306,7 @@ export default function NosotrosPage() {
       desc: isEs
         ? 'Entendemos LATAM (cultura, regulaciones) pero aplicamos metodologías globales (PMI, Lean, ISO).'
         : 'We understand LATAM (culture, regulations) but apply global methodologies (PMI, Lean, ISO).',
-      stat: '3',
+      stat: '4',
       statLabel: isEs ? 'países' : 'countries',
     },
     {
@@ -1611,6 +1611,29 @@ export default function NosotrosPage() {
                       className="text-gris-arena/30"
                     />
                     
+                    {/* Puerto Rico - Highlighted */}
+                    <path
+                      d="M 320 120 L 340 118 L 345 125 L 338 132 L 318 130 Z"
+                      fill="currentColor"
+                      className="text-turquesa/40"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    />
+                    
+                    {/* Cuba */}
+                    <path
+                      d="M 180 70 L 220 60 L 260 65 L 270 75 L 250 85 L 200 90 L 175 80 Z"
+                      fill="currentColor"
+                      className="text-gris-arena/30"
+                    />
+                    
+                    {/* Dominican Republic / Haiti */}
+                    <path
+                      d="M 280 95 L 310 90 L 320 100 L 310 110 L 280 108 Z"
+                      fill="currentColor"
+                      className="text-gris-arena/30"
+                    />
+                    
                     {/* Ecuador */}
                     <path
                       d="M 180 235 L 195 260 L 185 290 L 165 285 L 160 260 Z"
@@ -1688,16 +1711,30 @@ export default function NosotrosPage() {
                       <circle r="4" fill="white" />
                     </g>
                     
+                    {/* Puerto Rico marker */}
+                    <g transform="translate(330, 125)">
+                      <motion.circle
+                        r="15"
+                        fill="currentColor"
+                        className="text-turquesa/20"
+                        animate={{ scale: [1, 1.6, 1], opacity: [0.5, 0, 0.5] }}
+                        transition={{ duration: 2, repeat: Infinity, delay: 1.2 }}
+                      />
+                      <circle r="8" fill="currentColor" className="text-turquesa" />
+                      <circle r="3" fill="white" />
+                    </g>
+                    
                     {/* Country labels */}
                     <text x="130" y="158" fill="currentColor" className="text-azul-marino dark:text-white" fontSize="9" fontWeight="600">Costa Rica</text>
                     <text x="175" y="225" fill="currentColor" className="text-azul-marino dark:text-white" fontSize="10" fontWeight="700">PANAMÁ</text>
                     <text x="250" y="260" fill="currentColor" className="text-azul-marino dark:text-white" fontSize="9" fontWeight="600">Colombia</text>
+                    <text x="310" y="145" fill="currentColor" className="text-azul-marino dark:text-white" fontSize="8" fontWeight="600">Puerto Rico</text>
                   </svg>
                 </div>
 
                 {/* Legend */}
                 <div className="flex flex-wrap justify-center gap-6 mt-6 pt-6 border-t border-gris-arena/20">
-                  {['Panamá', 'Costa Rica', 'Colombia'].map((country, i) => (
+                  {['Panamá', 'Costa Rica', 'Colombia', 'Puerto Rico'].map((country, i) => (
                     <motion.span
                       key={country}
                       initial={{ opacity: 0, y: 10 }}
@@ -1745,7 +1782,7 @@ export default function NosotrosPage() {
                   </h3>
                 </div>
                 <ul className="space-y-3">
-                  {['Panamá', 'Costa Rica', 'Colombia'].map((country, i) => (
+                  {['Panamá', 'Costa Rica', 'Colombia', 'Puerto Rico'].map((country, i) => (
                     <li key={i} className="flex items-center gap-3 text-foreground/80">
                       <CheckCircle2 className="w-5 h-5 text-turquesa" />
                       {country}
