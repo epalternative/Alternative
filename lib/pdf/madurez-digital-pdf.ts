@@ -31,66 +31,53 @@ interface PdfData {
 
 // Colores de la marca
 const COLORS = {
-  azulMarino: [19, 45, 84] as [number, number, number],      // #132d54
-  verdeOliva: [113, 143, 78] as [number, number, number],    // #718f4e
-  beige: [252, 247, 243] as [number, number, number],        // #fcf7f3
-  beigeOscuro: [197, 192, 170] as [number, number, number],  // #c5c0aa
+  azulMarino: [19, 45, 84] as [number, number, number],
+  verdeOliva: [113, 143, 78] as [number, number, number],
+  turquesa: [108, 196, 212] as [number, number, number],
+  violeta: [122, 105, 224] as [number, number, number],
+  beige: [252, 247, 243] as [number, number, number],
+  beigeOscuro: [197, 192, 170] as [number, number, number],
   white: [255, 255, 255] as [number, number, number],
   lightGray: [240, 240, 240] as [number, number, number],
 };
 
-async function loadLogoAsBase64(): Promise<string | null> {
-  try {
-    // In browser environment, fetch the logo
-    if (typeof window !== 'undefined') {
-      const response = await fetch('/logo_alternative_horizontal_footer.webp');
-      const blob = await response.blob();
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = () => resolve(null);
-        reader.readAsDataURL(blob);
-      });
-    }
-    return null;
-  } catch {
-    return null;
-  }
+// Función para dibujar el logo de texto estilizado
+function drawLogo(doc: jsPDF, x: number, y: number, width: number) {
+  const scale = width / 100;
+  
+  // Dibujar cuadrados del logo (simplificado)
+  // Cuadrado turquesa
+  doc.setFillColor(...COLORS.turquesa);
+  doc.rect(x, y, 4 * scale, 4 * scale, 'F');
+  
+  // Cuadrado verde
+  doc.setFillColor(...COLORS.verdeOliva);
+  doc.rect(x + 5 * scale, y, 4 * scale, 4 * scale, 'F');
+  
+  // Cuadrado violeta
+  doc.setFillColor(...COLORS.violeta);
+  doc.rect(x + 10 * scale, y, 4 * scale, 4 * scale, 'F');
+  
+  // Texto "Alternative"
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Alternative', x + 18 * scale, y + 3.5 * scale);
 }
 
-function drawHeader(doc: jsPDF, title: string, logoBase64?: string | null) {
+function drawHeader(doc: jsPDF, title: string) {
   const pageWidth = doc.internal.pageSize.width;
   
   // Fondo azul marino en el header
   doc.setFillColor(...COLORS.azulMarino);
-  doc.rect(0, 0, pageWidth, 40, 'F');
+  doc.rect(0, 0, pageWidth, 38, 'F');
   
-  // Logo de la empresa
-  if (logoBase64) {
-    try {
-      // Logo centrado en el header
-      const logoWidth = 50;
-      const logoHeight = 12;
-      const logoX = (pageWidth - logoWidth) / 2;
-      doc.addImage(logoBase64, 'PNG', logoX, 6, logoWidth, logoHeight);
-    } catch {
-      // Fallback a texto si falla el logo
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(20);
-      doc.setFont('helvetica', 'bold');
-      doc.text('ALTERNATIVE', pageWidth / 2, 15, { align: 'center' });
-    }
-  } else {
-    // Fallback a texto
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(20);
-    doc.setFont('helvetica', 'bold');
-    doc.text('ALTERNATIVE', pageWidth / 2, 15, { align: 'center' });
-  }
+  // Logo
+  drawLogo(doc, pageWidth / 2 - 35, 6, 70);
   
   // Título del reporte
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'normal');
   doc.text(title, pageWidth / 2, 30, { align: 'center' });
 }
@@ -102,18 +89,17 @@ function drawFooter(doc: jsPDF, pageNumber: number) {
   // Línea superior
   doc.setDrawColor(...COLORS.beigeOscuro);
   doc.setLineWidth(0.5);
-  doc.line(20, pageHeight - 20, pageWidth - 20, pageHeight - 20);
+  doc.line(20, pageHeight - 18, pageWidth - 20, pageHeight - 18);
   
   // Texto del footer
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(9);
+  doc.setFontSize(8);
   doc.setFont('helvetica', 'normal');
-  doc.text('www.grupoalternative.com', pageWidth / 2, pageHeight - 12, { align: 'center' });
+  doc.text('www.grupoalternative.com | info@grupoalternative.com', pageWidth / 2, pageHeight - 10, { align: 'center' });
   
   // Número de página
-  doc.setFontSize(8);
   doc.setTextColor(...COLORS.beigeOscuro);
-  doc.text(`Página ${pageNumber}`, pageWidth - 20, pageHeight - 12, { align: 'right' });
+  doc.text(`Página ${pageNumber}`, pageWidth - 20, pageHeight - 10, { align: 'right' });
 }
 
 function drawScoreGauge(doc: jsPDF, x: number, y: number, score: number, size: number = 40) {
@@ -125,32 +111,17 @@ function drawScoreGauge(doc: jsPDF, x: number, y: number, score: number, size: n
   doc.setFillColor(...COLORS.lightGray);
   doc.circle(centerX, centerY, radius, 'F');
   
-  // Círculo de progreso
-  const angle = (score / 100) * 360;
+  // Color según score
   let color: [number, number, number];
+  if (score < 25) color = [220, 53, 69];
+  else if (score < 50) color = [255, 193, 7];
+  else if (score < 75) color = [13, 202, 240];
+  else color = COLORS.verdeOliva;
   
-  if (score < 25) color = [220, 53, 69];      // Rojo
-  else if (score < 50) color = [255, 193, 7]; // Amarillo
-  else if (score < 75) color = [13, 202, 240]; // Azul claro
-  else color = COLORS.verdeOliva;              // Verde oliva
-  
-  doc.setFillColor(...color);
-  
-  // Dibujar arco de progreso
-  if (score > 0) {
-    const startAngle = -90;
-    const endAngle = startAngle + angle;
-    
-    // Aproximación del arco con líneas
-    const segments = Math.max(20, Math.floor(angle / 5));
-    for (let i = 0; i <= segments; i++) {
-      const currentAngle = startAngle + (angle * i / segments);
-      const rad = (currentAngle * Math.PI) / 180;
-      const x1 = centerX + (radius - 3) * Math.cos(rad);
-      const y1 = centerY + (radius - 3) * Math.sin(rad);
-      doc.circle(x1, y1, 2, 'F');
-    }
-  }
+  // Borde de progreso
+  doc.setDrawColor(...color);
+  doc.setLineWidth(3);
+  doc.circle(centerX, centerY, radius - 3, 'S');
   
   // Círculo blanco interior
   doc.setFillColor(...COLORS.white);
@@ -158,11 +129,11 @@ function drawScoreGauge(doc: jsPDF, x: number, y: number, score: number, size: n
   
   // Texto del score
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(16);
+  doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
-  doc.text(score.toString(), centerX, centerY - 2, { align: 'center' });
+  doc.text(score.toString(), centerX, centerY - 1, { align: 'center' });
   
-  doc.setFontSize(8);
+  doc.setFontSize(7);
   doc.setFont('helvetica', 'normal');
   doc.text('/100', centerX, centerY + 5, { align: 'center' });
 }
@@ -170,19 +141,19 @@ function drawScoreGauge(doc: jsPDF, x: number, y: number, score: number, size: n
 function drawInfoBox(doc: jsPDF, x: number, y: number, width: number, label: string, value: string) {
   // Fondo beige
   doc.setFillColor(...COLORS.beige);
-  doc.roundedRect(x, y, width, 12, 2, 2, 'F');
+  doc.roundedRect(x, y, width, 11, 2, 2, 'F');
   
   // Label
   doc.setTextColor(...COLORS.verdeOliva);
-  doc.setFontSize(8);
+  doc.setFontSize(7);
   doc.setFont('helvetica', 'bold');
-  doc.text(label, x + 3, y + 5);
+  doc.text(label, x + 3, y + 4);
   
   // Value
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(9);
+  doc.setFontSize(8);
   doc.setFont('helvetica', 'normal');
-  doc.text(value, x + 3, y + 9.5);
+  doc.text(value, x + 3, y + 9);
 }
 
 function drawDimensionBar(
@@ -193,19 +164,19 @@ function drawDimensionBar(
   label: string,
   score: number
 ) {
-  const barHeight = 8;
-  const maxBarWidth = width - 60;
+  const barHeight = 7;
+  const maxBarWidth = width - 55;
   const barWidth = (score / 100) * maxBarWidth;
   
   // Label
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
   doc.text(label, x, y + 5);
   
   // Barra de fondo
   doc.setFillColor(...COLORS.lightGray);
-  doc.roundedRect(x + 60, y, maxBarWidth, barHeight, 2, 2, 'F');
+  doc.roundedRect(x + 50, y, maxBarWidth, barHeight, 2, 2, 'F');
   
   // Barra de progreso
   if (score > 0) {
@@ -216,48 +187,24 @@ function drawDimensionBar(
     else color = COLORS.verdeOliva;
     
     doc.setFillColor(...color);
-    doc.roundedRect(x + 60, y, barWidth, barHeight, 2, 2, 'F');
+    doc.roundedRect(x + 50, y, barWidth, barHeight, 2, 2, 'F');
   }
   
   // Score text
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(9);
+  doc.setFontSize(8);
   doc.setFont('helvetica', 'bold');
-  doc.text(`${score}`, x + width - 15, y + 5.5);
+  doc.text(`${score}`, x + width - 10, y + 5);
 }
 
 function drawSectionTitle(doc: jsPDF, x: number, y: number, title: string) {
   doc.setFillColor(...COLORS.verdeOliva);
-  doc.rect(x, y, 3, 8, 'F');
+  doc.rect(x, y, 3, 7, 'F');
   
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text(title, x + 6, y + 6);
-}
-
-function wrapText(doc: jsPDF, text: string, maxWidth: number): string[] {
-  const words = text.split(' ');
-  const lines: string[] = [];
-  let currentLine = '';
-  
-  for (const word of words) {
-    const testLine = currentLine ? `${currentLine} ${word}` : word;
-    const width = doc.getTextWidth(testLine);
-    
-    if (width > maxWidth && currentLine) {
-      lines.push(currentLine);
-      currentLine = word;
-    } else {
-      currentLine = testLine;
-    }
-  }
-  
-  if (currentLine) {
-    lines.push(currentLine);
-  }
-  
-  return lines;
+  doc.text(title, x + 6, y + 5);
 }
 
 export async function generateMadurezDigitalPdf(doc: jsPDF, data: PdfData): Promise<void> {
@@ -266,65 +213,62 @@ export async function generateMadurezDigitalPdf(doc: jsPDF, data: PdfData): Prom
   const margin = 20;
   const contentWidth = pageWidth - 2 * margin;
   
-  // Cargar logo
-  const logoBase64 = await loadLogoAsBase64();
-  
   // ===== PÁGINA 1: Resumen Ejecutivo =====
-  drawHeader(doc, data.translations.title, logoBase64);
+  drawHeader(doc, data.translations.title);
   
-  let y = 50;
+  let y = 46;
   
   // Información del cliente
   drawSectionTitle(doc, margin, y, data.translations.generatedFor);
-  y += 15;
+  y += 12;
   
-  const colWidth = contentWidth / 2 - 5;
+  const colWidth = contentWidth / 2 - 4;
   drawInfoBox(doc, margin, y, colWidth, 'Nombre', data.name);
-  drawInfoBox(doc, margin + colWidth + 10, y, colWidth, 'Empresa', data.company);
-  y += 15;
+  drawInfoBox(doc, margin + colWidth + 8, y, colWidth, 'Empresa', data.company);
+  y += 14;
   
   drawInfoBox(doc, margin, y, colWidth, 'Email', data.email);
-  drawInfoBox(doc, margin + colWidth + 10, y, colWidth, 'Teléfono', data.phone || 'N/A');
-  y += 15;
+  drawInfoBox(doc, margin + colWidth + 8, y, colWidth, 'Teléfono', data.phone || 'N/A');
+  y += 14;
   
   drawInfoBox(doc, margin, y, colWidth, data.translations.industryLabel, data.preliminary.industry);
-  drawInfoBox(doc, margin + colWidth + 10, y, colWidth, data.translations.roleLabel, data.preliminary.role);
-  y += 15;
+  drawInfoBox(doc, margin + colWidth + 8, y, colWidth, data.translations.roleLabel, data.preliminary.role);
+  y += 14;
   
   drawInfoBox(doc, margin, y, colWidth, data.translations.companySizeLabel, data.preliminary.companySize);
-  drawInfoBox(doc, margin + colWidth + 10, y, colWidth, data.translations.date, new Date().toLocaleDateString('es-ES'));
-  y += 25;
+  drawInfoBox(doc, margin + colWidth + 8, y, colWidth, data.translations.date, new Date().toLocaleDateString('es-ES'));
+  y += 20;
   
   // Score principal
   drawSectionTitle(doc, margin, y, 'Score de Madurez Digital');
-  y += 15;
+  y += 12;
   
   // Gauge principal centrado
-  const gaugeSize = 60;
+  const gaugeSize = 50;
   const gaugeX = pageWidth / 2 - gaugeSize / 2;
   drawScoreGauge(doc, gaugeX, y, data.scores.total, gaugeSize);
   
   // Nivel debajo del gauge
-  y += gaugeSize + 10;
+  y += gaugeSize + 8;
   doc.setFillColor(...COLORS.verdeOliva);
-  const levelBoxWidth = 100;
+  const levelBoxWidth = 90;
   const levelBoxX = pageWidth / 2 - levelBoxWidth / 2;
-  doc.roundedRect(levelBoxX, y, levelBoxWidth, 15, 3, 3, 'F');
+  doc.roundedRect(levelBoxX, y, levelBoxWidth, 12, 2, 2, 'F');
   
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(14);
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text(data.translations.levelText, pageWidth / 2, y + 10, { align: 'center' });
+  doc.text(data.translations.levelText, pageWidth / 2, y + 8, { align: 'center' });
   
-  y += 25;
+  y += 18;
   
   // Benchmark
   if (data.scores.benchmark > 0) {
     doc.setFillColor(...COLORS.beige);
-    doc.roundedRect(margin, y, contentWidth, 26, 3, 3, 'F');
+    doc.roundedRect(margin, y, contentWidth, 22, 3, 3, 'F');
     
     doc.setTextColor(...COLORS.azulMarino);
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
     
     const benchmarkText = `${data.translations.industryBenchmark}: ${data.scores.benchmark}/100`;
@@ -332,27 +276,29 @@ export async function generateMadurezDigitalPdf(doc: jsPDF, data: PdfData): Prom
       ? `(+${data.scores.benchmarkDiff} puntos sobre el promedio)` 
       : `(${data.scores.benchmarkDiff} puntos bajo el promedio)`;
     
-    doc.text(benchmarkText, pageWidth / 2, y + 10, { align: 'center' });
+    doc.text(benchmarkText, pageWidth / 2, y + 8, { align: 'center' });
     
-    doc.setFontSize(9);
+    doc.setFontSize(8);
     doc.setTextColor(...COLORS.verdeOliva);
-    doc.text(diffText, pageWidth / 2, y + 19, { align: 'center' });
+    doc.text(diffText, pageWidth / 2, y + 16, { align: 'center' });
+    
+    y += 28;
+  } else {
+    y += 5;
   }
-  
-  y += 35;
   
   // Dimensiones
   drawSectionTitle(doc, margin, y, data.translations.dimensions);
-  y += 15;
+  y += 12;
   
   drawDimensionBar(doc, margin, y, contentWidth, data.translations.dimensionStrategy, data.scores.dimensions.strategy);
-  y += 15;
+  y += 12;
   
   drawDimensionBar(doc, margin, y, contentWidth, data.translations.dimensionChannels, data.scores.dimensions.channels);
-  y += 15;
+  y += 12;
   
   drawDimensionBar(doc, margin, y, contentWidth, data.translations.dimensionData, data.scores.dimensions.data);
-  y += 15;
+  y += 12;
   
   drawDimensionBar(doc, margin, y, contentWidth, data.translations.dimensionTech, data.scores.dimensions.tech);
   
@@ -360,23 +306,21 @@ export async function generateMadurezDigitalPdf(doc: jsPDF, data: PdfData): Prom
   
   // ===== PÁGINA 2: Fortalezas y Oportunidades =====
   doc.addPage();
-  drawHeader(doc, data.translations.title, logoBase64);
+  drawHeader(doc, data.translations.title);
   
-  y = 50;
+  y = 46;
   
   // Fortalezas
   drawSectionTitle(doc, margin, y, data.translations.strengthsTitle);
-  y += 12;
+  y += 10;
   
   if (data.scores.strongest.length > 0) {
     doc.setFillColor(...COLORS.beige);
-    doc.roundedRect(margin, y, contentWidth, 40, 3, 3, 'F');
+    doc.roundedRect(margin, y, contentWidth, 35, 3, 3, 'F');
     
-    doc.setTextColor(...COLORS.azulMarino);
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    
+    doc.setFontSize(9);
     let strengthY = y + 8;
+    
     for (const strength of data.scores.strongest.slice(0, 3)) {
       const dimensionName = 
         strength.id === 'strategy' ? data.translations.dimensionStrategy :
@@ -384,31 +328,32 @@ export async function generateMadurezDigitalPdf(doc: jsPDF, data: PdfData): Prom
         strength.id === 'data' ? data.translations.dimensionData :
         data.translations.dimensionTech;
       
+      doc.setTextColor(...COLORS.azulMarino);
       doc.setFont('helvetica', 'bold');
       doc.text(`• ${dimensionName}:`, margin + 5, strengthY);
       
       doc.setFont('helvetica', 'normal');
-      doc.text(`${strength.score}/100`, margin + 70, strengthY);
+      doc.text(`${strength.score}/100`, margin + 65, strengthY);
       
-      strengthY += 10;
+      strengthY += 9;
     }
+    
+    y += 42;
+  } else {
+    y += 10;
   }
-  
-  y += 50;
   
   // Oportunidades
   drawSectionTitle(doc, margin, y, data.translations.opportunitiesTitle);
-  y += 12;
+  y += 10;
   
   if (data.scores.weakest.length > 0) {
-    doc.setFillColor(255, 243, 224); // Naranja claro
-    doc.roundedRect(margin, y, contentWidth, 40, 3, 3, 'F');
+    doc.setFillColor(255, 243, 224);
+    doc.roundedRect(margin, y, contentWidth, 35, 3, 3, 'F');
     
-    doc.setTextColor(...COLORS.azulMarino);
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    
+    doc.setFontSize(9);
     let weakY = y + 8;
+    
     for (const weak of data.scores.weakest.slice(0, 3)) {
       const dimensionName = 
         weak.id === 'strategy' ? data.translations.dimensionStrategy :
@@ -416,27 +361,30 @@ export async function generateMadurezDigitalPdf(doc: jsPDF, data: PdfData): Prom
         weak.id === 'data' ? data.translations.dimensionData :
         data.translations.dimensionTech;
       
+      doc.setTextColor(...COLORS.azulMarino);
       doc.setFont('helvetica', 'bold');
       doc.text(`• ${dimensionName}:`, margin + 5, weakY);
       
       doc.setFont('helvetica', 'normal');
-      doc.text(`${weak.score}/100`, margin + 70, weakY);
+      doc.text(`${weak.score}/100`, margin + 65, weakY);
       
-      weakY += 10;
+      weakY += 9;
     }
+    
+    y += 42;
+  } else {
+    y += 10;
   }
-  
-  y += 55;
   
   // Recomendaciones
   drawSectionTitle(doc, margin, y, 'Próximos Pasos Recomendados');
-  y += 12;
+  y += 10;
   
   doc.setFillColor(...COLORS.verdeOliva);
-  doc.roundedRect(margin, y, contentWidth, 60, 3, 3, 'F');
+  doc.roundedRect(margin, y, contentWidth, 50, 3, 3, 'F');
   
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
   
   const recommendations = [
@@ -447,25 +395,27 @@ export async function generateMadurezDigitalPdf(doc: jsPDF, data: PdfData): Prom
     '5. Considerar consultoría estratégica para acelerar resultados'
   ];
   
-  let recY = y + 10;
+  let recY = y + 9;
   for (const rec of recommendations) {
     doc.text(rec, margin + 5, recY);
-    recY += 10;
+    recY += 8;
   }
   
+  y += 58;
+  
   // Call to action
-  y = pageHeight - 60;
+  const ctaY = Math.max(y, pageHeight - 50);
   doc.setFillColor(...COLORS.azulMarino);
-  doc.roundedRect(margin, y, contentWidth, 30, 3, 3, 'F');
+  doc.roundedRect(margin, ctaY, contentWidth, 26, 3, 3, 'F');
   
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text('¿Listo para acelerar tu transformación digital?', pageWidth / 2, y + 12, { align: 'center' });
+  doc.text('¿Listo para acelerar tu transformación digital?', pageWidth / 2, ctaY + 10, { align: 'center' });
   
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.text('Contáctanos para una consultoría estratégica gratuita', pageWidth / 2, y + 22, { align: 'center' });
+  doc.text('Contáctanos para una consultoría estratégica gratuita', pageWidth / 2, ctaY + 19, { align: 'center' });
   
   drawFooter(doc, 2);
 }

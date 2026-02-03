@@ -46,6 +46,8 @@ interface PdfData {
 const COLORS = {
   azulMarino: [19, 45, 84] as [number, number, number],
   verdeOliva: [113, 143, 78] as [number, number, number],
+  turquesa: [108, 196, 212] as [number, number, number],
+  violeta: [122, 105, 224] as [number, number, number],
   beige: [252, 247, 243] as [number, number, number],
   beigeOscuro: [197, 192, 170] as [number, number, number],
   white: [255, 255, 255] as [number, number, number],
@@ -55,65 +57,50 @@ const COLORS = {
   danger: [220, 53, 69] as [number, number, number],
 };
 
-async function loadLogoAsBase64(): Promise<string | null> {
-  try {
-    // In browser environment, fetch the logo
-    if (typeof window !== 'undefined') {
-      const response = await fetch('/logo_alternative_horizontal_footer.webp');
-      const blob = await response.blob();
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = () => resolve(null);
-        reader.readAsDataURL(blob);
-      });
-    }
-    return null;
-  } catch {
-    return null;
-  }
+// Función para dibujar el logo de texto estilizado
+function drawLogo(doc: jsPDF, x: number, y: number, width: number) {
+  const scale = width / 100;
+  
+  // Dibujar cuadrados del logo (simplificado)
+  // Cuadrado turquesa
+  doc.setFillColor(...COLORS.turquesa);
+  doc.rect(x, y, 4 * scale, 4 * scale, 'F');
+  
+  // Cuadrado verde
+  doc.setFillColor(...COLORS.verdeOliva);
+  doc.rect(x + 5 * scale, y, 4 * scale, 4 * scale, 'F');
+  
+  // Cuadrado violeta
+  doc.setFillColor(...COLORS.violeta);
+  doc.rect(x + 10 * scale, y, 4 * scale, 4 * scale, 'F');
+  
+  // Texto "Alternative"
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Alternative', x + 18 * scale, y + 3.5 * scale);
 }
 
-function drawHeader(doc: jsPDF, title: string, subtitle: string, logoBase64?: string | null) {
+function drawHeader(doc: jsPDF, title: string, subtitle: string) {
   const pageWidth = doc.internal.pageSize.width;
   
   // Fondo azul marino en el header
   doc.setFillColor(...COLORS.azulMarino);
-  doc.rect(0, 0, pageWidth, 45, 'F');
+  doc.rect(0, 0, pageWidth, 42, 'F');
   
-  // Logo de la empresa
-  if (logoBase64) {
-    try {
-      // Logo centrado en el header
-      const logoWidth = 50;
-      const logoHeight = 12;
-      const logoX = (pageWidth - logoWidth) / 2;
-      doc.addImage(logoBase64, 'PNG', logoX, 6, logoWidth, logoHeight);
-    } catch {
-      // Fallback a texto si falla el logo
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(20);
-      doc.setFont('helvetica', 'bold');
-      doc.text('ALTERNATIVE', pageWidth / 2, 15, { align: 'center' });
-    }
-  } else {
-    // Fallback a texto
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(20);
-    doc.setFont('helvetica', 'bold');
-    doc.text('ALTERNATIVE', pageWidth / 2, 15, { align: 'center' });
-  }
+  // Logo
+  drawLogo(doc, pageWidth / 2 - 35, 6, 70);
   
   // Título del reporte
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text(title, pageWidth / 2, 28, { align: 'center' });
+  doc.text(title, pageWidth / 2, 26, { align: 'center' });
   
   // Subtítulo
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.text(subtitle, pageWidth / 2, 36, { align: 'center' });
+  doc.text(subtitle, pageWidth / 2, 34, { align: 'center' });
 }
 
 function drawFooter(doc: jsPDF, pageNumber: number) {
@@ -123,28 +110,27 @@ function drawFooter(doc: jsPDF, pageNumber: number) {
   // Línea superior
   doc.setDrawColor(...COLORS.beigeOscuro);
   doc.setLineWidth(0.5);
-  doc.line(20, pageHeight - 20, pageWidth - 20, pageHeight - 20);
+  doc.line(20, pageHeight - 18, pageWidth - 20, pageHeight - 18);
   
   // Texto del footer
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(9);
+  doc.setFontSize(8);
   doc.setFont('helvetica', 'normal');
-  doc.text('www.grupoalternative.com | info@grupoalternative.com', pageWidth / 2, pageHeight - 12, { align: 'center' });
+  doc.text('www.grupoalternative.com | info@grupoalternative.com', pageWidth / 2, pageHeight - 10, { align: 'center' });
   
   // Número de página
-  doc.setFontSize(8);
   doc.setTextColor(...COLORS.beigeOscuro);
-  doc.text(`Página ${pageNumber}`, pageWidth - 20, pageHeight - 12, { align: 'right' });
+  doc.text(`Página ${pageNumber}`, pageWidth - 20, pageHeight - 10, { align: 'right' });
 }
 
 function drawSectionTitle(doc: jsPDF, x: number, y: number, title: string) {
   doc.setFillColor(...COLORS.verdeOliva);
-  doc.rect(x, y, 3, 8, 'F');
+  doc.rect(x, y, 3, 7, 'F');
   
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text(title, x + 6, y + 6);
+  doc.text(title, x + 6, y + 5);
 }
 
 function drawMetricBox(
@@ -163,18 +149,18 @@ function drawMetricBox(
   
   // Label
   doc.setTextColor(...COLORS.verdeOliva);
-  doc.setFontSize(9);
+  doc.setFontSize(8);
   doc.setFont('helvetica', 'bold');
-  doc.text(label, x + width / 2, y + 8, { align: 'center' });
+  doc.text(label, x + width / 2, y + 7, { align: 'center' });
   
   // Value
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(14);
+  doc.setFontSize(12);
   doc.setFont('helvetica', 'bold');
-  doc.text(value, x + width / 2, y + 18, { align: 'center' });
+  doc.text(value, x + width / 2, y + 16, { align: 'center' });
 }
 
-function drawRoiGauge(doc: jsPDF, x: number, y: number, roi: number, size: number = 50) {
+function drawRoiGauge(doc: jsPDF, x: number, y: number, roi: number, size: number = 45) {
   const centerX = x + size / 2;
   const centerY = y + size / 2;
   const radius = size / 2 - 2;
@@ -185,16 +171,16 @@ function drawRoiGauge(doc: jsPDF, x: number, y: number, roi: number, size: numbe
   
   if (roi > 200) {
     color = COLORS.success;
-    bgColor = [232, 245, 233]; // Verde claro
+    bgColor = [232, 245, 233];
   } else if (roi >= 100) {
     color = COLORS.verdeOliva;
-    bgColor = [240, 244, 233]; // Verde oliva claro
+    bgColor = [240, 244, 233];
   } else if (roi >= 50) {
     color = COLORS.warning;
-    bgColor = [255, 248, 225]; // Amarillo claro
+    bgColor = [255, 248, 225];
   } else {
     color = COLORS.danger;
-    bgColor = [255, 235, 238]; // Rojo claro
+    bgColor = [255, 235, 238];
   }
   
   // Fondo del círculo
@@ -203,22 +189,22 @@ function drawRoiGauge(doc: jsPDF, x: number, y: number, roi: number, size: numbe
   
   // Borde
   doc.setDrawColor(...color);
-  doc.setLineWidth(3);
+  doc.setLineWidth(2.5);
   doc.circle(centerX, centerY, radius - 2, 'S');
   
   // Texto del ROI
   doc.setTextColor(...color);
-  doc.setFontSize(18);
+  doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
   const roiText = roi > 999 ? '999+' : Math.round(roi).toString();
-  doc.text(roiText, centerX, centerY - 2, { align: 'center' });
+  doc.text(roiText, centerX, centerY - 1, { align: 'center' });
   
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.text('%', centerX, centerY + 6, { align: 'center' });
+  doc.text('%', centerX, centerY + 5, { align: 'center' });
   
-  doc.setFontSize(8);
-  doc.text('ROI', centerX, centerY + 13, { align: 'center' });
+  doc.setFontSize(7);
+  doc.text('ROI', centerX, centerY + 11, { align: 'center' });
 }
 
 function drawComparisonBars(
@@ -229,41 +215,39 @@ function drawComparisonBars(
   label1: string,
   value1: number,
   label2: string,
-  value2: number,
-  unit: string
+  value2: number
 ) {
-  const barHeight = 12;
+  const barHeight = 10;
   const maxValue = Math.max(value1, value2);
-  const maxBarWidth = width - 80;
+  const maxBarWidth = width - 85;
   
   // Barra 1 (actual)
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(9);
+  doc.setFontSize(8);
   doc.setFont('helvetica', 'normal');
-  doc.text(label1, x, y + 7);
+  doc.text(label1, x, y + 6);
   
-  const bar1Width = (value1 / maxValue) * maxBarWidth;
-  doc.setFillColor(220, 53, 69); // Rojo
-  doc.roundedRect(x + 70, y, bar1Width, barHeight, 2, 2, 'F');
+  const bar1Width = Math.max(10, (value1 / maxValue) * maxBarWidth);
+  doc.setFillColor(220, 53, 69);
+  doc.roundedRect(x + 55, y, bar1Width, barHeight, 2, 2, 'F');
   
-  doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
-  doc.text(`${formatCurrency(value1)} ${unit}`, x + width - 5, y + 7, { align: 'right' });
+  doc.text(formatCurrency(value1), x + width - 5, y + 6, { align: 'right' });
   
   // Barra 2 (optimizado)
-  y += 18;
+  y += 14;
   doc.setFont('helvetica', 'normal');
-  doc.text(label2, x, y + 7);
+  doc.text(label2, x, y + 6);
   
-  const bar2Width = (value2 / maxValue) * maxBarWidth;
+  const bar2Width = Math.max(10, (value2 / maxValue) * maxBarWidth);
   doc.setFillColor(...COLORS.success);
-  doc.roundedRect(x + 70, y, bar2Width, barHeight, 2, 2, 'F');
+  doc.roundedRect(x + 55, y, bar2Width, barHeight, 2, 2, 'F');
   
   doc.setFont('helvetica', 'bold');
-  doc.text(`${formatCurrency(value2)} ${unit}`, x + width - 5, y + 7, { align: 'right' });
+  doc.text(formatCurrency(value2), x + width - 5, y + 6, { align: 'right' });
   
-  // Flecha de ahorro
-  y += 18;
+  // Badge de ahorro
+  y += 14;
   const savings = value1 - value2;
   const savingsPct = ((savings / value1) * 100).toFixed(0);
   
@@ -271,9 +255,9 @@ function drawComparisonBars(
   doc.roundedRect(x, y, width, 10, 2, 2, 'F');
   
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
-  doc.text(`AHORRO: ${formatCurrency(savings)} ${unit} (-${savingsPct}%)`, x + width / 2, y + 7, { align: 'center' });
+  doc.text(`AHORRO: ${formatCurrency(savings)} (-${savingsPct}%)`, x + width / 2, y + 6.5, { align: 'center' });
 }
 
 function drawInfoTable(
@@ -283,8 +267,7 @@ function drawInfoTable(
   width: number,
   rows: Array<{ label: string; value: string }>
 ) {
-  const rowHeight = 10;
-  const colWidth = width / 2;
+  const rowHeight = 9;
   
   rows.forEach((row, index) => {
     const currentY = y + index * rowHeight;
@@ -297,19 +280,19 @@ function drawInfoTable(
     
     // Label
     doc.setTextColor(...COLORS.verdeOliva);
-    doc.setFontSize(9);
+    doc.setFontSize(8);
     doc.setFont('helvetica', 'bold');
-    doc.text(row.label, x + 3, currentY + 6.5);
+    doc.text(row.label, x + 3, currentY + 6);
     
     // Value
     doc.setTextColor(...COLORS.azulMarino);
     doc.setFont('helvetica', 'normal');
-    doc.text(row.value, x + colWidth + 3, currentY + 6.5);
+    doc.text(row.value, x + width / 2 + 5, currentY + 6);
   });
   
   // Borde de la tabla
   doc.setDrawColor(...COLORS.beigeOscuro);
-  doc.setLineWidth(0.5);
+  doc.setLineWidth(0.3);
   doc.rect(x, y, width, rows.length * rowHeight, 'S');
 }
 
@@ -343,79 +326,76 @@ export async function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): Pro
   const margin = 20;
   const contentWidth = pageWidth - 2 * margin;
   
-  // Cargar logo
-  const logoBase64 = await loadLogoAsBase64();
-  
   // ===== PÁGINA 1: Resumen Ejecutivo =====
-  drawHeader(doc, data.translations.title, data.translations.subtitle, logoBase64);
+  drawHeader(doc, data.translations.title, data.translations.subtitle);
   
-  let y = 55;
+  let y = 50;
   
   // Información del proceso
   if (data.formState?.processName) {
     doc.setFillColor(...COLORS.beige);
-    doc.roundedRect(margin, y, contentWidth, 12, 3, 3, 'F');
+    doc.roundedRect(margin, y, contentWidth, 10, 2, 2, 'F');
     
     doc.setTextColor(...COLORS.azulMarino);
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
-    doc.text(`${data.translations.processName}: `, margin + 5, y + 8);
+    doc.text(`${data.translations.processName}: `, margin + 4, y + 6.5);
     
     doc.setFont('helvetica', 'normal');
-    doc.text(data.formState.processName, margin + 50, y + 8);
+    doc.text(data.formState.processName, margin + 45, y + 6.5);
     
-    y += 18;
+    y += 14;
   }
   
   // ROI Principal y métricas clave
-  drawSectionTitle(doc, margin, y, 'Resultados del Analisis');
-  y += 15;
+  drawSectionTitle(doc, margin, y, 'Resultados del Análisis');
+  y += 12;
   
   // ROI Gauge centrado
-  const gaugeSize = 50;
+  const gaugeSize = 45;
   const gaugeX = pageWidth / 2 - gaugeSize / 2;
   drawRoiGauge(doc, gaugeX, y, data.results.roi, gaugeSize);
   
-  y += gaugeSize + 15;
+  y += gaugeSize + 10;
   
   // Métricas en cajas
-  const boxWidth = (contentWidth - 10) / 3;
+  const boxWidth = (contentWidth - 8) / 3;
   
   drawMetricBox(
     doc,
     margin,
     y,
     boxWidth,
-    25,
+    22,
     data.translations.annualSavings,
     formatCurrency(data.results.ahorroAnual)
   );
   
   drawMetricBox(
     doc,
-    margin + boxWidth + 5,
+    margin + boxWidth + 4,
     y,
     boxWidth,
-    25,
+    22,
     data.translations.payback,
     `${formatNumber(data.results.paybackMeses, 1)} ${data.translations.months}`
   );
   
   drawMetricBox(
     doc,
-    margin + 2 * (boxWidth + 5),
+    margin + 2 * (boxWidth + 4),
     y,
     boxWidth,
-    25,
+    22,
     data.translations.reduction,
     `${formatNumber(data.results.reduccionPct, 0)}%`
   );
   
-  y += 35;
+  y += 28;
   
   // Comparación de costos
-  drawSectionTitle(doc, margin, y, data.translations.currentSituation + ' vs ' + data.translations.optimizedScenario);
-  y += 15;
+  drawSectionTitle(doc, margin, y, `${data.translations.currentSituation} vs ${data.translations.optimizedScenario}`);
+  y += 12;
   
   drawComparisonBars(
     doc,
@@ -425,16 +405,15 @@ export async function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): Pro
     data.translations.currentCost,
     data.results.costoAnual,
     data.translations.optimizedCost,
-    data.results.costoOptimizado,
-    ''
+    data.results.costoOptimizado
   );
   
-  y += 55;
+  y += 45;
   
   // Parámetros de entrada
   if (data.formState) {
-    drawSectionTitle(doc, margin, y, 'Parametros del Analisis');
-    y += 12;
+    drawSectionTitle(doc, margin, y, 'Parámetros del Análisis');
+    y += 10;
     
     const frecuenciaMap: Record<string, string> = {
       hora: 'por hora',
@@ -444,81 +423,63 @@ export async function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): Pro
       trimestre: 'por trimestre',
     };
     
+    // Usar labels en español directamente ya que las traducciones pueden fallar
     drawInfoTable(doc, margin, y, contentWidth, [
-      { label: data.translations.volume, value: `${data.formState.volumen} ${frecuenciaMap[data.formState.frecuencia]}` },
-      { label: data.translations.timeSpent, value: `${data.formState.tiempoMinutos} min` },
-      { label: data.translations.people, value: `${data.formState.personas}` },
-      { label: data.translations.hourCost, value: formatCurrency(data.formState.costoHora) },
-      { label: data.translations.improvement, value: `${data.formState.mejoraPct}%` },
-      { label: data.translations.projectCost, value: formatCurrency(data.formState.costoProyecto) },
+      { label: 'Volumen', value: `${data.formState.volumen} ${frecuenciaMap[data.formState.frecuencia] || 'por mes'}` },
+      { label: 'Tiempo por ejecución', value: `${data.formState.tiempoMinutos} min` },
+      { label: 'Personas involucradas', value: `${data.formState.personas}` },
+      { label: 'Costo por hora', value: formatCurrency(data.formState.costoHora) },
+      { label: 'Mejora esperada', value: `${data.formState.mejoraPct}%` },
+      { label: 'Costo del proyecto', value: formatCurrency(data.formState.costoProyecto) },
     ]);
   }
   
   drawFooter(doc, 1);
   
-  // ===== PÁGINA 2: Análisis Detallado y Recomendaciones =====
+  // ===== PÁGINA 2: Recomendaciones =====
   doc.addPage();
-  drawHeader(doc, data.translations.title, data.translations.subtitle, logoBase64);
+  drawHeader(doc, data.translations.title, data.translations.subtitle);
   
-  y = 55;
+  y = 50;
   
   // Beneficios proyectados
   drawSectionTitle(doc, margin, y, data.translations.benefits);
-  y += 14;
+  y += 12;
   
   doc.setFillColor(...COLORS.beige);
-  doc.roundedRect(margin, y, contentWidth, 55, 3, 3, 'F');
+  doc.roundedRect(margin, y, contentWidth, 48, 3, 3, 'F');
   
-  doc.setTextColor(...COLORS.azulMarino);
   doc.setFontSize(9);
-  doc.setFont('helvetica', 'normal');
-  
-  let benefitY = y + 10;
+  let benefitY = y + 9;
   const labelX = margin + 5;
-  const valueX = margin + 90;
+  const valueX = margin + 85;
   
-  // Volumen anual
-  doc.setFont('helvetica', 'bold');
-  doc.text(`${data.translations.executionsPerYear}:`, labelX, benefitY);
-  doc.setFont('helvetica', 'normal');
-  doc.text(formatNumber(data.results.volumenAnual, 0), valueX, benefitY);
-  benefitY += 9;
+  const benefitItems = [
+    { label: 'Ejecuciones por año:', value: formatNumber(data.results.volumenAnual, 0) },
+    { label: 'Tiempo total actual:', value: `${formatNumber(data.results.tiempoTotalHoras, 0)} horas` },
+    { label: 'Tiempo optimizado:', value: `${formatNumber(data.results.tiempoOptimizadoHoras, 0)} horas` },
+    { label: 'Beneficio año 1:', value: formatCurrency(data.results.beneficioAno1), isGreen: true },
+    { label: 'Beneficio 3 años:', value: formatCurrency(data.results.beneficio3Anos), isGreen: true },
+  ];
   
-  // Tiempo total actual
-  doc.setFont('helvetica', 'bold');
-  doc.text('Tiempo total actual:', labelX, benefitY);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`${formatNumber(data.results.tiempoTotalHoras, 0)} ${data.translations.hours}`, valueX, benefitY);
-  benefitY += 9;
+  for (const item of benefitItems) {
+    doc.setTextColor(...COLORS.azulMarino);
+    doc.setFont('helvetica', 'bold');
+    doc.text(item.label, labelX, benefitY);
+    
+    if (item.isGreen) {
+      doc.setTextColor(...COLORS.success);
+    }
+    doc.setFont('helvetica', 'normal');
+    doc.text(item.value, valueX, benefitY);
+    benefitY += 8;
+  }
   
-  // Tiempo optimizado
-  doc.setFont('helvetica', 'bold');
-  doc.text('Tiempo optimizado:', labelX, benefitY);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`${formatNumber(data.results.tiempoOptimizadoHoras, 0)} ${data.translations.hours}`, valueX, benefitY);
-  benefitY += 9;
-  
-  // Beneficio año 1
-  doc.setFont('helvetica', 'bold');
-  doc.text(`${data.translations.benefit1Year}:`, labelX, benefitY);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...COLORS.success);
-  doc.text(formatCurrency(data.results.beneficioAno1), valueX, benefitY);
-  benefitY += 9;
-  
-  // Beneficio 3 años
-  doc.setTextColor(...COLORS.azulMarino);
-  doc.setFont('helvetica', 'bold');
-  doc.text(`${data.translations.benefit3Years}:`, labelX, benefitY);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...COLORS.success);
-  doc.text(formatCurrency(data.results.beneficio3Anos), valueX, benefitY);
-  
-  y += 65;
+  y += 55;
   
   // Recomendación
-  drawSectionTitle(doc, margin, y, data.translations.recommendation);
-  y += 14;
+  drawSectionTitle(doc, margin, y, 'Recomendación');
+  y += 12;
   
   // Color según nivel de recomendación
   let recColor: [number, number, number];
@@ -536,47 +497,48 @@ export async function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): Pro
       recColor = COLORS.danger;
   }
   
+  // Título de recomendación
   doc.setFillColor(...recColor);
-  doc.roundedRect(margin, y, contentWidth, 14, 3, 3, 'F');
+  doc.roundedRect(margin, y, contentWidth, 12, 2, 2, 'F');
   
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(11);
+  doc.setFontSize(10);
   doc.setFont('helvetica', 'bold');
-  doc.text(data.recommendation.title, pageWidth / 2, y + 9, { align: 'center' });
+  doc.text(data.recommendation.title, pageWidth / 2, y + 8, { align: 'center' });
   
-  y += 18;
+  y += 16;
   
-  // Cuerpo de la recomendación - con mejor wrapping
-  doc.setFontSize(9);
-  const wrappedBody = wrapText(doc, data.recommendation.body, contentWidth - 10);
-  const bodyHeight = Math.max(40, wrappedBody.length * 6 + 10);
+  // Cuerpo de la recomendación
+  doc.setFontSize(8);
+  const wrappedBody = wrapText(doc, data.recommendation.body, contentWidth - 8);
+  const bodyHeight = Math.min(35, wrappedBody.length * 5 + 8);
   
-  doc.setFillColor(255, 255, 255);
+  doc.setFillColor(...COLORS.white);
   doc.setDrawColor(...COLORS.beigeOscuro);
-  doc.setLineWidth(0.5);
-  doc.roundedRect(margin, y, contentWidth, bodyHeight, 3, 3, 'FD');
+  doc.setLineWidth(0.3);
+  doc.roundedRect(margin, y, contentWidth, bodyHeight, 2, 2, 'FD');
   
   doc.setTextColor(...COLORS.azulMarino);
   doc.setFont('helvetica', 'normal');
   
-  let bodyY = y + 8;
-  const maxLines = Math.floor((bodyHeight - 10) / 6);
-  for (const line of wrappedBody.slice(0, maxLines)) {
-    doc.text(line, margin + 5, bodyY);
-    bodyY += 6;
+  let bodyY = y + 6;
+  const maxLines = Math.floor((bodyHeight - 6) / 5);
+  for (let i = 0; i < Math.min(wrappedBody.length, maxLines); i++) {
+    doc.text(wrappedBody[i], margin + 4, bodyY);
+    bodyY += 5;
   }
   
   y += bodyHeight + 8;
   
   // Próximos pasos
-  drawSectionTitle(doc, margin, y, data.translations.nextSteps);
-  y += 12;
+  drawSectionTitle(doc, margin, y, 'Próximos Pasos');
+  y += 10;
   
   doc.setFillColor(...COLORS.verdeOliva);
-  doc.roundedRect(margin, y, contentWidth, 50, 3, 3, 'F');
+  doc.roundedRect(margin, y, contentWidth, 42, 3, 3, 'F');
   
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
   
   const steps = [
@@ -587,25 +549,27 @@ export async function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): Pro
     '5. Contactar a Alternative para una consultoría gratuita'
   ];
   
-  let stepY = y + 8;
+  let stepY = y + 7;
   for (const step of steps) {
     doc.text(step, margin + 5, stepY);
-    stepY += 9;
+    stepY += 7;
   }
   
-  // Call to action
-  y = pageHeight - 60;
+  y += 50;
+  
+  // Call to action - posición fija cerca del final pero sin superponerse
+  const ctaY = Math.max(y, pageHeight - 55);
   doc.setFillColor(...COLORS.azulMarino);
-  doc.roundedRect(margin, y, contentWidth, 30, 3, 3, 'F');
+  doc.roundedRect(margin, ctaY, contentWidth, 26, 3, 3, 'F');
   
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text('¿Listo para optimizar tus procesos?', pageWidth / 2, y + 12, { align: 'center' });
+  doc.text('¿Listo para optimizar tus procesos?', pageWidth / 2, ctaY + 10, { align: 'center' });
   
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.text('Contáctanos para una consultoría gratuita y comienza a ahorrar', pageWidth / 2, y + 22, { align: 'center' });
+  doc.text('Contáctanos para una consultoría gratuita y comienza a ahorrar', pageWidth / 2, ctaY + 19, { align: 'center' });
   
   drawFooter(doc, 2);
 }
