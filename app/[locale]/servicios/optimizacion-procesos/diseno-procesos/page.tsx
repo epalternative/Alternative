@@ -942,6 +942,7 @@ export default function DisenoProcesosPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           WHO IS IT FOR SECTION
