@@ -107,17 +107,17 @@ export default function KatherineGonzalezPage() {
       </motion.div>
 
       {/* Main Content */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center">
+      <div className="relative z-10 min-h-screen flex items-end lg:items-center pb-20 lg:pb-0">
         <div className="container-custom w-full">
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
-            {/* Left - Text Content (Centered) */}
-            <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-center gap-8 lg:gap-20">
+            {/* Left - Text Content */}
+            <div className="flex flex-col items-start text-left lg:items-center lg:text-center">
               {/* Title/Role */}
               <motion.span
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-turquesa uppercase tracking-[0.25em] text-sm font-medium mb-6"
+                className="text-turquesa uppercase tracking-[0.25em] text-sm font-medium mb-4"
               >
                 {isEs ? 'Fundadora & CEO' : 'Founder & CEO'}
               </motion.span>
@@ -127,7 +127,7 @@ export default function KatherineGonzalezPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white font-semibold leading-[0.95] mb-8"
+                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white font-semibold leading-[0.95] mb-6"
               >
                 Katherine
                 <br />
@@ -139,7 +139,7 @@ export default function KatherineGonzalezPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="text-white/70 text-lg leading-relaxed max-w-lg mb-6"
+                className="text-white/70 text-base lg:text-lg leading-relaxed max-w-lg mb-4"
               >
                 {isEs
                   ? 'Líder visionaria con más de 15 años transformando organizaciones en Latinoamérica. Especialista en consultoría estratégica, optimización de procesos y transformación digital.'
@@ -151,6 +151,7 @@ export default function KatherineGonzalezPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
+                className="mb-6 lg:mb-0"
               >
                 <Link 
                   href={`/${locale}/contacto`}
@@ -159,14 +160,42 @@ export default function KatherineGonzalezPage() {
                   {isEs ? 'Agenda una consulta estratégica' : 'Schedule a strategic consultation'}
                 </Link>
               </motion.div>
+
+              {/* Social Icons - Horizontal row on mobile, part of text section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+                className="flex flex-row gap-3 lg:hidden"
+              >
+                {socialLinks.map((social, i) => (
+                  <motion.a
+                    key={social.name}
+                    href={social.href}
+                    target={social.href.startsWith('http') ? '_blank' : undefined}
+                    rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`w-12 h-12 rounded-full flex items-center justify-center 
+                               shadow-lg transition-all duration-300 border-2
+                               ${social.isEmail 
+                                 ? 'bg-turquesa border-turquesa text-white' 
+                                 : 'bg-white border-white/20 text-turquesa'
+                               }`}
+                    aria-label={social.name}
+                  >
+                    <social.icon className="w-5 h-5" />
+                  </motion.a>
+                ))}
+              </motion.div>
             </div>
 
-            {/* Right - Social Icons (Large Circular Buttons) */}
+            {/* Right - Social Icons (Large Circular Buttons) - Desktop only */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="flex flex-wrap justify-center gap-4 lg:flex-col lg:gap-5 max-w-xs lg:max-w-none"
+              className="hidden lg:flex lg:flex-col gap-5"
             >
               {socialLinks.map((social, i) => (
                 <motion.a
@@ -179,7 +208,7 @@ export default function KatherineGonzalezPage() {
                   transition={{ delay: 0.5 + i * 0.1 }}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center 
+                  className={`w-20 h-20 rounded-full flex items-center justify-center 
                              shadow-xl transition-all duration-300 border-2
                              ${social.isEmail 
                                ? 'bg-turquesa border-turquesa text-white hover:bg-menta hover:border-menta hover:text-azul-marino' 
@@ -187,7 +216,7 @@ export default function KatherineGonzalezPage() {
                              }`}
                   aria-label={social.name}
                 >
-                  <social.icon className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8" />
+                  <social.icon className="w-8 h-8" />
                 </motion.a>
               ))}
             </motion.div>
