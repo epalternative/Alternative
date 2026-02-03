@@ -802,8 +802,9 @@ export default function GestionProyectosPage() {
       </section>
 
       {/* =====================================================
-          CASE STUDY SECTION
+          CASE STUDY SECTION - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section className="py-20 lg:py-28 bg-white dark:bg-background">
         <div className="container-custom">
           <AnimatedSection>
@@ -895,6 +896,7 @@ export default function GestionProyectosPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           PM PROFILE SECTION

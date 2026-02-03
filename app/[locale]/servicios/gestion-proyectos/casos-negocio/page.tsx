@@ -848,8 +848,9 @@ export default function CasosNegocioPage() {
       </section>
 
       {/* =====================================================
-          CASO DE ÉXITO - ERP junta escéptica
+          CASO DE ÉXITO - ERP junta escéptica - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section id="caso-exito" className="py-20 lg:py-28 bg-blanco-hueso dark:bg-card">
         <div className="container-custom">
           <AnimatedSection>
@@ -957,6 +958,7 @@ export default function CasosNegocioPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           CUÁNDO NECESITAS BUSINESS CASE - Checklist interactivo

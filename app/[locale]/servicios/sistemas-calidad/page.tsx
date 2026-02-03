@@ -683,8 +683,9 @@ export default function SistemasCalidadPage() {
       </section>
 
       {/* =====================================================
-          CASE STUDY SECTION
+          CASE STUDY SECTION - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section id="casos-exito" className="py-20 lg:py-28 bg-white dark:bg-background">
         <div className="container-custom">
           <AnimatedSection>
@@ -763,41 +764,139 @@ export default function SistemasCalidadPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
-          ISO 9001 BRIEF SECTION
+          ISO 9001 BRIEF SECTION - Redesigned
           ===================================================== */}
       <section className="py-20 lg:py-28 bg-blanco-hueso dark:bg-card">
         <div className="container-custom">
-          <AnimatedSection className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="inline-block px-4 py-2 bg-violeta/10 text-violeta 
-                               rounded-full text-sm font-medium mb-4">
-                {isEs ? 'ISO 9001' : 'ISO 9001'}
-              </span>
-              <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white mb-4">
-                {isEs ? '¿Qué es ISO 9001?' : 'What is ISO 9001?'}
-              </h2>
-            </div>
+          {/* Header */}
+          <AnimatedSection className="text-center mb-12">
+            <span className="inline-block px-4 py-2 bg-violeta/10 text-violeta 
+                             rounded-full text-sm font-medium mb-4">
+              {isEs ? 'ISO 9001' : 'ISO 9001'}
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino dark:text-white mb-4">
+              {isEs ? '¿Qué es ISO 9001?' : 'What is ISO 9001?'}
+            </h2>
+            <p className="text-foreground/70 max-w-2xl mx-auto">
+              {isEs
+                ? 'La norma internacional más reconocida para sistemas de gestión de calidad'
+                : 'The most recognized international standard for quality management systems'}
+            </p>
+          </AnimatedSection>
 
-            <div className="bg-white dark:bg-background rounded-2xl p-8 lg:p-12 shadow-brand space-y-6">
-              <p className="text-foreground/70 leading-relaxed text-lg">
-                {isEs
-                  ? 'ISO 9001 es la norma internacional más reconocida para sistemas de gestión de calidad. Establece requisitos para que una organización demuestre su capacidad de proporcionar productos y servicios que cumplan con requisitos legales y regulatorios, así como con las necesidades y expectativas de clientes.'
-                  : 'ISO 9001 is the most recognized international standard for quality management systems. It establishes requirements for an organization to demonstrate its ability to provide products and services that meet legal and regulatory requirements, as well as customer needs and expectations.'}
-              </p>
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
+            {/* Left - Main content */}
+            <AnimatedSection>
+              <div className="bg-white dark:bg-background rounded-2xl p-8 shadow-brand h-full">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-violeta/10 rounded-xl flex items-center justify-center">
+                    <Award className="w-7 h-7 text-violeta" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-azul-marino dark:text-white">
+                      ISO 9001:2015
+                    </h3>
+                    <p className="text-foreground/60 text-sm">{isEs ? 'Versión actual' : 'Current version'}</p>
+                  </div>
+                </div>
+                
+                <p className="text-foreground/70 leading-relaxed mb-6">
+                  {isEs
+                    ? 'Establece requisitos para que una organización demuestre su capacidad de proporcionar productos y servicios que cumplan con requisitos legales y regulatorios, así como con las necesidades de clientes.'
+                    : 'Establishes requirements for an organization to demonstrate its ability to provide products and services that meet legal and regulatory requirements, as well as customer needs.'}
+                </p>
 
-              <p className="text-foreground/70 leading-relaxed text-lg">
-                {isEs
-                  ? 'La norma se basa en 7 principios fundamentales: enfoque al cliente, liderazgo, compromiso de las personas, enfoque a procesos, mejora continua, toma de decisiones basada en evidencia, y gestión de relaciones. Estos principios guían el diseño e implementación de un sistema de calidad efectivo que no solo cumple requisitos, sino que genera valor real para la organización.'
-                  : 'The standard is based on 7 fundamental principles: customer focus, leadership, engagement of people, process approach, continuous improvement, evidence-based decision making, and relationship management. These principles guide the design and implementation of an effective quality system that not only meets requirements, but generates real value for the organization.'}
-              </p>
+                {/* Key Requirements */}
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold text-azul-marino dark:text-white">
+                    {isEs ? 'Requisitos clave:' : 'Key requirements:'}
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      isEs ? 'Documentación de procesos' : 'Process documentation',
+                      isEs ? 'Gestión de riesgos' : 'Risk management',
+                      isEs ? 'Auditorías internas' : 'Internal audits',
+                      isEs ? 'Mejora continua' : 'Continuous improvement',
+                    ].map((req, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-turquesa flex-shrink-0" />
+                        <span className="text-sm text-foreground/70">{req}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </AnimatedSection>
 
-              <p className="text-foreground/70 leading-relaxed text-lg">
-                {isEs
-                  ? 'ISO 9001:2015 (versión actual) requiere documentación de procesos críticos, establecimiento de controles, gestión de riesgos, auditorías internas periódicas, revisión por la dirección, y mejora continua. La certificación por un organismo acreditado demuestra que tu sistema cumple estos requisitos y genera confianza en clientes, reguladores y stakeholders.'
-                  : 'ISO 9001:2015 (current version) requires documentation of critical processes, establishment of controls, risk management, periodic internal audits, management review, and continuous improvement. Certification by an accredited body demonstrates that your system meets these requirements and generates trust in customers, regulators, and stakeholders.'}
-              </p>
+            {/* Right - 7 Principles */}
+            <AnimatedSection delay={0.2}>
+              <div className="bg-azul-marino rounded-2xl p-8 text-white">
+                <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
+                  <span className="w-8 h-8 bg-turquesa/20 rounded-lg flex items-center justify-center text-turquesa font-bold">
+                    7
+                  </span>
+                  {isEs ? 'Principios Fundamentales' : 'Fundamental Principles'}
+                </h3>
+                
+                <div className="space-y-3">
+                  {[
+                    { icon: Users, label: isEs ? 'Enfoque al cliente' : 'Customer focus' },
+                    { icon: Target, label: isEs ? 'Liderazgo' : 'Leadership' },
+                    { icon: Users, label: isEs ? 'Compromiso de las personas' : 'People engagement' },
+                    { icon: Settings, label: isEs ? 'Enfoque a procesos' : 'Process approach' },
+                    { icon: RefreshCw, label: isEs ? 'Mejora continua' : 'Continuous improvement' },
+                    { icon: BarChart3, label: isEs ? 'Decisiones basadas en evidencia' : 'Evidence-based decisions' },
+                    { icon: Briefcase, label: isEs ? 'Gestión de relaciones' : 'Relationship management' },
+                  ].map((principle, i) => (
+                    <motion.div
+                      key={i}
+                      whileHover={{ x: 5 }}
+                      className="flex items-center gap-3 p-3 bg-white/5 rounded-lg 
+                                 hover:bg-white/10 transition-colors cursor-default"
+                    >
+                      <div className="w-8 h-8 bg-turquesa/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <principle.icon className="w-4 h-4 text-turquesa" />
+                      </div>
+                      <span className="text-white/90 text-sm font-medium">{principle.label}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </AnimatedSection>
+          </div>
+
+          {/* Bottom - Benefits banner */}
+          <AnimatedSection delay={0.3} className="mt-8">
+            <div className="bg-gradient-to-r from-turquesa to-menta rounded-2xl p-6 lg:p-8">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-azul-marino font-semibold text-lg">
+                      {isEs ? '¿Por qué certificarse?' : 'Why get certified?'}
+                    </h4>
+                    <p className="text-azul-marino/70 text-sm">
+                      {isEs 
+                        ? 'Genera confianza en clientes, reguladores y stakeholders'
+                        : 'Builds trust with customers, regulators and stakeholders'}
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href={`/${locale}/servicios/sistemas-calidad/implementacion-iso-9001`}
+                  className="inline-flex items-center gap-2 bg-azul-marino text-white 
+                             font-semibold px-6 py-3 rounded-lg hover:bg-azul-marino/90 
+                             transition-all duration-300 group whitespace-nowrap"
+                >
+                  {isEs ? 'Ver Implementación ISO 9001' : 'View ISO 9001 Implementation'}
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </div>
           </AnimatedSection>
         </div>

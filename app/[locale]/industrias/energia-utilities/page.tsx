@@ -562,7 +562,8 @@ export default function EnergiaUtilitiesPage() {
         </div>
       </section>
 
-      {/* CASO DE ÉXITO */}
+      {/* CASO DE ÉXITO - HIDDEN FOR VALIDATION */}
+      {false && (
       <section className="py-20 lg:py-32 bg-white dark:bg-background">
         <div className="container-custom">
           <AnimatedSection>
@@ -622,6 +623,7 @@ export default function EnergiaUtilitiesPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* FAQ */}
       <section className="py-20 lg:py-32 bg-blanco-hueso dark:bg-card">

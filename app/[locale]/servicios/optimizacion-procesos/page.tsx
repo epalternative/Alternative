@@ -836,8 +836,9 @@ export default function OptimizacionProcesosPage() {
       </section>
 
       {/* =====================================================
-          CASE STUDY SECTION
+          CASE STUDY SECTION - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section className="py-20 lg:py-32 bg-white dark:bg-background">
         <div className="container-custom">
           <AnimatedSection>
@@ -932,6 +933,7 @@ export default function OptimizacionProcesosPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           METHODOLOGY SECTION

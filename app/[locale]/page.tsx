@@ -1478,7 +1478,7 @@ export default function Home() {
             ))}
           </StaggerContainer>
 
-          {/* Client Logos */}
+          {/* Client Logos Carousel */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -1489,22 +1489,57 @@ export default function Home() {
             <p className="text-center text-white/50 text-sm mb-8">
               Empresas que confían en nosotros
             </p>
-            <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 + i * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.05 }}
-                  className="w-32 h-14 bg-white/10 rounded-lg flex items-center justify-center
-                             hover:bg-white/20 transition-all duration-300 cursor-pointer
-                             border border-white/5"
-                >
-                  <span className="text-white/30 text-xs font-medium">Logo {i}</span>
-                </motion.div>
-              ))}
+            <div className="relative overflow-hidden">
+              {/* Gradient masks for fade effect */}
+              <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-azul-marino to-transparent z-10 pointer-events-none" />
+              <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-azul-marino to-transparent z-10 pointer-events-none" />
+              
+              {/* Infinite scrolling carousel */}
+              <motion.div
+                className="flex gap-8"
+                animate={{ x: ['0%', '-50%'] }}
+                transition={{
+                  x: {
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    duration: 30,
+                    ease: 'linear',
+                  },
+                }}
+              >
+                {/* Duplicate the array for infinite scroll effect */}
+                {[...Array(2)].map((_, setIndex) => (
+                  <div key={setIndex} className="flex gap-8 shrink-0">
+                    {[
+                      'Icon Group',
+                      'PH Miramar Plaza',
+                      'Finanxial IT',
+                      "Ayala's Freight Co.",
+                      'GAC Enterprises',
+                      'Servicios Agroindustriales',
+                      'Grupo Trenco',
+                      'Tropigas',
+                      'Banco Aliado',
+                      'Global Bank',
+                      'IPACOOP',
+                      'NEO Addition',
+                      'Smart Consulting',
+                      'Toledano',
+                      'Cibernética',
+                      'STH Panamá',
+                    ].map((company, i) => (
+                      <div
+                        key={`${setIndex}-${i}`}
+                        className="shrink-0 px-6 py-3 bg-white/10 rounded-lg flex items-center justify-center
+                                   hover:bg-white/20 transition-all duration-300 cursor-default
+                                   border border-white/5 whitespace-nowrap"
+                      >
+                        <span className="text-white/70 text-sm font-medium">{company}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </motion.div>
             </div>
           </motion.div>
         </div>

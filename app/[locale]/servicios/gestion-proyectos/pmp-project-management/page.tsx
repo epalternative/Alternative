@@ -957,8 +957,9 @@ export default function PMPProjectManagementPage() {
       </section>
 
       {/* =====================================================
-          CASE STUDY SECTION
+          CASE STUDY SECTION - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section id="caso-exito" className="py-20 lg:py-28 bg-white dark:bg-background">
         <div className="container-custom">
           <AnimatedSection>
@@ -1050,6 +1051,7 @@ export default function PMPProjectManagementPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           ALTERNATIVE VS OTHERS SECTION

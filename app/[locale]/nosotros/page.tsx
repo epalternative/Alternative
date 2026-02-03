@@ -1013,15 +1013,20 @@ export default function NosotrosPage() {
               viewport={{ once: true }}
               className="flex items-center justify-center gap-4"
             >
-              <div className="w-16 h-16 bg-turquesa/20 rounded-full flex items-center justify-center">
-                <span className="text-turquesa font-bold text-xl">KG</span>
-              </div>
-              <div className="text-left">
-                <div className="text-white font-semibold text-lg">Katherine González</div>
-                <div className="text-white/60 text-sm">
-                  {isEs ? 'Fundadora & CEO, Grupo Alternative' : 'Founder & CEO, Grupo Alternative'}
+              <Link href={`/${locale}/nosotros/katherine-gonzalez`} className="flex items-center gap-4 group">
+                <div className="w-16 h-16 bg-turquesa/20 rounded-full flex items-center justify-center 
+                                group-hover:bg-turquesa/30 transition-colors">
+                  <span className="text-turquesa font-bold text-xl">KG</span>
                 </div>
-              </div>
+                <div className="text-left">
+                  <div className="text-white font-semibold text-lg group-hover:text-turquesa transition-colors cursor-pointer">
+                    Katherine González
+                  </div>
+                  <div className="text-white/60 text-sm">
+                    {isEs ? 'Fundadora & CEO, Grupo Alternative' : 'Founder & CEO, Grupo Alternative'}
+                  </div>
+                </div>
+              </Link>
             </motion.div>
           </AnimatedSection>
         </div>

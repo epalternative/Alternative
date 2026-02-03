@@ -1030,8 +1030,9 @@ export default function AnalisisDatosPage() {
       </section>
 
       {/* =====================================================
-          CASO DE ÉXITO SECTION
+          CASO DE ÉXITO SECTION - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section className="py-20 lg:py-32 bg-white dark:bg-background">
         <div className="container-custom">
           <AnimatedSection>
@@ -1177,6 +1178,7 @@ export default function AnalisisDatosPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           HERRAMIENTAS BI - Tabla Comparativa

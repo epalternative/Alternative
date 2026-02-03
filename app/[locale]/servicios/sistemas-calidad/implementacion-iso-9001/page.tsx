@@ -163,67 +163,67 @@ export default function ImplementacionISO9001Page() {
   // CONTENT DATA
   // =====================================================
 
-  // For Whom section
+  // For Whom section - Compact descriptions
   const forWhom = [
     {
       icon: Briefcase,
-      title: isEs ? 'Cliente requiere certificación ISO 9001' : 'Client requires ISO 9001 certification',
+      title: isEs ? 'Cliente exige certificación' : 'Client requires certification',
       description: isEs
-        ? 'Tu cliente principal exige certificación ISO 9001 como requisito para continuar la relación comercial. Sin certificación, pierdes el contrato.'
-        : 'Your main client requires ISO 9001 certification as a requirement to continue the business relationship. Without certification, you lose the contract.',
+        ? 'Tu cliente principal exige ISO 9001 para continuar la relación comercial.'
+        : 'Your main client requires ISO 9001 to continue the business relationship.',
       color: 'turquesa'
     },
     {
       icon: Scale,
-      title: isEs ? 'Industria regulada requiere sistema formal' : 'Regulated industry requires formal system',
+      title: isEs ? 'Industria regulada' : 'Regulated industry',
       description: isEs
-        ? 'Sector bancario, farmacéutico, alimentos, energía. Reguladores exigen sistema de gestión de calidad documentado y certificado.'
-        : 'Banking, pharmaceutical, food, energy sectors. Regulators require documented and certified quality management system.',
+        ? 'Sectores bancario, farmacéutico, alimentos o energía con requisitos regulatorios.'
+        : 'Banking, pharmaceutical, food or energy sectors with regulatory requirements.',
       color: 'menta'
     },
     {
       icon: Globe,
       title: isEs ? 'Expansión internacional' : 'International expansion',
       description: isEs
-        ? 'Quieres exportar o abrir operaciones en otros países. ISO 9001 es reconocida globalmente y facilita entrada a mercados internacionales.'
-        : 'You want to export or open operations in other countries. ISO 9001 is globally recognized and facilitates entry to international markets.',
+        ? 'ISO 9001 facilita entrada a mercados internacionales con reconocimiento global.'
+        : 'ISO 9001 facilitates entry to international markets with global recognition.',
       color: 'violeta'
     },
     {
       icon: TrendingUp,
-      title: isEs ? 'Empresa escalando necesita estandarización' : 'Scaling company needs standardization',
+      title: isEs ? 'Empresa en crecimiento' : 'Growing company',
       description: isEs
-        ? 'Crecimiento rápido generó procesos inconsistentes. Necesitas estandarizar operaciones para mantener calidad mientras escalas.'
-        : 'Rapid growth generated inconsistent processes. You need to standardize operations to maintain quality while scaling.',
+        ? 'Necesitas estandarizar operaciones para mantener calidad mientras escalas.'
+        : 'You need to standardize operations to maintain quality while scaling.',
       color: 'turquesa'
     },
     {
       icon: AlertTriangle,
-      title: isEs ? 'Sistema de calidad informal no funciona' : 'Informal quality system not working',
+      title: isEs ? 'Sistema informal' : 'Informal system',
       description: isEs
-        ? 'Tienes procesos pero no documentados. Calidad inconsistente genera quejas, retrabajos, pérdida de clientes. Necesitas sistema formal.'
-        : 'You have processes but not documented. Inconsistent quality generates complaints, rework, customer loss. You need a formal system.',
+        ? 'Procesos no documentados generan inconsistencias. Necesitas sistema formal.'
+        : 'Undocumented processes create inconsistencies. You need a formal system.',
       color: 'menta'
     },
     {
       icon: Target,
-      title: isEs ? 'Ventaja competitiva en licitaciones' : 'Competitive advantage in tenders',
+      title: isEs ? 'Licitaciones' : 'Tenders',
       description: isEs
-        ? 'Licitaciones públicas y privadas valoran certificación ISO 9001. Sin ella, quedas fuera de oportunidades comerciales importantes.'
-        : 'Public and private tenders value ISO 9001 certification. Without it, you are excluded from important business opportunities.',
+        ? 'Certificación ISO 9001 es valorada en licitaciones públicas y privadas.'
+        : 'ISO 9001 certification is valued in public and private tenders.',
       color: 'violeta'
     }
   ];
 
-  // Methodology - 7 phases
+  // Methodology - 7 phases (compact descriptions)
   const methodology = [
     {
       phase: isEs ? 'FASE 1' : 'PHASE 1',
       title: isEs ? 'Diagnóstico Inicial' : 'Initial Diagnosis',
       duration: isEs ? '1-2 semanas' : '1-2 weeks',
       description: isEs
-        ? 'Evaluación completa del estado actual: procesos existentes, documentación, brechas vs ISO 9001:2015. Identificación de procesos críticos y riesgos. Plan de implementación detallado.'
-        : 'Complete evaluation of current state: existing processes, documentation, gaps vs ISO 9001:2015. Identification of critical processes and risks. Detailed implementation plan.',
+        ? 'Evaluación del estado actual, brechas vs ISO 9001:2015 y plan de implementación.'
+        : 'Current state evaluation, gaps vs ISO 9001:2015 and implementation plan.',
       icon: Search,
       color: 'turquesa'
     },
@@ -232,8 +232,8 @@ export default function ImplementacionISO9001Page() {
       title: isEs ? 'Diseño del Sistema' : 'System Design',
       duration: isEs ? '2-3 semanas' : '2-3 weeks',
       description: isEs
-        ? 'Arquitectura del sistema de gestión de calidad. Definición de procesos, responsabilidades, estructura organizacional. Mapeo de procesos críticos. Diseño de indicadores de calidad (KPIs).'
-        : 'Quality management system architecture. Process definition, responsibilities, organizational structure. Critical process mapping. Quality indicators (KPIs) design.',
+        ? 'Arquitectura del SGC, procesos, responsabilidades y KPIs de calidad.'
+        : 'QMS architecture, processes, responsibilities and quality KPIs.',
       icon: Settings,
       color: 'menta'
     },
@@ -242,18 +242,18 @@ export default function ImplementacionISO9001Page() {
       title: isEs ? 'Documentación' : 'Documentation',
       duration: isEs ? '4-6 semanas' : '4-6 weeks',
       description: isEs
-        ? 'Elaboración de manual de calidad, procedimientos, instrucciones de trabajo, formatos. Documentación alineada a ISO 9001:2015. Revisión y aprobación con tu equipo.'
-        : 'Development of quality manual, procedures, work instructions, forms. Documentation aligned to ISO 9001:2015. Review and approval with your team.',
+        ? 'Manual de calidad, procedimientos e instrucciones alineados a ISO 9001:2015.'
+        : 'Quality manual, procedures and instructions aligned to ISO 9001:2015.',
       icon: FileText,
       color: 'violeta'
     },
     {
       phase: isEs ? 'FASE 4' : 'PHASE 4',
-      title: isEs ? 'Implementación Operativa' : 'Operational Implementation',
+      title: isEs ? 'Implementación' : 'Implementation',
       duration: isEs ? '6-8 semanas' : '6-8 weeks',
       description: isEs
-        ? 'Capacitación del personal en nuevos procesos. Implementación de controles de calidad. Registros y evidencias. Ajustes según feedback operativo. Institucionalización del sistema.'
-        : 'Staff training on new processes. Quality control implementation. Records and evidence. Adjustments based on operational feedback. System institutionalization.',
+        ? 'Capacitación, controles de calidad y ajustes según feedback operativo.'
+        : 'Training, quality controls and adjustments based on operational feedback.',
       icon: Zap,
       color: 'turquesa'
     },
@@ -262,28 +262,28 @@ export default function ImplementacionISO9001Page() {
       title: isEs ? 'Auditoría Interna' : 'Internal Audit',
       duration: isEs ? '1-2 semanas' : '1-2 weeks',
       description: isEs
-        ? 'Auditoría interna completa por auditores certificados. Identificación de no conformidades. Plan de acciones correctivas. Verificación de efectividad del sistema.'
-        : 'Complete internal audit by certified auditors. Non-conformity identification. Corrective action plan. System effectiveness verification.',
+        ? 'Auditoría por auditores certificados e identificación de no conformidades.'
+        : 'Audit by certified auditors and non-conformity identification.',
       icon: ClipboardCheck,
       color: 'menta'
     },
     {
       phase: isEs ? 'FASE 6' : 'PHASE 6',
-      title: isEs ? 'Corrección de No Conformidades' : 'Non-Conformity Correction',
+      title: isEs ? 'Correcciones' : 'Corrections',
       duration: isEs ? '2-4 semanas' : '2-4 weeks',
       description: isEs
-        ? 'Implementación de acciones correctivas para todas las no conformidades identificadas. Evidencias de cierre. Segunda auditoría interna si es necesario. Preparación para certificación.'
-        : 'Implementation of corrective actions for all identified non-conformities. Closure evidence. Second internal audit if necessary. Certification preparation.',
+        ? 'Acciones correctivas y preparación final para certificación.'
+        : 'Corrective actions and final preparation for certification.',
       icon: RefreshCw,
       color: 'violeta'
     },
     {
       phase: isEs ? 'FASE 7' : 'PHASE 7',
-      title: isEs ? 'Preparación para Certificación' : 'Certification Preparation',
+      title: isEs ? 'Certificación' : 'Certification',
       duration: isEs ? '1-2 semanas' : '1-2 weeks',
       description: isEs
-        ? 'Revisión final del sistema. Simulación de auditoría de certificación. Selección de organismo certificador. Coordinación de auditoría Stage 1 y Stage 2. Acompañamiento durante auditoría.'
-        : 'Final system review. Certification audit simulation. Certification body selection. Stage 1 and Stage 2 audit coordination. Support during audit.',
+        ? 'Simulación de auditoría y acompañamiento durante Stage 1 y Stage 2.'
+        : 'Audit simulation and support during Stage 1 and Stage 2.',
       icon: Award,
       color: 'turquesa'
     }
@@ -439,55 +439,55 @@ export default function ImplementacionISO9001Page() {
     }
   ];
 
-  // FAQs
+  // FAQs - Compact answers
   const faqs = [
     {
       question: isEs 
-        ? '¿Cuánto tiempo toma implementar ISO 9001 desde cero?' 
-        : 'How long does it take to implement ISO 9001 from scratch?',
+        ? '¿Cuánto tiempo toma implementar ISO 9001?' 
+        : 'How long does it take to implement ISO 9001?',
       answer: isEs
-        ? 'Típicamente 4-8 meses dependiendo del tamaño y complejidad de la empresa. Empresas pequeñas (10-50 empleados) pueden completar en 4-5 meses. Empresas medianas (50-200 empleados) requieren 6-8 meses. El tiempo incluye implementación, auditorías internas, corrección de no conformidades, y preparación para certificación.'
-        : 'Typically 4-8 months depending on company size and complexity. Small companies (10-50 employees) can complete in 4-5 months. Medium companies (50-200 employees) require 6-8 months. Time includes implementation, internal audits, non-conformity correction, and certification preparation.'
+        ? 'Típicamente 4-8 meses. Empresas pequeñas: 4-5 meses. Empresas medianas: 6-8 meses. Incluye implementación, auditorías internas y preparación para certificación.'
+        : 'Typically 4-8 months. Small companies: 4-5 months. Medium companies: 6-8 months. Includes implementation, internal audits and certification preparation.'
     },
     {
       question: isEs 
-        ? '¿Qué diferencia hay entre implementación y certificación ISO 9001?' 
-        : 'What\'s the difference between ISO 9001 implementation and certification?',
+        ? '¿Diferencia entre implementación y certificación?' 
+        : 'Difference between implementation and certification?',
       answer: isEs
-        ? 'Implementación es el proceso interno de diseñar, documentar y operar el sistema de gestión de calidad según ISO 9001:2015. Certificación es la evaluación externa por un organismo certificador acreditado que verifica que tu sistema cumple la norma y te otorga el certificado. Implementación es necesaria antes de certificación. Alternative te acompaña en ambos procesos.'
-        : 'Implementation is the internal process of designing, documenting and operating the quality management system according to ISO 9001:2015. Certification is the external evaluation by an accredited certification body that verifies your system meets the standard and grants you the certificate. Implementation is necessary before certification. Alternative accompanies you in both processes.'
+        ? 'Implementación es el proceso interno para diseñar y operar el sistema. Certificación es la evaluación externa que verifica cumplimiento y otorga el certificado. Alternative te acompaña en ambos.'
+        : 'Implementation is the internal process to design and operate the system. Certification is the external evaluation that verifies compliance and grants the certificate. Alternative supports you in both.'
     },
     {
       question: isEs 
-        ? '¿Necesito tener procesos perfectos antes de implementar ISO 9001?' 
-        : 'Do I need to have perfect processes before implementing ISO 9001?',
+        ? '¿Necesito procesos perfectos para empezar?' 
+        : 'Do I need perfect processes to start?',
       answer: isEs
-        ? 'No. ISO 9001 no requiere procesos perfectos, requiere que tengas procesos documentados, controlados y en mejora continua. Durante la implementación, Alternative identifica procesos existentes, los documenta, y mejora los que tienen problemas. El enfoque es pragmático: documentamos lo que funciona y mejoramos lo que no.'
-        : 'No. ISO 9001 does not require perfect processes, it requires documented, controlled and continuously improving processes. During implementation, Alternative identifies existing processes, documents them, and improves those with problems. The approach is pragmatic: we document what works and improve what doesn\'t.'
+        ? 'No. ISO 9001 requiere procesos documentados y en mejora continua, no perfectos. Documentamos lo que funciona y mejoramos lo que no.'
+        : 'No. ISO 9001 requires documented processes with continuous improvement, not perfect ones. We document what works and improve what doesn\'t.'
     },
     {
       question: isEs 
-        ? '¿Qué pasa si no paso la auditoría de certificación?' 
-        : 'What happens if I don\'t pass the certification audit?',
+        ? '¿Qué pasa si no paso la auditoría?' 
+        : 'What if I don\'t pass the audit?',
       answer: isEs
-        ? 'Si hay no conformidades menores, el organismo certificador te da plazo (típicamente 30-90 días) para corregirlas y luego verifica el cierre. Si hay no conformidades mayores, el proceso se detiene hasta corregirlas. Con Alternative, 85%+ de nuestros clientes pasan la primera auditoría porque hacemos auditorías internas rigurosas antes de la certificación y corregimos todas las no conformidades.'
-        : 'If there are minor non-conformities, the certification body gives you a deadline (typically 30-90 days) to correct them and then verifies closure. If there are major non-conformities, the process stops until corrected. With Alternative, 85%+ of our clients pass the first audit because we do rigorous internal audits before certification and correct all non-conformities.'
+        ? 'Con no conformidades menores, tienes 30-90 días para corregir. Con Alternative, 85%+ pasan la primera auditoría gracias a auditorías internas rigurosas previas.'
+        : 'With minor non-conformities, you have 30-90 days to correct. With Alternative, 85%+ pass the first audit thanks to rigorous prior internal audits.'
     },
     {
       question: isEs 
         ? '¿Cuánto cuesta implementar ISO 9001?' 
-        : 'How much does it cost to implement ISO 9001?',
+        : 'How much does ISO 9001 implementation cost?',
       answer: isEs
-        ? 'El costo depende del tamaño de la empresa, complejidad de procesos, y nivel de soporte requerido. Incluye: consultoría de implementación, documentación, capacitación, auditorías internas. Adicionalmente, el organismo certificador cobra por la auditoría de certificación (Stage 1 y Stage 2) y certificado anual. Alternative ofrece cotización personalizada después de diagnóstico inicial.'
-        : 'Cost depends on company size, process complexity, and level of support required. Includes: implementation consulting, documentation, training, internal audits. Additionally, the certification body charges for certification audit (Stage 1 and Stage 2) and annual certificate. Alternative offers personalized quote after initial diagnosis.'
+        ? 'Depende del tamaño y complejidad. Incluye consultoría, documentación, capacitación y auditorías. Solicita cotización personalizada con diagnóstico gratuito.'
+        : 'Depends on size and complexity. Includes consulting, documentation, training and audits. Request personalized quote with free diagnosis.'
     },
     {
       question: isEs 
-        ? '¿Necesito mantener el sistema después de certificarme?' 
-        : 'Do I need to maintain the system after certification?',
+        ? '¿Hay mantenimiento post-certificación?' 
+        : 'Is there post-certification maintenance?',
       answer: isEs
-        ? 'Sí. ISO 9001 requiere mantenimiento continuo: auditorías internas anuales, revisión por la dirección, acciones correctivas, mejora continua. El organismo certificador hace auditorías de vigilancia anuales y re-certificación cada 3 años. Alternative ofrece servicios de mantenimiento y acompañamiento post-certificación para asegurar que mantengas tu certificado.'
-        : 'Yes. ISO 9001 requires continuous maintenance: annual internal audits, management review, corrective actions, continuous improvement. The certification body conducts annual surveillance audits and re-certification every 3 years. Alternative offers maintenance and post-certification support services to ensure you maintain your certificate.'
+        ? 'Sí. Auditorías internas anuales, revisión por dirección y mejora continua. Re-certificación cada 3 años. Alternative ofrece acompañamiento post-certificación.'
+        : 'Yes. Annual internal audits, management review and continuous improvement. Re-certification every 3 years. Alternative offers post-certification support.'
     }
   ];
 
@@ -988,8 +988,9 @@ export default function ImplementacionISO9001Page() {
       </section>
 
       {/* =====================================================
-          CASE STUDY SECTION
+          CASE STUDY SECTION - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section className="py-20 lg:py-28 bg-white dark:bg-background">
         <div className="container-custom">
           <AnimatedSection>
@@ -1083,6 +1084,7 @@ export default function ImplementacionISO9001Page() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           ISO 9001:2015 REQUIREMENTS SECTION

@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
+import { WhatsAppButton } from '@/components/ui/whatsapp-button';
 
 const HELPDESK_PATH = 'helpdesk-it';
 const STUDIO_PATH = 'studio';
@@ -22,6 +23,7 @@ export function ConditionalShell({ children }: { children: React.ReactNode }) {
       <Header />
       <main className="pt-16 lg:pt-20">{children}</main>
       <Footer />
+      <WhatsAppButton />
     </>
   );
 }

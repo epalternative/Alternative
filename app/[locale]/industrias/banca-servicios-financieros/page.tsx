@@ -762,8 +762,9 @@ export default function BancaServiciosFinancierosPage() {
       </section>
 
       {/* =====================================================
-          SECCIÓN 5: CASO DE ÉXITO
+          SECCIÓN 5: CASO DE ÉXITO - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section className="py-20 lg:py-32 bg-blanco-hueso">
         <div className="container-custom">
           <AnimatedSection>
@@ -874,6 +875,7 @@ export default function BancaServiciosFinancierosPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           SECCIÓN 6: EXPLORA TEMAS ESPECÍFICOS

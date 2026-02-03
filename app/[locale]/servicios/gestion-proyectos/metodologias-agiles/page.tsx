@@ -980,8 +980,9 @@ export default function MetodologiasAgilesPage() {
       </section>
 
       {/* =====================================================
-          CASE STUDY SECTION
+          CASE STUDY SECTION - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section id="caso-exito" className="py-20 lg:py-28 bg-white dark:bg-background">
         <div className="container-custom">
           <AnimatedSection>
@@ -1060,6 +1061,7 @@ export default function MetodologiasAgilesPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           SCRUM VS KANBAN SECTION

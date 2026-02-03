@@ -716,8 +716,9 @@ export default function CertificacionISOPage() {
       </section>
 
       {/* =====================================================
-          CASO DE ÉXITO - Banco ISO 9001 SBP
+          CASO DE ÉXITO - Banco ISO 9001 SBP - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section id="caso-exito" className="py-20 lg:py-28 bg-white dark:bg-background">
         <div className="container-custom">
           <AnimatedSection>
@@ -802,6 +803,7 @@ export default function CertificacionISOPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           ORGANISMOS CERTIFICADORES

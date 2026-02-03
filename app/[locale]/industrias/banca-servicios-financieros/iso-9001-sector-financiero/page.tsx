@@ -462,7 +462,8 @@ export default function ISO9001SectorFinancieroPage() {
         </div>
       </section>
 
-      {/* CASO DE ÉXITO */}
+      {/* CASO DE ÉXITO - HIDDEN FOR VALIDATION */}
+      {false && (
       <section className="py-20 lg:py-32 bg-white">
         <div className="container-custom">
           <AnimatedSection>
@@ -557,6 +558,7 @@ export default function ISO9001SectorFinancieroPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* CTA FINAL */}
       <section className="py-20 lg:py-32 bg-violeta relative overflow-hidden">

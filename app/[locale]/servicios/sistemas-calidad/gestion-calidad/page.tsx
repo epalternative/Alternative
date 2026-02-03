@@ -1008,8 +1008,9 @@ export default function GestionCalidadPage() {
       </section>
 
       {/* =====================================================
-          CASE STUDY SECTION
+          CASE STUDY SECTION - HIDDEN FOR VALIDATION
           ===================================================== */}
+      {false && (
       <section className="py-20 lg:py-28 bg-white dark:bg-background">
         <div className="container-custom">
           <AnimatedSection>
@@ -1103,6 +1104,7 @@ export default function GestionCalidadPage() {
           </AnimatedSection>
         </div>
       </section>
+      )}
 
       {/* =====================================================
           COMPARISON TABLE SECTION
