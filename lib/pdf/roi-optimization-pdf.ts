@@ -57,39 +57,61 @@ const COLORS = {
   danger: [220, 53, 69] as [number, number, number],
 };
 
-// Función para dibujar el logo de texto estilizado
-function drawLogo(doc: jsPDF, x: number, y: number, width: number) {
-  const scale = width / 100;
+// Variable para almacenar el logo cargado
+let cachedLogoBase64: string | null = null;
+
+// Función para cargar el logo como base64
+async function loadLogoAsBase64(): Promise<string | null> {
+  if (cachedLogoBase64) return cachedLogoBase64;
   
-  // Dibujar cuadrados del logo (simplificado)
-  // Cuadrado turquesa
-  doc.setFillColor(...COLORS.turquesa);
-  doc.rect(x, y, 4 * scale, 4 * scale, 'F');
-  
-  // Cuadrado verde
-  doc.setFillColor(...COLORS.verdeOliva);
-  doc.rect(x + 5 * scale, y, 4 * scale, 4 * scale, 'F');
-  
-  // Cuadrado violeta
-  doc.setFillColor(...COLORS.violeta);
-  doc.rect(x + 10 * scale, y, 4 * scale, 4 * scale, 'F');
-  
-  // Texto "Alternative"
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(16);
-  doc.setFont('helvetica', 'bold');
-  doc.text('Alternative', x + 18 * scale, y + 3.5 * scale);
+  try {
+    if (typeof window !== 'undefined') {
+      const response = await fetch('/images/logoreporte.webp');
+      const blob = await response.blob();
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          cachedLogoBase64 = reader.result as string;
+          resolve(cachedLogoBase64);
+        };
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(blob);
+      });
+    }
+    return null;
+  } catch {
+    return null;
+  }
 }
 
-function drawHeader(doc: jsPDF, title: string, subtitle: string) {
+function drawHeader(doc: jsPDF, title: string, subtitle: string, logoBase64?: string | null) {
   const pageWidth = doc.internal.pageSize.width;
   
   // Fondo azul marino en el header
   doc.setFillColor(...COLORS.azulMarino);
   doc.rect(0, 0, pageWidth, 42, 'F');
   
-  // Logo
-  drawLogo(doc, pageWidth / 2 - 35, 6, 70);
+  // Logo desde imagen
+  if (logoBase64) {
+    try {
+      const logoWidth = 55;
+      const logoHeight = 12;
+      const logoX = (pageWidth - logoWidth) / 2;
+      doc.addImage(logoBase64, 'WEBP', logoX, 5, logoWidth, logoHeight);
+    } catch {
+      // Fallback a texto
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(18);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Alternative', pageWidth / 2, 14, { align: 'center' });
+    }
+  } else {
+    // Fallback a texto
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Alternative', pageWidth / 2, 14, { align: 'center' });
+  }
   
   // Título del reporte
   doc.setTextColor(255, 255, 255);
@@ -326,8 +348,11 @@ export async function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): Pro
   const margin = 20;
   const contentWidth = pageWidth - 2 * margin;
   
+  // Cargar logo
+  const logoBase64 = await loadLogoAsBase64();
+  
   // ===== PÁGINA 1: Resumen Ejecutivo =====
-  drawHeader(doc, data.translations.title, data.translations.subtitle);
+  drawHeader(doc, data.translations.title, data.translations.subtitle, logoBase64);
   
   let y = 50;
   
@@ -438,7 +463,7 @@ export async function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): Pro
   
   // ===== PÁGINA 2: Recomendaciones =====
   doc.addPage();
-  drawHeader(doc, data.translations.title, data.translations.subtitle);
+  drawHeader(doc, data.translations.title, data.translations.subtitle, logoBase64);
   
   y = 50;
   
