@@ -120,7 +120,7 @@ export function RoiPdfModal({ results, formState }: RoiPdfModalProps) {
         hours: 'horas',
       };
 
-      generateRoiOptimizationPdf(doc, {
+      await generateRoiOptimizationPdf(doc, {
         email: email.trim(),
         results,
         formState,

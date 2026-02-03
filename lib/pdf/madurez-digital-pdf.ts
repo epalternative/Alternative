@@ -39,21 +39,58 @@ const COLORS = {
   lightGray: [240, 240, 240] as [number, number, number],
 };
 
-function drawHeader(doc: jsPDF, title: string) {
+async function loadLogoAsBase64(): Promise<string | null> {
+  try {
+    // In browser environment, fetch the logo
+    if (typeof window !== 'undefined') {
+      const response = await fetch('/logo_alternative_horizontal_footer.webp');
+      const blob = await response.blob();
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(blob);
+      });
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function drawHeader(doc: jsPDF, title: string, logoBase64?: string | null) {
   const pageWidth = doc.internal.pageSize.width;
   
   // Fondo azul marino en el header
   doc.setFillColor(...COLORS.azulMarino);
   doc.rect(0, 0, pageWidth, 40, 'F');
   
-  // Logo/Nombre de la empresa
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(24);
-  doc.setFont('helvetica', 'bold');
-  doc.text('ALTERNATIVE', pageWidth / 2, 18, { align: 'center' });
+  // Logo de la empresa
+  if (logoBase64) {
+    try {
+      // Logo centrado en el header
+      const logoWidth = 50;
+      const logoHeight = 12;
+      const logoX = (pageWidth - logoWidth) / 2;
+      doc.addImage(logoBase64, 'PNG', logoX, 6, logoWidth, logoHeight);
+    } catch {
+      // Fallback a texto si falla el logo
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(20);
+      doc.setFont('helvetica', 'bold');
+      doc.text('ALTERNATIVE', pageWidth / 2, 15, { align: 'center' });
+    }
+  } else {
+    // Fallback a texto
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(20);
+    doc.setFont('helvetica', 'bold');
+    doc.text('ALTERNATIVE', pageWidth / 2, 15, { align: 'center' });
+  }
   
   // Título del reporte
-  doc.setFontSize(14);
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(12);
   doc.setFont('helvetica', 'normal');
   doc.text(title, pageWidth / 2, 30, { align: 'center' });
 }
@@ -223,14 +260,17 @@ function wrapText(doc: jsPDF, text: string, maxWidth: number): string[] {
   return lines;
 }
 
-export function generateMadurezDigitalPdf(doc: jsPDF, data: PdfData): void {
+export async function generateMadurezDigitalPdf(doc: jsPDF, data: PdfData): Promise<void> {
   const pageWidth = doc.internal.pageSize.width;
   const pageHeight = doc.internal.pageSize.height;
   const margin = 20;
   const contentWidth = pageWidth - 2 * margin;
   
+  // Cargar logo
+  const logoBase64 = await loadLogoAsBase64();
+  
   // ===== PÁGINA 1: Resumen Ejecutivo =====
-  drawHeader(doc, data.translations.title);
+  drawHeader(doc, data.translations.title, logoBase64);
   
   let y = 50;
   
@@ -320,7 +360,7 @@ export function generateMadurezDigitalPdf(doc: jsPDF, data: PdfData): void {
   
   // ===== PÁGINA 2: Fortalezas y Oportunidades =====
   doc.addPage();
-  drawHeader(doc, data.translations.title);
+  drawHeader(doc, data.translations.title, logoBase64);
   
   y = 50;
   

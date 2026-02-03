@@ -55,28 +55,65 @@ const COLORS = {
   danger: [220, 53, 69] as [number, number, number],
 };
 
-function drawHeader(doc: jsPDF, title: string, subtitle: string) {
+async function loadLogoAsBase64(): Promise<string | null> {
+  try {
+    // In browser environment, fetch the logo
+    if (typeof window !== 'undefined') {
+      const response = await fetch('/logo_alternative_horizontal_footer.webp');
+      const blob = await response.blob();
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(blob);
+      });
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function drawHeader(doc: jsPDF, title: string, subtitle: string, logoBase64?: string | null) {
   const pageWidth = doc.internal.pageSize.width;
   
   // Fondo azul marino en el header
   doc.setFillColor(...COLORS.azulMarino);
   doc.rect(0, 0, pageWidth, 45, 'F');
   
-  // Logo/Nombre de la empresa
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(24);
-  doc.setFont('helvetica', 'bold');
-  doc.text('ALTERNATIVE', pageWidth / 2, 18, { align: 'center' });
+  // Logo de la empresa
+  if (logoBase64) {
+    try {
+      // Logo centrado en el header
+      const logoWidth = 50;
+      const logoHeight = 12;
+      const logoX = (pageWidth - logoWidth) / 2;
+      doc.addImage(logoBase64, 'PNG', logoX, 6, logoWidth, logoHeight);
+    } catch {
+      // Fallback a texto si falla el logo
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(20);
+      doc.setFont('helvetica', 'bold');
+      doc.text('ALTERNATIVE', pageWidth / 2, 15, { align: 'center' });
+    }
+  } else {
+    // Fallback a texto
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(20);
+    doc.setFont('helvetica', 'bold');
+    doc.text('ALTERNATIVE', pageWidth / 2, 15, { align: 'center' });
+  }
   
   // Título del reporte
-  doc.setFontSize(14);
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(12);
   doc.setFont('helvetica', 'bold');
-  doc.text(title, pageWidth / 2, 30, { align: 'center' });
+  doc.text(title, pageWidth / 2, 28, { align: 'center' });
   
   // Subtítulo
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.text(subtitle, pageWidth / 2, 38, { align: 'center' });
+  doc.text(subtitle, pageWidth / 2, 36, { align: 'center' });
 }
 
 function drawFooter(doc: jsPDF, pageNumber: number) {
@@ -300,14 +337,17 @@ function wrapText(doc: jsPDF, text: string, maxWidth: number): string[] {
   return lines;
 }
 
-export function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): void {
+export async function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): Promise<void> {
   const pageWidth = doc.internal.pageSize.width;
   const pageHeight = doc.internal.pageSize.height;
   const margin = 20;
   const contentWidth = pageWidth - 2 * margin;
   
+  // Cargar logo
+  const logoBase64 = await loadLogoAsBase64();
+  
   // ===== PÁGINA 1: Resumen Ejecutivo =====
-  drawHeader(doc, data.translations.title, data.translations.subtitle);
+  drawHeader(doc, data.translations.title, data.translations.subtitle, logoBase64);
   
   let y = 55;
   
@@ -418,65 +458,67 @@ export function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): void {
   
   // ===== PÁGINA 2: Análisis Detallado y Recomendaciones =====
   doc.addPage();
-  drawHeader(doc, data.translations.title, data.translations.subtitle);
+  drawHeader(doc, data.translations.title, data.translations.subtitle, logoBase64);
   
   y = 55;
   
   // Beneficios proyectados
   drawSectionTitle(doc, margin, y, data.translations.benefits);
-  y += 12;
+  y += 14;
   
   doc.setFillColor(...COLORS.beige);
-  doc.roundedRect(margin, y, contentWidth, 50, 3, 3, 'F');
+  doc.roundedRect(margin, y, contentWidth, 55, 3, 3, 'F');
   
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
   
   let benefitY = y + 10;
+  const labelX = margin + 5;
+  const valueX = margin + 90;
   
   // Volumen anual
   doc.setFont('helvetica', 'bold');
-  doc.text(`${data.translations.executionsPerYear}:`, margin + 5, benefitY);
+  doc.text(`${data.translations.executionsPerYear}:`, labelX, benefitY);
   doc.setFont('helvetica', 'normal');
-  doc.text(formatNumber(data.results.volumenAnual, 0), margin + 80, benefitY);
-  benefitY += 8;
+  doc.text(formatNumber(data.results.volumenAnual, 0), valueX, benefitY);
+  benefitY += 9;
   
   // Tiempo total actual
   doc.setFont('helvetica', 'bold');
-  doc.text('Tiempo total actual:', margin + 5, benefitY);
+  doc.text('Tiempo total actual:', labelX, benefitY);
   doc.setFont('helvetica', 'normal');
-  doc.text(`${formatNumber(data.results.tiempoTotalHoras, 0)} ${data.translations.hours}`, margin + 80, benefitY);
-  benefitY += 8;
+  doc.text(`${formatNumber(data.results.tiempoTotalHoras, 0)} ${data.translations.hours}`, valueX, benefitY);
+  benefitY += 9;
   
   // Tiempo optimizado
   doc.setFont('helvetica', 'bold');
-  doc.text('Tiempo optimizado:', margin + 5, benefitY);
+  doc.text('Tiempo optimizado:', labelX, benefitY);
   doc.setFont('helvetica', 'normal');
-  doc.text(`${formatNumber(data.results.tiempoOptimizadoHoras, 0)} ${data.translations.hours}`, margin + 80, benefitY);
-  benefitY += 8;
+  doc.text(`${formatNumber(data.results.tiempoOptimizadoHoras, 0)} ${data.translations.hours}`, valueX, benefitY);
+  benefitY += 9;
   
   // Beneficio año 1
   doc.setFont('helvetica', 'bold');
-  doc.text(`${data.translations.benefit1Year}:`, margin + 5, benefitY);
+  doc.text(`${data.translations.benefit1Year}:`, labelX, benefitY);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(...COLORS.success);
-  doc.text(formatCurrency(data.results.beneficioAno1), margin + 80, benefitY);
-  benefitY += 8;
+  doc.text(formatCurrency(data.results.beneficioAno1), valueX, benefitY);
+  benefitY += 9;
   
   // Beneficio 3 años
   doc.setTextColor(...COLORS.azulMarino);
   doc.setFont('helvetica', 'bold');
-  doc.text(`${data.translations.benefit3Years}:`, margin + 5, benefitY);
+  doc.text(`${data.translations.benefit3Years}:`, labelX, benefitY);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(...COLORS.success);
-  doc.text(formatCurrency(data.results.beneficio3Anos), margin + 80, benefitY);
+  doc.text(formatCurrency(data.results.beneficio3Anos), valueX, benefitY);
   
-  y += 60;
+  y += 65;
   
   // Recomendación
   drawSectionTitle(doc, margin, y, data.translations.recommendation);
-  y += 12;
+  y += 14;
   
   // Color según nivel de recomendación
   let recColor: [number, number, number];
@@ -495,33 +537,36 @@ export function generateRoiOptimizationPdf(doc: jsPDF, data: PdfData): void {
   }
   
   doc.setFillColor(...recColor);
-  doc.roundedRect(margin, y, contentWidth, 15, 3, 3, 'F');
+  doc.roundedRect(margin, y, contentWidth, 14, 3, 3, 'F');
   
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'bold');
-  doc.text(data.recommendation.title, pageWidth / 2, y + 10, { align: 'center' });
+  doc.text(data.recommendation.title, pageWidth / 2, y + 9, { align: 'center' });
   
-  y += 20;
+  y += 18;
   
-  // Cuerpo de la recomendación
+  // Cuerpo de la recomendación - con mejor wrapping
+  doc.setFontSize(9);
+  const wrappedBody = wrapText(doc, data.recommendation.body, contentWidth - 10);
+  const bodyHeight = Math.max(40, wrappedBody.length * 6 + 10);
+  
   doc.setFillColor(255, 255, 255);
   doc.setDrawColor(...COLORS.beigeOscuro);
   doc.setLineWidth(0.5);
-  doc.roundedRect(margin, y, contentWidth, 45, 3, 3, 'FD');
+  doc.roundedRect(margin, y, contentWidth, bodyHeight, 3, 3, 'FD');
   
   doc.setTextColor(...COLORS.azulMarino);
-  doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   
-  const wrappedBody = wrapText(doc, data.recommendation.body, contentWidth - 10);
   let bodyY = y + 8;
-  for (const line of wrappedBody.slice(0, 5)) {
+  const maxLines = Math.floor((bodyHeight - 10) / 6);
+  for (const line of wrappedBody.slice(0, maxLines)) {
     doc.text(line, margin + 5, bodyY);
     bodyY += 6;
   }
   
-  y += 55;
+  y += bodyHeight + 8;
   
   // Próximos pasos
   drawSectionTitle(doc, margin, y, data.translations.nextSteps);

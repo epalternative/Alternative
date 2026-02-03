@@ -92,7 +92,7 @@ export function MadurezPdfLeadForm({ scores, preliminary }: MadurezPdfLeadFormPr
         date: 'Fecha',
       };
       
-      generateMadurezDigitalPdf(doc, {
+      await generateMadurezDigitalPdf(doc, {
         name: name.trim(),
         company: company.trim(),
         email: email.trim(),
