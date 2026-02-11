@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 // ============================================================
 // HERO - Left text + Right chaos→order reveal
@@ -86,29 +86,85 @@ const ORDER_LINES = [
 
 export default function HeroReveal() {
   const panelRef = useRef<HTMLDivElement>(null);
-  const [mouse, setMouse] = useState({ x: -500, y: -500 });
-  const [isHovering, setIsHovering] = useState(false);
+  const orderedLayerRef = useRef<HTMLDivElement>(null);
+  const spotlightRingRef = useRef<HTMLDivElement>(null);
+  const cursorDotRef = useRef<HTMLDivElement>(null);
+  const mouseRef = useRef({ x: -500, y: -500 });
+  const hoveringRef = useRef(false);
+  const rafRef = useRef<number>(0);
   const [isFullReveal, setIsFullReveal] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
   const spotlightR = 160;
+
+  // Direct DOM update — no React re-render per mouse move
+  const updateDOM = useCallback(() => {
+    const { x, y } = mouseRef.current;
+    const hovering = hoveringRef.current;
+
+    if (orderedLayerRef.current) {
+      if (hovering) {
+        orderedLayerRef.current.style.clipPath = `circle(${spotlightR}px at ${x}px ${y}px)`;
+        orderedLayerRef.current.style.transition = 'clip-path 0.02s linear';
+      }
+    }
+
+    if (spotlightRingRef.current) {
+      spotlightRingRef.current.style.left = `${x - spotlightR}px`;
+      spotlightRingRef.current.style.top = `${y - spotlightR}px`;
+      spotlightRingRef.current.style.display = hovering ? 'block' : 'none';
+    }
+
+    if (cursorDotRef.current) {
+      cursorDotRef.current.style.left = `${x}px`;
+      cursorDotRef.current.style.top = `${y}px`;
+      cursorDotRef.current.style.display = hovering ? 'block' : 'none';
+    }
+  }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!panelRef.current) return;
     const rect = panelRef.current.getBoundingClientRect();
-    setMouse({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(updateDOM);
+  }, [updateDOM]);
+
+  const handleMouseEnter = useCallback(() => {
+    hoveringRef.current = true;
+    setIsHovering(true);
   }, []);
 
-  // Determine clip-path for the ordered layer
-  const getClipPath = () => {
-    if (isFullReveal) return 'circle(150% at 50% 50%)';
-    if (isHovering) return `circle(${spotlightR}px at ${mouse.x}px ${mouse.y}px)`;
-    return `circle(0px at ${mouse.x}px ${mouse.y}px)`;
-  };
+  const handleMouseLeave = useCallback(() => {
+    hoveringRef.current = false;
+    mouseRef.current = { x: -500, y: -500 };
+    setIsHovering(false);
 
-  const getClipTransition = () => {
-    if (isFullReveal) return 'clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
-    if (isHovering) return 'clip-path 0.06s ease-out';
-    return 'clip-path 0.4s ease-in';
-  };
+    // Animate clip-path back to 0
+    if (orderedLayerRef.current) {
+      orderedLayerRef.current.style.transition = 'clip-path 0.4s ease-in';
+      orderedLayerRef.current.style.clipPath = 'circle(0px at -500px -500px)';
+    }
+    if (spotlightRingRef.current) spotlightRingRef.current.style.display = 'none';
+    if (cursorDotRef.current) cursorDotRef.current.style.display = 'none';
+  }, []);
+
+  // Sync full reveal state with ordered layer
+  useEffect(() => {
+    if (!orderedLayerRef.current) return;
+    if (isFullReveal) {
+      orderedLayerRef.current.style.transition = 'clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
+      orderedLayerRef.current.style.clipPath = 'circle(150% at 50% 50%)';
+    } else {
+      orderedLayerRef.current.style.transition = 'clip-path 0.6s ease-in';
+      orderedLayerRef.current.style.clipPath = 'circle(0px at 50% 50%)';
+    }
+  }, [isFullReveal]);
+
+  // Cleanup RAF on unmount
+  useEffect(() => {
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
 
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -329,11 +385,8 @@ export default function HeroReveal() {
             <div
               ref={panelRef}
               onMouseMove={handleMouseMove}
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => {
-                setIsHovering(false);
-                setMouse({ x: -500, y: -500 });
-              }}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               style={{
                 position: 'relative',
                 width: '100%',
@@ -487,15 +540,16 @@ export default function HeroReveal() {
 
               {/* ---- ORDERED LAYER (revealed) ---- */}
               <div
+                ref={orderedLayerRef}
                 style={{
                   position: 'absolute',
                   inset: 0,
                   background: `linear-gradient(160deg, ${COLORS.azulMarino}, ${COLORS.azulMarinoLight})`,
                   border: '1px solid rgba(108,196,212,0.15)',
                   borderRadius: '24px',
-                  clipPath: getClipPath(),
-                  transition: getClipTransition(),
+                  clipPath: 'circle(0px at -500px -500px)',
                   zIndex: 2,
+                  willChange: 'clip-path',
                 }}
               >
                 {/* Clean grid bg */}
@@ -654,12 +708,13 @@ export default function HeroReveal() {
               </div>
 
               {/* ---- SPOTLIGHT RING ---- */}
-              {isHovering && !isFullReveal && (
+              {!isFullReveal && (
                 <div
+                  ref={spotlightRingRef}
                   style={{
                     position: 'absolute',
-                    left: mouse.x - spotlightR,
-                    top: mouse.y - spotlightR,
+                    left: -500,
+                    top: -500,
                     width: spotlightR * 2,
                     height: spotlightR * 2,
                     borderRadius: '50%',
@@ -667,17 +722,19 @@ export default function HeroReveal() {
                     boxShadow: '0 0 50px rgba(108,196,212,0.06), inset 0 0 50px rgba(108,196,212,0.02)',
                     pointerEvents: 'none',
                     zIndex: 10,
+                    display: 'none',
                   }}
                 />
               )}
 
               {/* ---- CUSTOM CURSOR ---- */}
-              {isHovering && !isFullReveal && (
+              {!isFullReveal && (
                 <div
+                  ref={cursorDotRef}
                   style={{
                     position: 'absolute',
-                    left: mouse.x,
-                    top: mouse.y,
+                    left: -500,
+                    top: -500,
                     width: 8,
                     height: 8,
                     borderRadius: '50%',
@@ -686,6 +743,7 @@ export default function HeroReveal() {
                     pointerEvents: 'none',
                     zIndex: 11,
                     boxShadow: `0 0 12px ${COLORS.turquesa}`,
+                    display: 'none',
                   }}
                 />
               )}
