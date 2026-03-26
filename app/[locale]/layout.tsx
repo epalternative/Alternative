@@ -1,10 +1,12 @@
 import { notFound } from 'next/navigation';
+import { headers } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { locales, Locale } from '@/i18n';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ConditionalShell } from '@/components/layout/conditional-shell';
 import { SetHtmlLang } from '@/components/layout/set-html-lang';
+import { SITE_URL, buildAlternates } from '@/lib/seo';
 
 type Props = {
   children: React.ReactNode;
@@ -13,7 +15,11 @@ type Props = {
 
 export async function generateMetadata({ params }: { params: { locale: string } }) {
   const { locale } = params;
-  
+
+  // Read the actual pathname set by middleware so canonical/hreflang are page-specific
+  const headersList = headers();
+  const pathname = headersList.get('x-pathname') || `/${locale}`;
+
   const metadata = {
     es: {
       title: 'Consultoría Empresarial que Genera Resultados | Alternative',
@@ -28,10 +34,10 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   };
 
   const meta = metadata[locale as keyof typeof metadata] || metadata.es;
-  const baseUrl = 'https://grupoalternative.com';
+  const alternates = buildAlternates(pathname);
 
   return {
-    metadataBase: new URL(baseUrl),
+    metadataBase: new URL(SITE_URL),
     title: {
       default: meta.title,
       template: `%s | Alternative`
@@ -39,23 +45,17 @@ export async function generateMetadata({ params }: { params: { locale: string } 
     description: meta.description,
     keywords: meta.keywords,
     authors: [{ name: 'Alternative' }],
-    alternates: {
-      canonical: `https://grupoalternative.com/${locale}`,
-      languages: {
-        'es': 'https://grupoalternative.com/es',
-        'en': 'https://grupoalternative.com/en',
-      }
-    },
+    alternates,
     openGraph: {
       type: 'website',
       locale: locale === 'es' ? 'es_PA' : 'en_US',
-      url: `${baseUrl}/${locale}`,
+      url: alternates.canonical,
       siteName: 'Alternative',
       title: meta.title,
       description: meta.description,
       images: [
         {
-          url: `${baseUrl}/logo_24.webp`,
+          url: `${SITE_URL}/logo_24.webp`,
           width: 1200,
           height: 630,
           alt: 'Alternative - Consultoría Empresarial',
@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: { params: { locale: string } 
       card: 'summary_large_image',
       title: meta.title,
       description: meta.description,
-      images: [`${baseUrl}/logo_24.webp`],
+      images: [`${SITE_URL}/logo_24.webp`],
     },
     robots: {
       index: true,

@@ -1,31 +1,68 @@
 import { MetadataRoute } from 'next';
 import { getAllSlugsAsync } from '@/lib/blog';
+import { SITE_URL } from '@/lib/seo';
+
+/**
+ * Helper: create a pair of ES + EN sitemap entries with cross-linked hreflangs + x-default.
+ * Both locales share the same slug path (the App Router uses [locale] with identical slugs).
+ */
+function bilingualEntry(
+  path: string,
+  opts: { changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; priority: number }
+): MetadataRoute.Sitemap {
+  const langs = {
+    es: `${SITE_URL}/es${path}`,
+    en: `${SITE_URL}/en${path}`,
+    'x-default': `${SITE_URL}/es${path}`,
+  };
+  return [
+    { url: `${SITE_URL}/es${path}`, lastModified: new Date(), ...opts, alternates: { languages: langs } },
+    { url: `${SITE_URL}/en${path}`, lastModified: new Date(), ...opts, alternates: { languages: langs } },
+  ];
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://grupoalternative.com';
-  
-  // Servicios principales
-  const serviciosES = [
+  const routes: MetadataRoute.Sitemap = [];
+
+  // ── Homepage ──
+  routes.push(...bilingualEntry('', { changeFrequency: 'weekly', priority: 1 }));
+
+  // ── Main pages (same slug for both locales) ──
+  const mainPages = ['servicios', 'industrias', 'casos-exito', 'nosotros', 'blog', 'contacto', 'recursos'];
+  mainPages.forEach((page) => {
+    routes.push(...bilingualEntry(`/${page}`, { changeFrequency: 'weekly', priority: 0.9 }));
+  });
+
+  // ── Services (main categories) ──
+  const servicios = [
     'optimizacion-procesos',
     'sistemas-calidad',
     'gestion-proyectos',
     'transformacion-digital',
     'consultoria-estrategica',
-    'desarrollo-tecnologia'
+    'desarrollo-tecnologia',
   ];
+  servicios.forEach((s) => {
+    routes.push(...bilingualEntry(`/servicios/${s}`, { changeFrequency: 'weekly', priority: 0.8 }));
+  });
 
-  // Sub-servicios
-  const subServiciosES: Record<string, string[]> = {
+  // ── Sub-services ──
+  const subServicios: Record<string, string[]> = {
     'optimizacion-procesos': ['bpm-empresarial', 'lean-six-sigma', 'diseno-procesos', 'automatizacion-procesos'],
     'sistemas-calidad': ['implementacion-iso-9001', 'auditoria-calidad', 'certificacion-iso', 'gestion-calidad'],
     'gestion-proyectos': ['pmp-project-management', 'metodologias-agiles', 'pmo-office', 'casos-negocio'],
-    'transformacion-digital': ['estrategia-digital', 'automatizacion-inteligente', 'desarrollo-software', 'infraestructura-it'],
-    'consultoria-estrategica': ['diagnostico-organizacional', 'estudios-viabilidad', 'desarrollo-rfp'],
-    'desarrollo-tecnologia': ['aplicaciones-medida', 'portales-corporativos', 'integraciones-api', 'soporte-infraestructura']
+    'transformacion-digital': ['estrategia-digital', 'change-management', 'digitalizacion-procesos', 'analisis-datos'],
+    'consultoria-estrategica': ['diagnostico-organizacional', 'diseno-organizacional', 'planificacion-estrategica'],
+    'desarrollo-tecnologia': ['aplicaciones-web-moviles', 'consultoria-tecnologica', 'desarrollo-software', 'integracion-sistemas'],
   };
+  Object.entries(subServicios).forEach(([cat, subs]) => {
+    subs.forEach((sub) => {
+      routes.push(...bilingualEntry(`/servicios/${cat}/${sub}`, { changeFrequency: 'monthly', priority: 0.7 }));
+    });
+  });
 
-  // Industrias
-  const industriasES = [
+  // ── Industries ──
+  const industrias = [
     'banca-servicios-financieros',
     'manufactura-logistica',
     'retail-comercio',
@@ -33,162 +70,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'servicios-profesionales',
     'gobierno-sector-publico',
     'salud-farmaceutica',
-    'energia-utilities'
+    'energia-utilities',
   ];
-
-  const routes: MetadataRoute.Sitemap = [];
-
-  // Homepage - ambos idiomas
-  routes.push({
-    url: `${baseUrl}/es`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 1,
-    alternates: {
-      languages: {
-        es: `${baseUrl}/es`,
-        en: `${baseUrl}/en`,
-      },
-    },
+  industrias.forEach((ind) => {
+    routes.push(...bilingualEntry(`/industrias/${ind}`, { changeFrequency: 'monthly', priority: 0.7 }));
   });
 
-  routes.push({
-    url: `${baseUrl}/en`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 1,
-    alternates: {
-      languages: {
-        es: `${baseUrl}/es`,
-        en: `${baseUrl}/en`,
-      },
-    },
-  });
-
-  // Páginas principales ES
-  const mainPagesES = ['servicios', 'industrias', 'casos-exito', 'nosotros', 'blog', 'contacto', 'recursos'];
-  const mainPagesEN = ['services', 'industries', 'success-stories', 'about', 'blog', 'contact', 'resources'];
-
-  mainPagesES.forEach((page, index) => {
-    routes.push({
-      url: `${baseUrl}/es/${page}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-      alternates: {
-        languages: {
-          es: `${baseUrl}/es/${page}`,
-          en: `${baseUrl}/en/${mainPagesEN[index]}`,
-        },
-      },
-    });
-
-    routes.push({
-      url: `${baseUrl}/en/${mainPagesEN[index]}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-      alternates: {
-        languages: {
-          es: `${baseUrl}/es/${page}`,
-          en: `${baseUrl}/en/${mainPagesEN[index]}`,
-        },
-      },
-    });
-  });
-
-  // Servicios principales ES
-  serviciosES.forEach((servicio) => {
-    routes.push({
-      url: `${baseUrl}/es/servicios/${servicio}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    });
-  });
-
-  // Sub-servicios ES
-  Object.entries(subServiciosES).forEach(([categoria, subs]) => {
-    subs.forEach((sub) => {
-      routes.push({
-        url: `${baseUrl}/es/servicios/${categoria}/${sub}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.7,
-      });
-    });
-  });
-
-  // Industrias ES
-  industriasES.forEach((industria) => {
-    routes.push({
-      url: `${baseUrl}/es/industrias/${industria}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    });
-  });
-
-  // Calculadoras (recursos)
-  const calculatorRoutes = [
-    { path: 'calculadoras', pathEn: 'calculadoras' },
-    { path: 'calculadoras/roi-optimizacion-procesos', pathEn: 'calculadoras/roi-optimizacion-procesos' },
-    { path: 'calculadoras/madurez-digital', pathEn: 'calculadoras/madurez-digital' },
+  // ── Calculators (under /recursos) ──
+  const calculators = [
+    'calculadoras',
+    'calculadoras/roi-optimizacion-procesos',
+    'calculadoras/madurez-digital',
   ];
-  calculatorRoutes.forEach(({ path, pathEn }) => {
-    routes.push({
-      url: `${baseUrl}/es/recursos/${path}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-      alternates: {
-        languages: {
-          es: `${baseUrl}/es/recursos/${path}`,
-          en: `${baseUrl}/en/recursos/${pathEn}`,
-        },
-      },
-    });
-    routes.push({
-      url: `${baseUrl}/en/recursos/${pathEn}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-      alternates: {
-        languages: {
-          es: `${baseUrl}/es/recursos/${path}`,
-          en: `${baseUrl}/en/recursos/${pathEn}`,
-        },
-      },
-    });
+  calculators.forEach((calc) => {
+    routes.push(...bilingualEntry(`/recursos/${calc}`, { changeFrequency: 'monthly', priority: 0.7 }));
   });
 
-  // Blog posts (es + en) — from Sanity if configured, else static
+  // ── Blog posts (from Sanity or static) ──
   const blogSlugs = await getAllSlugsAsync();
   blogSlugs.forEach((slug) => {
-    routes.push({
-      url: `${baseUrl}/es/blog/${slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-      alternates: {
-        languages: {
-          es: `${baseUrl}/es/blog/${slug}`,
-          en: `${baseUrl}/en/blog/${slug}`,
-        },
-      },
-    });
-    routes.push({
-      url: `${baseUrl}/en/blog/${slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-      alternates: {
-        languages: {
-          es: `${baseUrl}/es/blog/${slug}`,
-          en: `${baseUrl}/en/blog/${slug}`,
-        },
-      },
-    });
+    routes.push(...bilingualEntry(`/blog/${slug}`, { changeFrequency: 'monthly', priority: 0.8 }));
   });
 
   return routes;

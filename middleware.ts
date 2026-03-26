@@ -14,7 +14,13 @@ export function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith('/studio')) {
     return NextResponse.next();
   }
-  return intlMiddleware(req);
+
+  const response = intlMiddleware(req);
+
+  // Pass the original pathname to layouts/pages so they can build correct canonical/hreflang URLs
+  response.headers.set('x-pathname', req.nextUrl.pathname);
+
+  return response;
 }
 
 export const config = {

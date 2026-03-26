@@ -7,6 +7,7 @@ import { BpmArticleContent, BPM_TOC } from '@/components/blog/contents/BpmArticl
 import { BancoRegionalCaseContent, BANCO_REGIONAL_TOC } from '@/components/blog/contents/BancoRegionalCaseContent';
 import type { TocItem } from '@/components/blog/BlogPostLayout';
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/seo';
 
 function ArticleJsonLd({
   post,
@@ -17,7 +18,7 @@ function ArticleJsonLd({
   locale: string;
   slug: string;
 }) {
-  const baseUrl = 'https://www.grupoalternative.com';
+  const baseUrl = SITE_URL;
   const url = `${baseUrl}/${locale}/blog/${slug}`;
   const title = locale === 'en' ? post.titleEn : post.title;
   const description = locale === 'en' ? post.metaDescriptionEn : post.metaDescription;
@@ -76,9 +77,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = isEn ? post.metaTitleEn : post.metaTitle;
   const description = isEn ? post.metaDescriptionEn : post.metaDescription;
 
-  const baseUrl = 'https://www.grupoalternative.com';
-  const path = `/${locale}/blog/${slug}`;
-  const canonical = `${baseUrl}${path}`;
+  const canonical = `${SITE_URL}/${locale}/blog/${slug}`;
 
   return {
     title,
@@ -86,8 +85,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: {
       canonical,
       languages: {
-        es: `${baseUrl}/es/blog/${slug}`,
-        en: `${baseUrl}/en/blog/${slug}`,
+        es: `${SITE_URL}/es/blog/${slug}`,
+        en: `${SITE_URL}/en/blog/${slug}`,
+        'x-default': `${SITE_URL}/es/blog/${slug}`,
       },
     },
     openGraph: {
@@ -97,7 +97,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       siteName: 'Alternative',
       title,
       description,
-      images: post.heroImage ? [{ url: `${baseUrl}${post.heroImage}`, alt: isEn ? post.heroImageAltEn : post.heroImageAlt }] : undefined,
+      images: post.heroImage ? [{ url: `${SITE_URL}${post.heroImage}`, alt: isEn ? post.heroImageAltEn : post.heroImageAlt }] : undefined,
       publishedTime: post.publishedAt,
       authors: [post.author.name],
     },

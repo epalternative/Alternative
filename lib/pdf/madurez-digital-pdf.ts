@@ -117,7 +117,7 @@ function drawFooter(doc: jsPDF, pageNumber: number) {
   doc.setTextColor(...COLORS.azulMarino);
   doc.setFontSize(8);
   doc.setFont('helvetica', 'normal');
-  doc.text('www.grupoalternative.com | info@grupoalternative.com', pageWidth / 2, pageHeight - 10, { align: 'center' });
+  doc.text('grupoalternative.com | info@grupoalternative.com', pageWidth / 2, pageHeight - 10, { align: 'center' });
   
   // Número de página
   doc.setTextColor(...COLORS.beigeOscuro);

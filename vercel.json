@@ -184,6 +184,51 @@
       "source": "/business-consultants",
       "destination": "/en/nosotros",
       "permanent": true
+    },
+    {
+      "source": "/en/services",
+      "destination": "/en/servicios",
+      "permanent": true
+    },
+    {
+      "source": "/en/services/:path*",
+      "destination": "/en/servicios/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/en/industries",
+      "destination": "/en/industrias",
+      "permanent": true
+    },
+    {
+      "source": "/en/industries/:path*",
+      "destination": "/en/industrias/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/en/about",
+      "destination": "/en/nosotros",
+      "permanent": true
+    },
+    {
+      "source": "/en/success-stories",
+      "destination": "/en/casos-exito",
+      "permanent": true
+    },
+    {
+      "source": "/en/contact",
+      "destination": "/en/contacto",
+      "permanent": true
+    },
+    {
+      "source": "/en/resources",
+      "destination": "/en/recursos",
+      "permanent": true
+    },
+    {
+      "source": "/en/resources/:path*",
+      "destination": "/en/recursos/:path*",
+      "permanent": true
     }
   ]
 }

@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import { SITE_URL } from '@/lib/seo';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXTAUTH_URL ?? 'https://grupoalternative.com'),
+  metadataBase: new URL(process.env.NEXTAUTH_URL ?? SITE_URL),
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',
