@@ -7,6 +7,7 @@ import { BpmArticleContent, BPM_TOC } from '@/components/blog/contents/BpmArticl
 import { BancoRegionalCaseContent, BANCO_REGIONAL_TOC } from '@/components/blog/contents/BancoRegionalCaseContent';
 import type { TocItem } from '@/components/blog/BlogPostLayout';
 import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import { SITE_URL } from '@/lib/seo';
 
 function ArticleJsonLd({
@@ -121,6 +122,7 @@ export async function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { locale, slug } = params;
+  setRequestLocale(locale);
   const post = await getPostBySlugAsync(slug);
   if (!post) notFound();
 

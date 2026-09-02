@@ -1,76 +1,43 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { headers } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { locales, Locale } from '@/i18n';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ConditionalShell } from '@/components/layout/conditional-shell';
-import { SetHtmlLang } from '@/components/layout/set-html-lang';
-import { SITE_URL, buildAlternates } from '@/lib/seo';
+import { SITE_URL, OG_IMAGE } from '@/lib/seo';
+import '../globals.css';
 
 type Props = {
   children: React.ReactNode;
   params: { locale: string };
 };
 
-export async function generateMetadata({ params }: { params: { locale: string } }) {
-  const { locale } = params;
-
-  // Read the actual pathname set by middleware so canonical/hreflang are page-specific
-  const headersList = headers();
-  const pathname = headersList.get('x-pathname') || `/${locale}`;
-
-  const metadata = {
-    es: {
-      title: 'Consultoría Empresarial que Genera Resultados | Alternative',
-      description: 'Consultoría en optimización de procesos, gestión de proyectos y sistemas de calidad. Equipo certificado PMP®, ISO 9001 Lead Auditor y Lean Six Sigma. Experiencia en LATAM y el Caribe.',
-      keywords: 'consultoría empresarial, optimización de procesos, gestión de proyectos, sistemas de calidad, ISO 9001, consultoría BPM, transformación digital',
-    },
-    en: {
-      title: 'Business Consulting that Delivers Results | Alternative',
-      description: 'Consulting in process optimization, project management, and quality systems. Team certified in PMP®, ISO 9001 Lead Auditor, and Lean Six Sigma. Experience in LATAM and the Caribbean.',
-      keywords: 'business consulting, process optimization, project management, quality systems, ISO 9001, BPM consulting, digital transformation',
-    }
-  };
-
-  const meta = metadata[locale as keyof typeof metadata] || metadata.es;
-  const alternates = buildAlternates(pathname);
+/**
+ * Metadata de respaldo del sitio.
+ *
+ * Cada página aporta su propio `title`, `description`, `alternates` y
+ * `openGraph` vía `buildPageMetadata()` (ver `lib/seo.ts`), así que aquí solo
+ * queda lo verdaderamente global. Deliberadamente NO hay:
+ *   - `title.template`: los titles del registro ya son absolutos.
+ *   - `keywords`: Google los ignora desde 2009 y eran idénticos en todo el sitio.
+ *   - `headers()`: leerlos convertía todas las rutas en dinámicas.
+ */
+export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+  const isEs = params.locale !== 'en';
 
   return {
     metadataBase: new URL(SITE_URL),
-    title: {
-      default: meta.title,
-      template: `%s | Alternative`
-    },
-    description: meta.description,
-    keywords: meta.keywords,
-    authors: [{ name: 'Alternative' }],
-    alternates,
+    title: isEs
+      ? 'Consultoría Empresarial en Panamá | Grupo Alternative'
+      : 'Business Consulting Firm in Panama | Grupo Alternative',
+    description: isEs
+      ? 'Consultoría en procesos, calidad, proyectos y transformación digital para empresas en Panamá y LATAM.'
+      : 'Consulting in processes, quality, projects and digital transformation for companies in Panama and LATAM.',
+    authors: [{ name: 'Grupo Alternative' }],
     openGraph: {
-      type: 'website',
-      locale: locale === 'es' ? 'es_PA' : 'en_US',
-      url: alternates.canonical,
-      siteName: 'Alternative',
-      title: meta.title,
-      description: meta.description,
-      images: [
-        {
-          url: `${SITE_URL}/logo_24.webp`,
-          width: 1200,
-          height: 630,
-          alt: 'Alternative - Consultoría Empresarial',
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: meta.title,
-      description: meta.description,
-      images: [`${SITE_URL}/logo_24.webp`],
-    },
-    robots: {
-      index: true,
-      follow: true,
+      siteName: 'Grupo Alternative',
+      images: [{ url: OG_IMAGE, width: 1200, height: 630 }],
     },
     icons: {
       icon: '/favicon.svg',
@@ -80,28 +47,30 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 }
 
 export default async function LocaleLayout({ children, params: { locale } }: Props) {
-  // Validate locale
   if (!locales.includes(locale as Locale)) {
     notFound();
   }
 
-  // Get messages for the current locale
+  // Habilita el renderizado estático de este segmento y sus descendientes.
+  setRequestLocale(locale);
+
   const messages = await getMessages();
 
   return (
-    <>
-      <SetHtmlLang locale={locale} />
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="light"
-        enableSystem={false}
-        disableTransitionOnChange={false}
-      >
-        <NextIntlClientProvider messages={messages} locale={locale}>
-          <ConditionalShell>{children}</ConditionalShell>
-        </NextIntlClientProvider>
-      </ThemeProvider>
-    </>
+    <html lang={locale} suppressHydrationWarning>
+      <body className="min-h-screen bg-background text-foreground antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange={false}
+        >
+          <NextIntlClientProvider messages={messages} locale={locale}>
+            <ConditionalShell>{children}</ConditionalShell>
+          </NextIntlClientProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
 
