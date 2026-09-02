@@ -1,10 +1,10 @@
-# Reporte de corrección SEO — Fases 1a, 1b y 4
+# Reporte de corrección SEO — Fases 1a, 1b, 2, 3 y 4
 
 **Rama:** `seo/fix` (sin merge a `main`)
 **Base:** `76d7b5e`
-**Commits:** `07ac65f` (1a) · `78b0c79` (1b) · `8d0151a` (1a ajustes) · `2eb08b7` (4)
+**Commits:** `07ac65f` (1a) · `78b0c79` (1b) · `8d0151a` (1a ajustes) · `2eb08b7` (4) · `9da4ace` (2) · `b16afc3` (3)
 
-Fases 2, 3, 5 y 6.2 **pendientes**. Este reporte cubre lo ejecutado hasta ahora.
+Fase 5 **pendiente**. Este reporte cubre las fases 1a, 1b, 2, 3 y 4.
 
 ---
 
@@ -14,21 +14,21 @@ Fases 2, 3, 5 y 6.2 **pendientes**. Este reporte cubre lo ejecutado hasta ahora.
 |---|---|---|---|
 | **C1** | 52 de 55 rutas comparten title y description | ✅ **Corregido** | `lib/seo/routes.ts` + 54 `page.tsx`. Verificado: 108 URLs, 0 duplicados |
 | **C2** | `"use client"` impide metadata por ruta | ✅ **Corregido** | 53 páginas divididas en `page.tsx` + `PageClient.tsx` |
-| **C3** | Sin datos estructurados fuera del blog | ⏳ Fase 2 | — |
-| **C4** | Redirecciones 308 que terminan en 404 | ⏳ Fase 3 | — |
+| **C3** | Sin datos estructurados fuera del blog | ✅ **Corregido** | `lib/seo/jsonld.ts` + `components/seo/JsonLd.tsx` |
+| **C4** | Redirecciones 308 que terminan en 404 | ✅ **Corregido** | `vercel.json` (52 reglas) |
 | **C5** | El HTML sirve `0+` / `0%` | ✅ **Corregido** | `components/ui/counter.tsx` |
 | **A1** | `<html lang="es">` en las URLs `/en` | ✅ **Corregido** | `app/[locale]/layout.tsx` es root layout con `lang={locale}` |
-| **A2** | `robots.txt` bloquea `/_next/` | ⏳ Fase 3 | — |
-| **A3** | Soft-404 en 8 rutas dinámicas | ⏳ Fase 3 | — |
-| **A4** | `/casos-exito` placeholder en el sitemap | 🟡 **Parcial** | Ya tiene `noindex: true` y metadata honesta en el registro; sale del sitemap en Fase 3 |
-| **A5** | `lastmod` del sitemap no real | 🟡 **Parcial** | El registro ya trae `updatedAt` real por ruta; el sitemap lo consumirá en Fase 3 |
+| **A2** | `robots.txt` bloquea `/_next/` | ✅ **Corregido** | `app/robots.ts` |
+| **A3** | Soft-404 en 8 rutas dinámicas | ✅ **Corregido** | 8 rutas eliminadas o restringidas |
+| **A4** | `/casos-exito` placeholder en el sitemap | ✅ **Corregido** | `noindex` + fuera del sitemap |
+| **A5** | `lastmod` del sitemap no real | ✅ **Corregido** | 9 fechas distintas frente a 1 |
 | **A6** | `/en/nosotros` y `/en/helpdesk-it` con metadata en español | ✅ **Corregido** | Layouts eliminados; ambas pasan por el registro bilingüe |
 | **A7** | Ninguna ruta se prerenderiza | ✅ **Corregido** | **115 páginas HTML en disco** (antes 0) |
 | **A8** | Fuentes por `@import` | ⏳ Fase 5 | — |
-| **A9** | `twitter:image` de 502 KB | 🟡 **Parcial** | `buildPageMetadata` ya apunta a `/og-image.png`; ver §5 |
+| **A9** | `twitter:image` de 502 KB | ✅ **Corregido** | `og:image` y `twitter:image` = `/og-image.png` |
 | **A10** | `metadataBase` desde `NEXTAUTH_URL` | ✅ **Corregido** | Ahora `new URL(SITE_URL)` |
 | **A11** | Sin analítica | ❌ No aplicado | Fuera del alcance del plan |
-| **A12** | OG image rota para posts de Sanity | ⏳ Fase 2 | `absoluteUrl()` ya existe en `lib/seo.ts`, falta usarlo |
+| **A12** | OG image rota para posts de Sanity | ✅ **Corregido** | `absoluteUrl()` en OG, Twitter y JSON-LD |
 | **A13** | `/blog` sin metadata propia | ✅ **Corregido** | `app/[locale]/blog/page.tsx` |
 | **M1** | `x-default` contradictorio en la cabecera `Link` | ⏳ Fase 5 | Requiere `alternateLinks: false` |
 | **M2** | `/nosotros` y `katherine-gonzalez` con la misma metadata | ✅ **Corregido** | Entradas separadas en el registro |
@@ -37,6 +37,13 @@ Fases 2, 3, 5 y 6.2 **pendientes**. Este reporte cubre lo ejecutado hasta ahora.
 | **B1** | `meta keywords` global | ✅ **Corregido** | Eliminado del layout. Verificado: 0 en las 108 URLs |
 | **B4** | Doble sufijo de marca en el title | ✅ **Corregido** | Eliminado `title.template` |
 | **B11** | `x-pathname` expuesto en la respuesta | ✅ **Corregido** | `middleware.ts` |
+| **M3** | `/business-consultants` duplica `/nosotros` | ✅ **Corregido** | Eliminada + redirects a `/nosotros` |
+| **M4** | 5 páginas reales ausentes del sitemap | ✅ **Corregido** | El sitemap deriva del registro |
+| **M5** | `/studio` indexable | ✅ **Corregido** | `robots.ts` + `[locale]/studio` eliminado |
+| **M14** | Listas hardcodeadas en `sitemap.ts` | ✅ **Corregido** | `getIndexableRoutes()` |
+| **M16** | `og:image` del blog vertical | 🟡 **Parcial** | Fallback a `/og-image.png`; `consulting-session.webp` sigue siendo 1066×1600 |
+| **B3** | `robots.ts` bloquea `/admin/` inexistente | ✅ **Corregido** | `app/robots.ts` |
+| **B10** | `Article` en vez de `BlogPosting` | ✅ **Corregido** | + `inLanguage`, `articleSection`, `wordCount` |
 
 ---
 
@@ -44,18 +51,27 @@ Fases 2, 3, 5 y 6.2 **pendientes**. Este reporte cubre lo ejecutado hasta ahora.
 
 Ambas columnas provienen de `next build` + rastreo del HTML servido con `scripts/seo-check.mjs`.
 
-| Métrica | Antes (`76d7b5e`) | Después (`2eb08b7`) |
+| Métrica | Antes (`76d7b5e`) | Después (`b16afc3`) |
 |---|---:|---:|
 | Titles únicos en ES (55 rutas) | **3** | **54** |
 | Descriptions únicas en ES | **3** | **54** |
 | URLs con `<meta name="keywords">` | 110 | **0** |
 | URLs `/en` con `<html lang="es">` | 55 | **0** |
 | Rutas con canonical propio | 55 (ya correcto) | 108 |
-| Páginas prerenderizadas a HTML | **0** | **115** |
-| Rutas en `prerender-manifest.json` | 2 | **116** |
+| Páginas prerenderizadas a HTML | **0** | **121** |
+| Rutas en `prerender-manifest.json` | 2 | **122** |
 | Cifras del hero en el HTML | `0+`, `0%`, `0+` | `50+`, `98%`, `15+` |
-| Rutas con JSON-LD | 4 (solo posts) | 4 (Fase 2 pendiente) |
-| Soft-404 (HTTP 200 en slug inexistente) | 4 | 4 (Fase 3 pendiente) |
+| Rutas con JSON-LD | 4 (solo posts) | **112** (108 + 4 posts) |
+| Bloques JSON-LD por página | 0 | 2 (`ProfessionalService`+`WebSite`, y el `@graph` de la página) |
+| Soft-404 (HTTP 200 en slug inexistente) | 4 | **0** |
+| URLs en el sitemap | 100 | 108 |
+| `lastmod` distintos en el sitemap | **1** (idéntico en las 100) | **9** |
+| `/casos-exito` (noindex) en el sitemap | sí | **no** |
+| `/es/studio` | 200 + `index,follow` | **404** |
+| `robots.txt` bloquea `/_next/` | sí | **no** |
+| `og:image` | ruta generada (PNG dinámico) | **`/og-image.png`** |
+| `twitter:image` | `logo_24.webp` (502 KB, 3310×1990) | **`/og-image.png`** (17 KB, 1200×630) |
+| Redirects 308 hacia 404 | 7 | **0** |
 
 ### First Load JS (`next build`)
 
@@ -73,22 +89,27 @@ objetivo de la Fase 5.
 ### Verificación end-to-end
 
 ```
-node scripts/seo-check.mjs --port 3141 --external
+npx next start -p 3151 &
+node scripts/seo-check.mjs --port 3151 --external
 
-checks superados: 1299   ·   hallazgos: 6
-nota: lib/seo/jsonld.ts no existe → checks de JSON-LD omitidos (Fase 2)
-
-▸ Fase 3 — 6 hallazgo(s)
-   ✖ /es/servicios/optimizacion-procesos/slug-inexistente-xyz  HTTP 200, se esperaba 404
-   ✖ /es/servicios/sistemas-calidad/slug-inexistente-xyz       HTTP 200, se esperaba 404
-   ✖ /es/industrias/slug-inexistente-xyz                       HTTP 200, se esperaba 404
-   ✖ /es/recursos/slug-inexistente-xyz                          HTTP 200, se esperaba 404
-   ✖ /robots.txt                                                sigue bloqueando /_next/
-   ✖ /sitemap.xml                                               incluye ruta noindex: /casos-exito
+checks superados: 1683   ·   hallazgos: 0
+✔ todo en verde
 ```
 
-**0 hallazgos de Fase 1b y 0 de Fase 4.** Los 6 restantes son exactamente el
-alcance de la Fase 3.
+Cobertura del check, sobre las 108 URLs del registro más los posts y 5 sondas de
+slug inexistente: HTTP 200, title y description presentes, longitud y unicidad,
+`<html lang>` igual al locale, exactamente un `<h1>`, canonical propio, 3
+`hreflang`, ausencia de `meta keywords`, `noindex` donde toca, JSON-LD parseable
+con `BreadcrumbList` (salvo home) y `FAQPage` donde hay preguntas, `og:image`
+correcta, contadores sin ceros, 404 en las sondas, `robots.txt` sin `/_next/`, y
+cada `<loc>` del sitemap respondiendo 200 sin incluir rutas `noindex`.
+
+**JSON-LD servido** en una página de servicio:
+
+```
+bloque 1 -> ProfessionalService, WebSite      (layout, una vez por página)
+bloque 2 -> BreadcrumbList, Service, FAQPage  (@graph de la página)
+```
 
 ---
 
@@ -271,7 +292,58 @@ node scripts/seo-check.mjs --port 3141 --external
 
 ---
 
-## 8. Siguiente paso
+## 8. Verificación contra preview: BLOQUEADA por permisos
 
-Fase 2 (datos estructurados) y Fase 3 (robots, sitemap, soft-404, redirecciones).
-Los 6 hallazgos abiertos de `seo-check` son exactamente el alcance de la Fase 3.
+El push de `seo/fix` **no se pudo completar**. No es un problema de red ni del
+código: la cuenta autenticada no tiene permiso de escritura sobre el repo.
+
+```
+remote: Permission to epalternative/Alternative.git denied to EpenalbaDev.
+fatal: ... The requested URL returned error: 403
+```
+
+```
+$ gh api user --jq .login
+EpenalbaDev
+
+$ gh api repos/epalternative/Alternative --jq .permissions
+{"admin": false, "maintain": false, "pull": true, "push": false, "triage": false}
+```
+
+Un detalle que retrasó el diagnóstico: `git push` se quedaba colgado sin emitir
+salida porque `git-credential-manager` esperaba un prompt interactivo que en un
+entorno no interactivo nunca llega. Forzando el helper de `gh`
+(`git -c credential.helper='!gh auth git-credential' push`) el error real
+aparece de inmediato.
+
+### Qué hace falta
+
+Una de estas tres, a elección:
+
+1. Añadir a `EpenalbaDev` como colaborador con permiso de escritura en
+   `epalternative/Alternative`.
+2. Autenticar `gh` con la cuenta que sí tenga acceso: `gh auth login`.
+3. Hacer el push manualmente desde una sesión con credenciales válidas:
+   `git push -u origin seo/fix`.
+
+En cuanto la rama esté publicada y Vercel genere el preview:
+
+```bash
+node scripts/seo-check.mjs --base=https://<preview>.vercel.app
+node scripts/check-redirects.mjs --base=https://<preview>.vercel.app
+```
+
+El segundo es el único que puede validar las 52 reglas de `vercel.json`: son
+configuración de plataforma y `next start` no las aplica, así que **las
+redirecciones siguen sin verificarse contra un despliegue real**. Es lo único
+del plan que queda sin comprobar de forma empírica.
+
+---
+
+## 9. Siguiente paso
+
+Fase 5 (fuentes con `next/font`, imágenes optimizadas, `alternateLinks: false`
+para el `x-default` contradictorio, limpieza de `HeroReveal` y `browserslist`).
+
+Antes conviene resolver el bloqueo del push y correr las dos verificaciones
+remotas de arriba.
