@@ -15,12 +15,16 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 
 const arg = (name, def) => {
+  const hit = process.argv.find((a) => a.startsWith(`--${name}=`));
+  if (hit) return hit.split('=').slice(1).join('=');
   const i = process.argv.indexOf(`--${name}`);
   return i > -1 ? process.argv[i + 1] : def;
 };
 const PORT = Number(arg('port', 3131));
 const DIST = arg('dist', '.next');
-const BASE = `http://localhost:${PORT}`;
+/** `--base=https://preview.vercel.app` rastrea un despliegue real en vez de levantar next start. */
+const REMOTE = (arg('base', '') || '').replace(/\/+$/, '');
+const BASE = REMOTE || `http://localhost:${PORT}`;
 const LOCALES = ['es', 'en'];
 
 // ── Registro ──────────────────────────────────────────────────
@@ -60,7 +64,7 @@ async function get(url) {
 // ── Arranque del servidor ─────────────────────────────────────
 // `--external` reutiliza un `next start` ya levantado (util en Windows, donde
 // spawn de npx es fragil).
-const EXTERNAL = process.argv.includes('--external');
+const EXTERNAL = process.argv.includes('--external') || Boolean(REMOTE);
 let server = null;
 if (!EXTERNAL) {
   console.log(`> next start -p ${PORT} (dist: ${DIST})`);
@@ -70,7 +74,7 @@ if (!EXTERNAL) {
     { env: { ...process.env, NEXT_DIST_DIR: DIST }, stdio: 'ignore', shell: process.platform === 'win32' }
   );
 } else {
-  console.log(`> usando servidor externo en ${BASE}`);
+  console.log(`> ${REMOTE ? 'despliegue remoto' : 'servidor externo'}: ${BASE}`);
 }
 const stop = () => { try { server && server.kill(); } catch {} };
 process.on('exit', stop);
@@ -169,8 +173,10 @@ const run = async () => {
           let parsed;
           try { parsed = blocks.map((b) => JSON.parse(b)); ok(); }
           catch { fail('2', rel, 'ld+json no parseable'); }
-          if (parsed && !JSON.stringify(parsed).includes('BreadcrumbList')) fail('2', rel, 'ld+json sin BreadcrumbList');
-          else if (parsed) ok();
+          // La home no lleva migas: un BreadcrumbList de un solo nivel no aporta nada.
+          if (parsed && route.type !== 'home' && !JSON.stringify(parsed).includes('BreadcrumbList')) {
+            fail('2', rel, 'ld+json sin BreadcrumbList');
+          } else if (parsed) ok();
           if (parsed && hasFaqModule) {
             const faqFile = path.join(FAQ_DIR, `${(route.path || 'home').replace(/\//g, '_')}.ts`);
             if (fs.existsSync(faqFile) && !JSON.stringify(parsed).includes('FAQPage')) {
@@ -178,6 +184,14 @@ const run = async () => {
             } else ok();
           }
         }
+      }
+
+      // og:image apunta al PNG estatico del sitio (Fase 2/5)
+      if (route.type === 'service' && !route.noindex) {
+        const og = one(body, /property="og:image" content="([^"]*)"/);
+        const expectedOg = 'https://grupoalternative.com/og-image.png';
+        if (og !== expectedOg) fail('2', rel, `og:image "${og}", se esperaba "${expectedOg}"`);
+        else ok();
       }
 
       // contadores del hero (Fase 4)
