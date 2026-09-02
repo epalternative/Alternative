@@ -89,13 +89,15 @@ export function buildPageMetadata(path: string, locale: Locale): Metadata {
       siteName: 'Grupo Alternative',
       title,
       description,
-      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: title }],
+      // URL absoluta a proposito: Vercel sobrescribe `metadataBase` con el
+      // dominio del deployment, asi que una ruta relativa apuntaria al preview.
+      images: [{ url: absoluteUrl(OG_IMAGE), width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [OG_IMAGE],
+      images: [absoluteUrl(OG_IMAGE)],
     },
     robots: route.noindex
       ? { index: false, follow: true }

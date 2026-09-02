@@ -5,7 +5,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { locales, Locale } from '@/i18n';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ConditionalShell } from '@/components/layout/conditional-shell';
-import { SITE_URL, OG_IMAGE } from '@/lib/seo';
+import { SITE_URL, OG_IMAGE, absoluteUrl } from '@/lib/seo';
 import { buildOrganization } from '@/lib/seo/jsonld';
 import { JsonLd } from '@/components/seo/JsonLd';
 import '../globals.css';
@@ -39,7 +39,7 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
     authors: [{ name: 'Grupo Alternative' }],
     openGraph: {
       siteName: 'Grupo Alternative',
-      images: [{ url: OG_IMAGE, width: 1200, height: 630 }],
+      images: [{ url: absoluteUrl(OG_IMAGE), width: 1200, height: 630 }],
     },
     icons: {
       icon: '/favicon.svg',
