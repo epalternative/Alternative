@@ -55,8 +55,18 @@ const one = (html, rx) => {
 };
 const count = (html, rx) => (html.match(rx) || []).length;
 
+/**
+ * Bypass de Deployment Protection de Vercel.
+ *
+ * Los previews protegidos devuelven 302 a vercel.com/sso-api para cualquier
+ * peticion anonima. El secreto se genera en Vercel > Settings > Deployment
+ * Protection > Protection Bypass for Automation y NO se imprime nunca.
+ */
+const BYPASS = arg('bypass', process.env.VERCEL_AUTOMATION_BYPASS_SECRET || '');
+const HEADERS = BYPASS ? { 'x-vercel-protection-bypass': BYPASS } : undefined;
+
 async function get(url) {
-  const res = await fetch(url, { redirect: 'manual' });
+  const res = await fetch(url, { redirect: 'manual', headers: HEADERS });
   const body = res.status === 200 ? await res.text() : '';
   return { status: res.status, body };
 }
@@ -83,7 +93,7 @@ process.on('SIGINT', () => { stop(); process.exit(130); });
 async function waitUp() {
   for (let i = 0; i < 40; i++) {
     try {
-      const r = await fetch(`${BASE}/es`, { redirect: 'manual' });
+      const r = await fetch(`${BASE}/es`, { redirect: 'manual', headers: HEADERS });
       if (r.status < 500) return true;
     } catch {}
     await new Promise((r) => setTimeout(r, 500));
@@ -234,7 +244,7 @@ const run = async () => {
 
   // ── robots.txt ──
   {
-    const r = await fetch(`${BASE}/robots.txt`);
+    const r = await fetch(`${BASE}/robots.txt`, { headers: HEADERS });
     const txt = await r.text();
     if (/Disallow:\s*\/_next\//.test(txt)) fail('3', '/robots.txt', 'sigue bloqueando /_next/');
     else ok();
@@ -244,7 +254,7 @@ const run = async () => {
 
   // ── sitemap.xml ──
   {
-    const r = await fetch(`${BASE}/sitemap.xml`);
+    const r = await fetch(`${BASE}/sitemap.xml`, { headers: HEADERS });
     const xml = await r.text();
     const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
     const mods = [...xml.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1]);

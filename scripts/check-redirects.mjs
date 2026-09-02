@@ -55,8 +55,12 @@ const fail = (rule, msg) => findings.push({ rule, msg });
 
 const norm = (loc) => (loc || '').replace(BASE, '').replace(/^https?:\/\/[^/]+/, '') || '/';
 
+/** Bypass de Deployment Protection de Vercel; nunca se imprime. */
+const BYPASS = arg('bypass', process.env.VERCEL_AUTOMATION_BYPASS_SECRET || '');
+const HEADERS = BYPASS ? { 'x-vercel-protection-bypass': BYPASS } : undefined;
+
 async function head(url) {
-  const r = await fetch(url, { redirect: 'manual' });
+  const r = await fetch(url, { redirect: 'manual', headers: HEADERS });
   return { status: r.status, location: r.headers.get('location') };
 }
 
