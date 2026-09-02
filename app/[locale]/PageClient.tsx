@@ -438,9 +438,9 @@ export default function Home() {
                 className="flex flex-wrap gap-8 pt-8 border-t border-white/10"
               >
                 {[
-                  { number: 500, suffix: '+', label: 'Proyectos Completados' },
-                  { number: 98, suffix: '%', label: 'Satisfacción del Cliente' },
-                  { number: 15, suffix: '+', label: 'Años de Experiencia' }
+                  { number: 50, suffix: '+', label: tHero('counters.projects') },
+                  { number: 98, suffix: '%', label: tHero('counters.satisfaction') },
+                  { number: 15, suffix: '+', label: tHero('counters.experience') }
                 ].map((stat, i) => (
                   <div key={i}>
                     <div className="text-3xl font-bold text-turquesa mb-1">

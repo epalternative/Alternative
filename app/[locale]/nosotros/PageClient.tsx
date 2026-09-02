@@ -856,8 +856,8 @@ export default function NosotrosPage() {
 
               <p className="text-lg text-foreground/80 mb-6 leading-relaxed">
                 {isEs
-                  ? 'Grupo Alternative es una consultora estratégica con más de 5 años transformando empresas de servicios en Panamá y América Latina.'
-                  : 'Grupo Alternative is a strategic consulting firm with over 5 years transforming service companies in Panama and Latin America.'}
+                  ? 'Grupo Alternative es una consultora estratégica con más de 15 años transformando empresas de servicios en Panamá y América Latina.'
+                  : 'Grupo Alternative is a strategic consulting firm with over 15 years transforming service companies in Panama and Latin America.'}
               </p>
 
               <p className="text-foreground/70 mb-8 leading-relaxed">
