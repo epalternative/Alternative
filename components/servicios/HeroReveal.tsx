@@ -350,7 +350,7 @@ export default function HeroReveal() {
               }}
             >
               {[
-                { n: '500+', l: 'Proyectos Completados' },
+                { n: '50+', l: 'Proyectos Completados' },
                 { n: '98%', l: 'Satisfacción del Cliente' },
                 { n: '15+', l: 'Años de Experiencia' },
               ].map((s, i) => (

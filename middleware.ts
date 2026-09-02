@@ -15,12 +15,9 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const response = intlMiddleware(req);
-
-  // Pass the original pathname to layouts/pages so they can build correct canonical/hreflang URLs
-  response.headers.set('x-pathname', req.nextUrl.pathname);
-
-  return response;
+  // El canonical y los hreflang los construye cada página desde
+  // `lib/seo/routes.ts`, así que ya no hace falta propagar el pathname.
+  return intlMiddleware(req);
 }
 
 export const config = {

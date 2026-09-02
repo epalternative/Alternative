@@ -7,7 +7,9 @@ import { BpmArticleContent, BPM_TOC } from '@/components/blog/contents/BpmArticl
 import { BancoRegionalCaseContent, BANCO_REGIONAL_TOC } from '@/components/blog/contents/BancoRegionalCaseContent';
 import type { TocItem } from '@/components/blog/BlogPostLayout';
 import type { Metadata } from 'next';
-import { SITE_URL } from '@/lib/seo';
+import { setRequestLocale } from 'next-intl/server';
+import { SITE_URL, OG_IMAGE, absoluteUrl } from '@/lib/seo';
+import { ORGANIZATION_ID } from '@/lib/seo/jsonld';
 
 function ArticleJsonLd({
   post,
@@ -22,24 +24,26 @@ function ArticleJsonLd({
   const url = `${baseUrl}/${locale}/blog/${slug}`;
   const title = locale === 'en' ? post.titleEn : post.title;
   const description = locale === 'en' ? post.metaDescriptionEn : post.metaDescription;
+  const excerpt = locale === 'en' ? post.excerptEn : post.excerpt;
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
     headline: title,
     description,
-    image: post.heroImage ? `${baseUrl}${post.heroImage}` : undefined,
+    inLanguage: locale === 'en' ? 'en-US' : 'es-PA',
+    articleSection: locale === 'en' ? post.categoryLabelEn : post.categoryLabel,
+    wordCount: excerpt ? excerpt.split(/\s+/).filter(Boolean).length : undefined,
+    keywords: post.keywords?.length ? post.keywords.join(', ') : undefined,
+    // `heroImage` puede venir del CDN de Sanity (absoluta) o de /public (relativa).
+    image: absoluteUrl(post.heroImage ?? OG_IMAGE),
     datePublished: post.publishedAt,
     dateModified: post.updatedAt ?? post.publishedAt,
     author: {
       '@type': 'Person',
       name: locale === 'en' ? post.author.nameEn : post.author.name,
-      url: post.author.link ? `${baseUrl}${post.author.link}` : undefined,
+      url: post.author.link ? `${baseUrl}/${locale}${post.author.link}` : undefined,
     },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Grupo Alternative',
-      logo: { '@type': 'ImageObject', url: `${baseUrl}/logo_alternative_horizontal.webp` },
-    },
+    publisher: { '@id': ORGANIZATION_ID },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
   };
   return (
@@ -94,10 +98,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: 'article',
       locale: locale === 'es' ? 'es_PA' : 'en_US',
       url: canonical,
-      siteName: 'Alternative',
+      siteName: 'Grupo Alternative',
       title,
       description,
-      images: post.heroImage ? [{ url: `${SITE_URL}${post.heroImage}`, alt: isEn ? post.heroImageAltEn : post.heroImageAlt }] : undefined,
+      images: [
+        {
+          url: absoluteUrl(post.heroImage ?? OG_IMAGE),
+          alt: (isEn ? post.heroImageAltEn : post.heroImageAlt) ?? title,
+        },
+      ],
       publishedTime: post.publishedAt,
       authors: [post.author.name],
     },
@@ -105,6 +114,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: 'summary_large_image',
       title,
       description,
+      images: [absoluteUrl(post.heroImage ?? OG_IMAGE)],
     },
     robots: {
       index: true,
@@ -121,6 +131,7 @@ export async function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { locale, slug } = params;
+  setRequestLocale(locale);
   const post = await getPostBySlugAsync(slug);
   if (!post) notFound();
 

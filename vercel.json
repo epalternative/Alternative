@@ -27,7 +27,7 @@
     },
     {
       "source": "/service/desarrollo-software",
-      "destination": "/es/servicios/desarrollo-tecnologia/aplicaciones-medida",
+      "destination": "/es/servicios/desarrollo-tecnologia/aplicaciones-web-moviles",
       "permanent": true
     },
     {
@@ -72,22 +72,22 @@
     },
     {
       "source": "/ia-en-gestion-de-proyectos",
-      "destination": "/es/blog/ia-gestion-proyectos",
+      "destination": "/es/blog",
       "permanent": true
     },
     {
       "source": "/diagramas-de-flujo-de-proces-llave-maestra-la-eficiencia-laboral",
-      "destination": "/es/blog/diagramas-flujo-procesos",
+      "destination": "/es/blog",
       "permanent": true
     },
     {
       "source": "/la-columna-vertebral-del-exito-empresarial",
-      "destination": "/es/blog/columna-vertebral-exito",
+      "destination": "/es/blog",
       "permanent": true
     },
     {
       "source": "/codigo-impecable-la-importancia-de-la-calidad-en-el-desarrollo-de-software-empresarial",
-      "destination": "/es/blog/calidad-desarrollo-software",
+      "destination": "/es/blog",
       "permanent": true
     },
     {
@@ -112,7 +112,7 @@
     },
     {
       "source": "/services/software-development",
-      "destination": "/en/servicios/desarrollo-tecnologia/aplicaciones-medida",
+      "destination": "/en/servicios/desarrollo-tecnologia/aplicaciones-web-moviles",
       "permanent": true
     },
     {
@@ -157,11 +157,6 @@
     },
     {
       "source": "/navegando-el-futuro-de-la-transformacion",
-      "destination": "/es/blog/navegando-el-futuro-de-la-transformacion",
-      "permanent": true
-    },
-    {
-      "source": "/navegando-el-futuro-de-la-transformacion/",
       "destination": "/es/blog/navegando-el-futuro-de-la-transformacion",
       "permanent": true
     },
@@ -228,6 +223,36 @@
     {
       "source": "/en/resources/:path*",
       "destination": "/en/recursos/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/beneficios-de-la-consultoria-en-ti",
+      "destination": "/es/servicios/transformacion-digital",
+      "permanent": true
+    },
+    {
+      "source": "/es/business-consultants",
+      "destination": "/es/nosotros",
+      "permanent": true
+    },
+    {
+      "source": "/en/business-consultants",
+      "destination": "/en/nosotros",
+      "permanent": true
+    },
+    {
+      "source": "/service/:path*",
+      "destination": "/es/servicios",
+      "permanent": true
+    },
+    {
+      "source": "/services/:path*",
+      "destination": "/en/servicios",
+      "permanent": true
+    },
+    {
+      "source": "/project/:path*",
+      "destination": "/es/nosotros",
       "permanent": true
     }
   ]

@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/seo';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,9 +7,11 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/_next/', '/admin/'],
+        // `/_next/` ya NO se bloquea: Googlebot necesita el JS y el CSS para
+        // renderizar. `/admin/` se elimina porque esa ruta no existe.
+        disallow: ['/api/', '/studio', '/es/studio', '/en/studio'],
       },
     ],
-    sitemap: 'https://grupoalternative.com/sitemap.xml',
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

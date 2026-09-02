@@ -34,6 +34,11 @@
       "iso": "ISO 9001 Lead Auditors",
       "lean": "Lean Six Sigma Certified",
       "experience": "15+ años de experiencia"
+    },
+    "counters": {
+      "projects": "Proyectos Completados",
+      "satisfaction": "Satisfacción del Cliente",
+      "experience": "Años de Experiencia"
     }
   },
   "about": {

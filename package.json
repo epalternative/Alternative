@@ -7,7 +7,10 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "studio": "cd studio-app && npm run dev"
+    "studio": "cd studio-app && npm run dev",
+    "seo:check": "node scripts/seo-check.mjs",
+    "seo:routes": "node scripts/validate-routes.mjs",
+    "seo:redirects": "node scripts/check-redirects.mjs"
   },
   "prisma": {
     "seed": "tsx --require dotenv/config scripts/seed.ts"
@@ -89,12 +92,12 @@
     "embla-carousel-react": "8.3.0",
     "formik": "2.4.5",
     "framer-motion": "10.18.0",
-    "jspdf": "^2.5.2",
-    "jspdf-autotable": "^3.8.3",
     "gray-matter": "4.0.3",
     "input-otp": "1.2.4",
     "jotai": "2.6.0",
     "jsonwebtoken": "9.0.2",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.3",
     "lodash": "4.17.21",
     "lucide-react": "0.446.0",
     "mapbox-gl": "1.13.3",
