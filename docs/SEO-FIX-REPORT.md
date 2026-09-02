@@ -292,58 +292,64 @@ node scripts/seo-check.mjs --port 3141 --external
 
 ---
 
-## 8. Verificación contra preview: BLOQUEADA por permisos
+## 8. Verificación contra el preview de Vercel: EN VERDE
 
-El push de `seo/fix` **no se pudo completar**. No es un problema de red ni del
-código: la cuenta autenticada no tiene permiso de escritura sobre el repo.
+Rama publicada y desplegada. Verificado contra el despliegue real, no solo en local.
 
-```
-remote: Permission to epalternative/Alternative.git denied to EpenalbaDev.
-fatal: ... The requested URL returned error: 403
-```
+**Preview:** `https://alternative-irnjkcqof-ep-alternatives-projects.vercel.app` (commit `1a1f179`)
 
 ```
-$ gh api user --jq .login
-EpenalbaDev
-
-$ gh api repos/epalternative/Alternative --jq .permissions
-{"admin": false, "maintain": false, "pull": true, "push": false, "triage": false}
+node scripts/seo-check.mjs      --base=<preview>   →  1685 checks · 0 hallazgos
+node scripts/check-redirects.mjs --base=<preview>  →   204 checks · 0 fallos
 ```
 
-Un detalle que retrasó el diagnóstico: `git push` se quedaba colgado sin emitir
-salida porque `git-credential-manager` esperaba un prompt interactivo que en un
-entorno no interactivo nunca llega. Forzando el helper de `gh`
-(`git -c credential.helper='!gh auth git-credential' push`) el error real
-aparece de inmediato.
+Las 51 reglas de `vercel.json` responden 308 con el `Location` exacto y su destino
+da 200 sin ser soft-404. Los 9 comodines se probaron sustituyendo por rutas reales
+del registro (`/service/optimizacion-procesos`, `/project/katherine-gonzalez`,
+`/blog/que-es-bpm-…`, y las variantes `/en/services|industries|resources/:path*`).
 
-### Qué hace falta
+### Dos fallos que solo aparecieron en remoto
 
-Una de estas tres, a elección:
+Esta es la razón de verificar contra un despliegue y no solo con `next start`:
+ninguno de los dos se manifestaba en local.
 
-1. Añadir a `EpenalbaDev` como colaborador con permiso de escritura en
-   `epalternative/Alternative`.
-2. Autenticar `gh` con la cuenta que sí tenga acceso: `gh auth login`.
-3. Hacer el push manualmente desde una sesión con credenciales válidas:
-   `git push -u origin seo/fix`.
+**1. `og:image` apuntaba al dominio del preview** — afectaba a las 58 URLs de servicio.
 
-En cuanto la rama esté publicada y Vercel genere el preview:
-
-```bash
-node scripts/seo-check.mjs --base=https://<preview>.vercel.app
-node scripts/check-redirects.mjs --base=https://<preview>.vercel.app
+```
+canonical  → https://grupoalternative.com/...          ✅
+og:url     → https://grupoalternative.com/...          ✅
+og:image   → https://alternative-git-seo-fix-….vercel.app/og-image.png   ❌
 ```
 
-El segundo es el único que puede validar las 52 reglas de `vercel.json`: son
-configuración de plataforma y `next start` no las aplica, así que **las
-redirecciones siguen sin verificarse contra un despliegue real**. Es lo único
-del plan que queda sin comprobar de forma empírica.
+`canonical` y `og:url` salían bien porque `buildAlternates` los construye absolutos
+desde `SITE_URL`. La imagen era la única ruta **relativa**, y Next la resuelve contra
+`metadataBase` — que **Vercel sobrescribe con la URL del deployment aunque esté
+fijado explícitamente en el layout**. Corregido con `absoluteUrl()`, el mismo
+tratamiento que ya recibía el canonical.
+
+Conclusión de fondo: `metadataBase` no es fiable en Vercel; toda URL que deba
+apuntar a producción tiene que emitirse absoluta.
+
+**2. La regla de redirect con barra final era inalcanzable.**
+
+Vercel normaliza `/x/` → `/x` con su propio 308 **antes** de aplicar los redirects,
+así que `/navegando-el-futuro-de-la-transformacion/` nunca podía coincidir con su
+regla: la cadena era 308 → 308 → 200, con un salto de más. Regla eliminada
+(52 → 51); la variante sin barra la cubre.
+
+### Bypass de Deployment Protection
+
+Los previews de Vercel devuelven 302 a `vercel.com/sso-api` para cualquier petición
+anónima. `seo-check` y `check-redirects` aceptan `--bypass=<secreto>` o la variable
+`VERCEL_AUTOMATION_BYPASS_SECRET` y envían la cabecera `x-vercel-protection-bypass`.
+El secreto no se imprime en ninguna salida.
 
 ---
 
 ## 9. Siguiente paso
 
-Fase 5 (fuentes con `next/font`, imágenes optimizadas, `alternateLinks: false`
-para el `x-default` contradictorio, limpieza de `HeroReveal` y `browserslist`).
+Fase 5: fuentes con `next/font`, `images.unoptimized` fuera, `alternateLinks: false`
+para el `x-default` contradictorio de la cabecera `Link`, y limpieza
+(`HeroReveal.tsx`, `browserslist` con `ie >= 11`, `gray-matter` sin uso).
 
-Antes conviene resolver el bloqueo del push y correr las dos verificaciones
-remotas de arriba.
+Las fases 1a, 1b, 2, 3 y 4 quedan verificadas contra el despliegue real.
