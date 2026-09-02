@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { IndustrySidebar } from '@/components/ui/industry-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/industrias--tecnologia-telecomunicaciones';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   ArrowRight,
   ChevronDown,
@@ -152,28 +154,7 @@ export default function TecnologiaTelecomunicacionesPage() {
     },
   ];
 
-  const faqs = [
-    {
-      question: '¿Scrum Master vs Project Manager: cuál necesito?',
-      answer:
-        'Scrum Master para: Desarrollo ágil continuo (producto SaaS en evolución, sprints sin fin definido), equipos de 5–10 developers, cultura tech ágil. SM facilita proceso Scrum, no gestiona presupuesto/scope tradicional. Project Manager para: Proyectos con inicio/fin definido (implementación plataforma, migración a cloud), múltiples workstreams, gestión de vendors, presupuesto significativo. Ambos: Proyectos grandes pueden tener PM (gestión general) + SM (facilitación de equipos ágiles).',
-    },
-    {
-      question: '¿Alternative provee solo SM/PM o también developers?',
-      answer:
-        'Ambos modelos: (1) Solo SM/PM: Proveemos SM que facilita TU equipo de developers (contratados o internos). (2) SM/PM + equipo desarrollo: Proveemos SM + developers si no tienes capacidad interna. Modelo depende de tu necesidad. Mayoría de clientes tech tienen developers, solo necesitan SM/PM para estructurar proceso.',
-    },
-    {
-      question: '¿Trabajan con metodologías específicas (Scrum, Kanban, SAFe)?',
-      answer:
-        'Sí, dominamos múltiples frameworks: Scrum: Más común (70% proyectos tech). Para equipos 5–10 personas, sprints 2 semanas. Kanban: Para equipos de soporte, mantenimiento, flujo continuo sin sprints. SAFe (Scaled Agile): Para organizaciones grandes (50+ personas en desarrollo) con múltiples equipos. Scrumban: Híbrido Scrum + Kanban. Recomendamos framework apropiado según contexto.',
-    },
-    {
-      question: '¿Entienden stack tecnológico moderno o son solo gestores?',
-      answer:
-        'Nuestros SMs/PMs tienen background técnico: entienden arquitectura de software, APIs, bases de datos, cloud, CI/CD. No programan activamente pero entienden lenguaje técnico de developers, pueden participar en discusiones de arquitectura, entienden trade-offs técnicos. Esto es crítico para remover impediments técnicos y facilitar decisiones. SM/PM sin conocimiento técnico en empresa tech no funciona.',
-    },
-  ];
+  const faqs = localizeFaqs(faqData, 'es');
 
   const contactSubject = isEs ? 'Scrum Master o PM Tech' : 'Scrum Master or Tech PM';
   const contactUrl = `/${locale}/contacto?subject=${encodeURIComponent(contactSubject)}`;

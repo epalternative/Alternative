@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { ServiceSidebar } from '@/components/ui/service-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/servicios--optimizacion-procesos--lean-six-sigma';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   Zap,
   ArrowRight,
@@ -358,44 +360,7 @@ export default function LeanSixSigmaPage() {
     }
   ];
 
-  const faqs = [
-    {
-      question: isEs ? '¿Cómo determinan el alcance de un proyecto Lean?' : 'How do you determine the scope of a Lean project?',
-      answer: isEs
-        ? 'Depende de: desperdicios identificados, complejidad del proceso, datos disponibles, alcance de certificación de equipo. Diagnóstico Lean gratuito identifica oportunidades y desarrolla propuesta con ROI proyectado.'
-        : 'It depends on: identified waste, process complexity, available data, team certification scope. Free Lean diagnosis identifies opportunities and develops proposal with projected ROI.'
-    },
-    {
-      question: isEs ? '¿Cuál es la diferencia entre Lean y Six Sigma?' : 'What\'s the difference between Lean and Six Sigma?',
-      answer: isEs
-        ? 'Lean elimina desperdicios (actividades sin valor). Six Sigma reduce variabilidad y defectos. Lean te hace rápido. Six Sigma te hace consistente. Lean Six Sigma combina ambos: eficiencia + calidad.'
-        : 'Lean eliminates waste (activities without value). Six Sigma reduces variability and defects. Lean makes you fast. Six Sigma makes you consistent. Lean Six Sigma combines both: efficiency + quality.'
-    },
-    {
-      question: isEs ? '¿Lean Six Sigma es solo para manufactura?' : 'Is Lean Six Sigma only for manufacturing?',
-      answer: isEs
-        ? 'No. Aunque nació en manufactura, hoy aplica a cualquier proceso repetitivo: banca, call centers, salud, gobierno, servicios profesionales. Si hay proceso repetitivo con desperdicios, Lean puede optimizarlo.'
-        : 'No. Although it was born in manufacturing, today it applies to any repetitive process: banking, call centers, healthcare, government, professional services. If there\'s a repetitive process with waste, Lean can optimize it.'
-    },
-    {
-      question: isEs ? '¿Qué significa Black Belt / Green Belt?' : 'What does Black Belt / Green Belt mean?',
-      answer: isEs
-        ? 'Niveles de certificación Lean Six Sigma. Yellow Belt: fundamentos. Green Belt: líder de proyectos. Black Belt: experto. Master Black Belt: mentor. Capacitamos y certificamos personal clave durante proyectos.'
-        : 'Lean Six Sigma certification levels. Yellow Belt: fundamentals. Green Belt: project leader. Black Belt: expert. Master Black Belt: mentor. We train and certify key personnel during projects.'
-    },
-    {
-      question: isEs ? '¿Los operadores se resisten (miedo a perder empleo)?' : 'Do operators resist (fear of job loss)?',
-      answer: isEs
-        ? 'Lean NO es despedir; es hacer más con lo que tienes. Involucramos operadores desde día 1 en identificar desperdicios porque ellos los conocen mejor. Resistencia baja cuando ven que Lean elimina sus frustraciones diarias.'
-        : 'Lean is NOT about firing; it\'s about doing more with what you have. We involve operators from day 1 in identifying waste because they know it best. Resistance drops when they see that Lean eliminates their daily frustrations.'
-    },
-    {
-      question: isEs ? '¿Las mejoras se sostienen?' : 'Do improvements last?',
-      answer: isEs
-        ? 'Fase Control asegura sostenibilidad: SOPs, controles visuales, auditorías, Green Belts internos capacitados. 80-85% de mejoras se mantienen a 2 años.'
-        : 'Control phase ensures sustainability: SOPs, visual controls, audits, trained internal Green Belts. 80-85% of improvements are maintained at 2 years.'
-    }
-  ];
+  const faqs = localizeFaqs(faqData, isEs ? 'es' : 'en');
 
   const colorClasses = {
     turquesa: { bg: 'bg-turquesa/10', text: 'text-turquesa', border: 'border-turquesa/20' },

@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { IndustrySidebar } from '@/components/ui/industry-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/industrias--servicios-profesionales';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   ArrowRight,
   ChevronDown,
@@ -152,28 +154,7 @@ export default function ServiciosProfesionalesPage() {
     },
   ];
 
-  const faqs = [
-    {
-      question: '¿Cómo Alternative ayuda a mejorar utilización de consultores?',
-      answer:
-        'Dos enfoques complementarios: (1) Reducir trabajo no facturable: Automatizar admin (timesheets, facturación), optimizar propuestas (templates), procesos eficientes. Libera 4–8 horas/semana/consultor = +10–15% utilización. (2) Mejorar gestión de proyectos: PM dedicado o metodología estructurada reduce scope creep, retrabajos, horas no facturadas. Mejora 5–10% utilización. Combinado: 15–25% mejora utilización factible.',
-    },
-    {
-      question: '¿ISO 9001 en servicios profesionales genera burocracia excesiva?',
-      answer:
-        'Preocupación válida. Mal implementado: ISO puede generar burocracia (documentación excesiva, procesos rígidos). Bien implementado: ISO documenta lo que ya haces + estandariza mejores prácticas. Beneficio: consultores junior ejecutan metodología probada (no inventan), propuestas/entregas consistentes, curva aprendizaje acelerada. Alternative diseña ISO pragmático adaptado a servicios (no manufactura rígida). 80% firmas reportan ISO como beneficio neto después de 12 meses.',
-    },
-    {
-      question: '¿Alternative entiende especificidades de diferentes servicios profesionales?',
-      answer:
-        'Experiencia en múltiples verticales: consultorías de gestión, firmas legales, firmas de contabilidad/auditoría, firmas de ingeniería, agencias de marketing/publicidad, arquitectura. Aunque servicios difieren, desafíos son similares: utilización, rentabilidad por proyecto, estandarización, escalamiento. Adaptamos metodología a cada vertical. Si firma muy especializada (ej: consultoría actuarial), curva aprendizaje inicial pero principios aplican universalmente.',
-    },
-    {
-      question: '¿Qué tamaño de firma justifica invertir en optimización/ISO?',
-      answer:
-        'Firmas pequeñas (&lt;10 personas): Optimización ligera (templates, herramientas básicas), ISO típicamente no justifica. Firmas medianas (10–50 personas): Optimización tiene ROI alto, ISO justifica si buscan diferenciación o escalar. Firmas grandes (50+ personas): Optimización e ISO críticos para no colapsar operativamente.',
-    },
-  ];
+  const faqs = localizeFaqs(faqData, 'es');
 
   const contactSubject = isEs ? 'PM o Consultoría Servicios Profesionales' : 'PM or Consulting Professional Services';
   const contactUrl = `/${locale}/contacto?subject=${encodeURIComponent(contactSubject)}`;

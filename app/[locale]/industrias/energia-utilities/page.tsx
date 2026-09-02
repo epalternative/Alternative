@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { buildPageMetadata } from '@/lib/seo';
+import { buildPageJsonLd } from '@/lib/seo/jsonld';
+import { JsonLd } from '@/components/seo/JsonLd';
 import PageClient from './PageClient';
 
 const PATH = '/industrias/energia-utilities';
@@ -15,5 +17,10 @@ export function generateMetadata({
 
 export default function Page({ params }: { params: { locale: 'es' | 'en' } }) {
   setRequestLocale(params.locale);
-  return <PageClient />;
+  return (
+    <>
+      <JsonLd data={buildPageJsonLd(PATH, params.locale)} />
+      <PageClient />
+    </>
+  );
 }

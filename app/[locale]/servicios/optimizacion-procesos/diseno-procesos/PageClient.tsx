@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { ServiceSidebar } from '@/components/ui/service-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/servicios--optimizacion-procesos--diseno-procesos';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   PenTool,
   ArrowRight,
@@ -324,44 +326,7 @@ export default function DisenoProcesosPage() {
     }
   ];
 
-  const faqs = [
-    {
-      question: isEs ? '¿Cómo determinan el alcance de diseño?' : 'How do you determine the design scope?',
-      answer: isEs
-        ? 'Varía según: cantidad de procesos, complejidad (# departamentos involucrados), nivel de documentación requerido (básico vs ISO), capacitación necesaria. Diagnóstico inicial dimensiona esfuerzo y presenta propuesta detallada.'
-        : 'It varies according to: number of processes, complexity (# departments involved), documentation level required (basic vs ISO), training needed. Initial diagnosis sizes effort and presents detailed proposal.'
-    },
-    {
-      question: isEs ? '¿Qué incluye un manual de procesos?' : 'What does a process manual include?',
-      answer: isEs
-        ? 'Objetivo, alcance, roles (RACI), descripción paso a paso, diagrama de flujo, entradas/salidas, documentos, KPIs, controles de calidad. Todo en formato editable.'
-        : 'Objective, scope, roles (RACI), step-by-step description, flowchart, inputs/outputs, documents, KPIs, quality controls. All in editable format.'
-    },
-    {
-      question: isEs ? '¿Necesito software especializado?' : 'Do I need specialized software?',
-      answer: isEs
-        ? 'No necesariamente. Word, Visio o PowerPoint son suficientes inicialmente. Para gestión continua existen herramientas BPM (Bizagi, Signavio). Entregamos en formatos estándar editables.'
-        : 'Not necessarily. Word, Visio or PowerPoint are sufficient initially. For continuous management there are BPM tools (Bizagi, Signavio). We deliver in editable standard formats.'
-    },
-    {
-      question: isEs ? '¿Cómo aseguran que procesos se implementen realmente?' : 'How do you ensure processes are actually implemented?',
-      answer: isEs
-        ? 'Involucramos ejecutores desde diseño, implementación gradual con quick wins, capacitación hands-on, auditorías de adopción a 30-60-90 días con ajustes basados en feedback.'
-        : 'We involve executors from design, gradual implementation with quick wins, hands-on training, adoption audits at 30-60-90 days with feedback-based adjustments.'
-    },
-    {
-      question: isEs ? '¿Puedo usar documentación para ISO 9001?' : 'Can I use documentation for ISO 9001?',
-      answer: isEs
-        ? 'Sí. Nuestra documentación cumple requisitos de "información documentada" de ISO 9001:2015. Clientes la usan como base para auditorías de certificación.'
-        : 'Yes. Our documentation meets ISO 9001:2015 "documented information" requirements. Clients use it as a base for certification audits.'
-    },
-    {
-      question: isEs ? '¿Incluyen perfiles de puesto?' : 'Do you include job profiles?',
-      answer: isEs
-        ? 'Incluimos Manual de Funciones por Proceso (matriz RACI: quién hace qué en el flujo). Diferente de perfiles de RR.HH. (competencias, educación). Nuestro enfoque define roles desde procesos de negocio.'
-        : 'We include Process Function Manual (RACI matrix: who does what in the flow). Different from HR profiles (competencies, education). Our approach defines roles from business processes.'
-    }
-  ];
+  const faqs = localizeFaqs(faqData, isEs ? 'es' : 'en');
 
   const colorClasses = {
     turquesa: { bg: 'bg-turquesa/10', text: 'text-turquesa', border: 'border-turquesa/20', solid: 'bg-turquesa' },

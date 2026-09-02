@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { ServiceSidebar } from '@/components/ui/service-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/servicios--gestion-proyectos--casos-negocio';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   FileText,
   ArrowRight,
@@ -430,56 +432,7 @@ export default function CasosNegocioPage() {
         'You need formal investment committee approval',
       ];
 
-  const faqs = [
-    {
-      question: isEs
-        ? '¿Cuánto tarda desarrollar un business case?'
-        : 'How long does it take to develop a business case?',
-      answer: isEs
-        ? 'Depende del alcance y disponibilidad de datos. Típicamente 2-4 semanas para un business case completo: discovery 3-5 días, análisis 1-2 semanas, documentación y revisión 1 semana. Para iniciativas más simples, podemos entregar en 1-2 semanas.'
-        : 'It depends on scope and data availability. Typically 2-4 weeks for a complete business case: discovery 3-5 days, analysis 1-2 weeks, documentation and review 1 week. For simpler initiatives, we can deliver in 1-2 weeks.',
-    },
-    {
-      question: isEs
-        ? '¿Incluyen el modelo financiero en Excel o solo el documento?'
-        : 'Do you include the financial model in Excel or just the document?',
-      answer: isEs
-        ? 'Sí. Entregamos el business case en Word/PDF y el modelo financiero en Excel (o Google Sheets) para que tu equipo pueda ajustar supuestos, escenarios y mantenerlo vivo. La propiedad intelectual es del cliente.'
-        : 'Yes. We deliver the business case in Word/PDF and the financial model in Excel (or Google Sheets) so your team can adjust assumptions, scenarios and keep it alive. Intellectual property belongs to the client.',
-    },
-    {
-      question: isEs
-        ? '¿Pueden presentar el business case ante nuestra junta?'
-        : 'Can you present the business case to our board?',
-      answer: isEs
-        ? 'Sí, si lo solicitas. Preparamos el deck ejecutivo y uno de nuestros consultores puede acompañar la presentación, responder preguntas técnicas o de metodología, y apoyar al sponsor durante la junta. Suele ser valioso cuando hay escepticismo o preguntas difíciles.'
-        : 'Yes, if you request it. We prepare the executive deck and one of our consultants can join the presentation, answer technical or methodology questions, and support the sponsor during the board meeting. It is often valuable when there is skepticism or tough questions.',
-    },
-    {
-      question: isEs
-        ? '¿Qué industrias han apoyado con business cases?'
-        : 'What industries have you supported with business cases?',
-      answer: isEs
-        ? 'Banca, seguros, retail, manufactura, tecnología, telecomunicaciones, salud, gobierno y servicios profesionales. El rigor del análisis es transversal; adaptamos el lenguaje y los indicadores al sector del cliente.'
-        : 'Banking, insurance, retail, manufacturing, technology, telecommunications, healthcare, government and professional services. The rigor of the analysis is transversal; we adapt the language and indicators to the client\'s sector.',
-    },
-    {
-      question: isEs
-        ? '¿El business case garantiza la aprobación?'
-        : 'Does the business case guarantee approval?',
-      answer: isEs
-        ? 'No. Un business case bien hecho aumenta sustancialmente la probabilidad de aprobación al presentar argumentos claros, números rigurosos y riesgos explícitos. La decisión final siempre es de la junta o comité. Lo que sí garantizamos es que la decisión se tome con información de calidad.'
-        : 'No. A well-done business case substantially increases the probability of approval by presenting clear arguments, rigorous numbers and explicit risks. The final decision is always the board\'s or committee\'s. What we do guarantee is that the decision is made with quality information.',
-    },
-    {
-      question: isEs
-        ? '¿Cómo se cobra un business case?'
-        : 'How is a business case charged?',
-      answer: isEs
-        ? 'Por proyecto fijo según alcance acordado. Incluye discovery, análisis, documentación y una ronda de revisiones. Presentación en junta y rondas adicionales de ajuste se cotizan por separado si se requieren. No hay costos ocultos.'
-        : 'Fixed per project according to agreed scope. Includes discovery, analysis, documentation and one round of revisions. Board presentation and additional adjustment rounds are quoted separately if required. No hidden costs.',
-    },
-  ];
+  const faqs = localizeFaqs(faqData, isEs ? 'es' : 'en');
 
   return (
     <>

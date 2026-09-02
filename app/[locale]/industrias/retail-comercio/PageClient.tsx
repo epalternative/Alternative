@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { IndustrySidebar } from '@/components/ui/industry-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/industrias--retail-comercio';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   ArrowRight,
   ChevronDown,
@@ -153,28 +155,7 @@ export default function RetailComercioPage() {
     },
   ];
 
-  const faqs = [
-    {
-      question: '¿Build vs buy para e-commerce: desarrollar custom o usar Shopify/WooCommerce?',
-      answer:
-        'Plataforma comercial (Shopify, WooCommerce, Magento) cuando: Catálogo estándar (<10K SKUs), funcionalidades estándar, presupuesto moderado, lanzamiento rápido (3-6 meses). Desarrollo custom cuando: Procesos muy específicos, catálogo masivo con complejidad (50K+ SKUs con variantes complejas), integraciones complejas con sistemas legacy, presupuesto permite. Recomendación Alternative: 80% casos Shopify Plus o similar es suficiente y más rápido.',
-    },
-    {
-      question: '¿Cómo manejan integración con inventario de tiendas físicas?',
-      answer:
-        'Integración crítica para omnicanalidad. Opciones: (1) API directa entre e-commerce y ERP/sistema inventario (tiempo real), (2) Sincronización periódica cada 15-30 min (near real-time, suficiente para mayoría). Desafío: Reservas de inventario (cliente agrega a carrito pero no compra por 15 min). Implementamos lógica de reserva temporal + liberación automática. Testing exhaustivo para evitar overselling (vender producto sin stock).',
-    },
-    {
-      question: '¿Alternative solo gestiona proyecto o también desarrolla e-commerce?',
-      answer:
-        'Ambos modelos: (1) Solo PM: Gestionamos proyecto, cliente/vendor desarrolla plataforma. Coordinamos entre stakeholders, vendors, equipos internos. (2) PM + desarrollo: Alternative gestiona Y desarrolla plataforma completa (más común). Ventaja: un solo proveedor responsable (no coordinación entre PM externo y developer externo). Cliente decide según capacidades internas.',
-    },
-    {
-      question: '¿Qué hacer con tiendas físicas al lanzar e-commerce? ¿Canibalizan ventas?',
-      answer:
-        'Preocupación común de retailers tradicionales. Realidad: E-commerce expande mercado (alcanza clientes que no visitan tienda física por distancia/tiempo) + captura ventas que irían a competencia online. Canibalización: Existe (10-20% ventas online son de clientes que hubieran comprado en tienda) pero crecimiento total compensa con creces. Estrategia omnicanal mitiga: click & collect incentiva visita a tienda (cross-selling adicional), tiendas como showrooms, personal tienda comisiona por ventas online generadas.',
-    },
-  ];
+  const faqs = localizeFaqs(faqData, 'es');
 
   const contactSubject = isEs ? 'PM Proyecto Retail' : 'Retail PM Project';
   const contactUrl = `/${locale}/contacto?subject=${encodeURIComponent(contactSubject)}`;

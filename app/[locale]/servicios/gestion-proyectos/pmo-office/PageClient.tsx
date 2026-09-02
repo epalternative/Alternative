@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { ServiceSidebar } from '@/components/ui/service-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/servicios--gestion-proyectos--pmo-office';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   Building2,
   ArrowRight,
@@ -320,56 +322,7 @@ export default function PMOOfficePage() {
     }
   ];
 
-  const faqs = [
-    {
-      question: isEs
-        ? '¿Cuál es la diferencia entre Consultoría PMO y Director PMO tercerizado?'
-        : 'What\'s the difference between PMO Consulting and outsourced PMO Director?',
-      answer: isEs
-        ? 'Consultoría: te ayudamos a diseñar e implementar un PMO interno; tu equipo lo opera. Director tercerizado: un experto Alternative actúa como Director de PMO en tu organización, operando el PMO día a día. Consultoría es para construir capacidad propia; outsourcing para tener PMO ya sin invertir en contratación.'
-        : 'Consulting: we help you design and implement an internal PMO; your team operates it. Outsourced Director: an Alternative expert acts as PMO Director in your organization, operating the PMO day to day. Consulting is for building your own capability; outsourcing for having a PMO without hiring.'
-    },
-    {
-      question: isEs
-        ? '¿Cuánto tiempo toma implementar un PMO?'
-        : 'How long does it take to implement a PMO?',
-      answer: isEs
-        ? 'Con consultoría: 2-4 meses para PMO mínimo viable (governance, metodología básica, dashboard). Con director tercerizado: 2-4 semanas para tener PMO operativo. El director llega, se integra y comienza a ejecutar desde el día uno.'
-        : 'With consulting: 2-4 months for minimum viable PMO (governance, basic methodology, dashboard). With outsourced director: 2-4 weeks to have operational PMO. The director arrives, integrates and starts executing from day one.'
-    },
-    {
-      question: isEs
-        ? '¿PMO es solo para empresas grandes?'
-        : 'Is PMO only for large companies?',
-      answer: isEs
-        ? 'Un PMO estructurado suele tener sentido desde 10-15 proyectos simultáneos o inversión significativa en proyectos. Empresas medianas con 5+ proyectos críticos ya se benefician de un PMO ligero. Evaluamos tu portafolio y recomendamos el enfoque adecuado.'
-        : 'A structured PMO usually makes sense from 10-15 simultaneous projects or significant project investment. Mid-size companies with 5+ critical projects already benefit from a light PMO. We evaluate your portfolio and recommend the right approach.'
-    },
-    {
-      question: isEs
-        ? '¿Necesito herramientas de software (PMIS)?'
-        : 'Do I need software tools (PMIS)?',
-      answer: isEs
-        ? 'No obligatorio al inicio. Puedes arrancar con Excel/Sheets y plantillas. PMIS (Jira, MS Project, etc.) recomendable cuando tienes muchos proyectos, equipos distribuidos o necesidad de reportes automatizados. Primero governance y metodología, luego herramientas.'
-        : 'Not mandatory at the start. You can begin with Excel/Sheets and templates. PMIS (Jira, MS Project, etc.) recommended when you have many projects, distributed teams or need automated reports. First governance and methodology, then tools.'
-    },
-    {
-      question: isEs
-        ? '¿El Director PMO trabaja on-site o remoto?'
-        : 'Does the PMO Director work on-site or remote?',
-      answer: isEs
-        ? 'Flexible. Podemos trabajar on-site, híbrido o remoto según tu preferencia. Para arranque e integración con alta gerencia, recomendamos presencia inicial; luego se puede ajustar a híbrido.'
-        : 'Flexible. We can work on-site, hybrid or remote per your preference. For kickoff and integration with senior management, we recommend initial presence; then it can shift to hybrid.'
-    },
-    {
-      question: isEs
-        ? '¿Qué tipo de PMO me conviene: Soporte, Control o Directivo?'
-        : 'What type of PMO suits me: Supportive, Controlling or Directive?',
-      answer: isEs
-        ? 'Depende de madurez y necesidad. Soporte: equipos ya maduros, solo quieren mejoras. Control: estándares dispares, necesitas homogenizar. Directivo: proyectos críticos, necesitas que el PMO tome las riendas. En el diagnóstico te recomendamos el tipo y nivel adecuados.'
-        : 'Depends on maturity and need. Supportive: teams already mature, just want improvements. Controlling: disparate standards, you need to homogenize. Directive: critical projects, you need the PMO to take the reins. In the diagnosis we recommend the right type and level.'
-    }
-  ];
+  const faqs = localizeFaqs(faqData, isEs ? 'es' : 'en');
 
   const colorClasses = {
     turquesa: { bg: 'bg-turquesa/10', text: 'text-turquesa', border: 'border-turquesa/20' },

@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { ServiceSidebar } from '@/components/ui/service-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/servicios--gestion-proyectos--metodologias-agiles';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   Zap,
   ArrowRight,
@@ -403,44 +405,7 @@ export default function MetodologiasAgilesPage() {
     }
   ];
 
-  const faqs = [
-    {
-      question: isEs ? '¿Cuál es la diferencia entre Scrum Master y Project Manager tradicional?' : 'What\'s the difference between Scrum Master and traditional Project Manager?',
-      answer: isEs
-        ? 'El PM tradicional dirige y asigna tareas. El Scrum Master facilita y remueve impedimentos. El equipo es auto-organizado y toma decisiones técnicas. El SM no es jefe del equipo; es su facilitador y coach. Reporta a la organización sobre adopción ágil, no sobre desempeño individual.'
-        : 'The traditional PM directs and assigns tasks. The Scrum Master facilitates and removes impediments. The team is self-organized and makes technical decisions. The SM is not the team\'s boss; they\'re their facilitator and coach. They report to the organization on agile adoption, not individual performance.'
-    },
-    {
-      question: isEs ? '¿Cuánto tiempo necesitamos un Scrum Master externo?' : 'How long do we need an external Scrum Master?',
-      answer: isEs
-        ? 'Típicamente 3-6 meses para establecer prácticas sólidas. Después opciones: entrenar SM interno, reducir a coaching quincenal, o mantener si el valor lo justifica. Nuestro objetivo es dejar capacidad instalada, no dependencia.'
-        : 'Typically 3-6 months to establish solid practices. Then options: train internal SM, reduce to bi-weekly coaching, or maintain if value justifies it. Our goal is to leave installed capacity, not dependency.'
-    },
-    {
-      question: isEs ? '¿Ágil funciona para proyectos no-software?' : 'Does Agile work for non-software projects?',
-      answer: isEs
-        ? 'Sí, con adaptaciones. Marketing, HR, operaciones usan Kanban exitosamente. Hardware y construcción usan híbridos ágil-waterfall. El principio de entregas incrementales y feedback continuo aplica a casi cualquier trabajo de conocimiento.'
-        : 'Yes, with adaptations. Marketing, HR, operations use Kanban successfully. Hardware and construction use agile-waterfall hybrids. The principle of incremental deliveries and continuous feedback applies to almost any knowledge work.'
-    },
-    {
-      question: isEs ? '¿Qué pasa si el equipo ya tiene Project Manager?' : 'What if the team already has a Project Manager?',
-      answer: isEs
-        ? 'Pueden coexistir. El PM gestiona stakeholders, presupuesto, contratos. El SM facilita al equipo de desarrollo. En transiciones, a veces el PM evoluciona a SM o a Product Owner. Evaluamos caso por caso.'
-        : 'They can coexist. The PM manages stakeholders, budget, contracts. The SM facilitates the development team. In transitions, sometimes the PM evolves to SM or Product Owner. We evaluate case by case.'
-    },
-    {
-      question: isEs ? '¿Cómo miden el éxito del Scrum Master?' : 'How do you measure Scrum Master success?',
-      answer: isEs
-        ? 'Métricas de equipo, no individuales: velocidad sostenible, predictibilidad de entregas, satisfacción del equipo (encuestas), reducción de impedimentos, calidad de retrospectivas, madurez ágil progresiva.'
-        : 'Team metrics, not individual: sustainable velocity, delivery predictability, team satisfaction (surveys), impediment reduction, retrospective quality, progressive agile maturity.'
-    },
-    {
-      question: isEs ? '¿Scrum funciona con equipos remotos o híbridos?' : 'Does Scrum work with remote or hybrid teams?',
-      answer: isEs
-        ? 'Absolutamente. Dailys por video, boards digitales (Jira, Miro), herramientas de retrospectiva virtual. De hecho, Scrum provee estructura que equipos remotos necesitan para coordinarse efectivamente.'
-        : 'Absolutely. Dailies by video, digital boards (Jira, Miro), virtual retrospective tools. In fact, Scrum provides structure that remote teams need to coordinate effectively.'
-    }
-  ];
+  const faqs = localizeFaqs(faqData, isEs ? 'es' : 'en');
 
   const colorClasses = {
     turquesa: { bg: 'bg-turquesa/10', text: 'text-turquesa', border: 'border-turquesa/20' },

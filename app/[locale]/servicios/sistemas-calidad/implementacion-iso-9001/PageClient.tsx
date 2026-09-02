@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { ServiceSidebar } from '@/components/ui/service-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/servicios--sistemas-calidad--implementacion-iso-9001';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   ArrowRight,
   ChevronDown,
@@ -440,56 +442,7 @@ export default function ImplementacionISO9001Page() {
   ];
 
   // FAQs - Compact answers
-  const faqs = [
-    {
-      question: isEs 
-        ? '¿Cuánto tiempo toma implementar ISO 9001?' 
-        : 'How long does it take to implement ISO 9001?',
-      answer: isEs
-        ? 'Típicamente 4-8 meses. Empresas pequeñas: 4-5 meses. Empresas medianas: 6-8 meses. Incluye implementación, auditorías internas y preparación para certificación.'
-        : 'Typically 4-8 months. Small companies: 4-5 months. Medium companies: 6-8 months. Includes implementation, internal audits and certification preparation.'
-    },
-    {
-      question: isEs 
-        ? '¿Diferencia entre implementación y certificación?' 
-        : 'Difference between implementation and certification?',
-      answer: isEs
-        ? 'Implementación es el proceso interno para diseñar y operar el sistema. Certificación es la evaluación externa que verifica cumplimiento y otorga el certificado. Alternative te acompaña en ambos.'
-        : 'Implementation is the internal process to design and operate the system. Certification is the external evaluation that verifies compliance and grants the certificate. Alternative supports you in both.'
-    },
-    {
-      question: isEs 
-        ? '¿Necesito procesos perfectos para empezar?' 
-        : 'Do I need perfect processes to start?',
-      answer: isEs
-        ? 'No. ISO 9001 requiere procesos documentados y en mejora continua, no perfectos. Documentamos lo que funciona y mejoramos lo que no.'
-        : 'No. ISO 9001 requires documented processes with continuous improvement, not perfect ones. We document what works and improve what doesn\'t.'
-    },
-    {
-      question: isEs 
-        ? '¿Qué pasa si no paso la auditoría?' 
-        : 'What if I don\'t pass the audit?',
-      answer: isEs
-        ? 'Con no conformidades menores, tienes 30-90 días para corregir. Con Alternative, 85%+ pasan la primera auditoría gracias a auditorías internas rigurosas previas.'
-        : 'With minor non-conformities, you have 30-90 days to correct. With Alternative, 85%+ pass the first audit thanks to rigorous prior internal audits.'
-    },
-    {
-      question: isEs 
-        ? '¿Cuánto cuesta implementar ISO 9001?' 
-        : 'How much does ISO 9001 implementation cost?',
-      answer: isEs
-        ? 'Depende del tamaño y complejidad. Incluye consultoría, documentación, capacitación y auditorías. Solicita cotización personalizada con diagnóstico gratuito.'
-        : 'Depends on size and complexity. Includes consulting, documentation, training and audits. Request personalized quote with free diagnosis.'
-    },
-    {
-      question: isEs 
-        ? '¿Hay mantenimiento post-certificación?' 
-        : 'Is there post-certification maintenance?',
-      answer: isEs
-        ? 'Sí. Auditorías internas anuales, revisión por dirección y mejora continua. Re-certificación cada 3 años. Alternative ofrece acompañamiento post-certificación.'
-        : 'Yes. Annual internal audits, management review and continuous improvement. Re-certification every 3 years. Alternative offers post-certification support.'
-    }
-  ];
+  const faqs = localizeFaqs(faqData, isEs ? 'es' : 'en');
 
   const colorClasses = {
     turquesa: { bg: 'bg-turquesa/10', text: 'text-turquesa', border: 'border-turquesa/20' },

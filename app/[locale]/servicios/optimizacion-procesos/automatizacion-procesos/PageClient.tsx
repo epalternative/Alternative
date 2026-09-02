@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { ServiceSidebar } from '@/components/ui/service-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/servicios--optimizacion-procesos--automatizacion-procesos';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   Bot,
   ArrowRight,
@@ -342,44 +344,7 @@ export default function AutomatizacionProcesosPage() {
       'You need to process outside business hours'
     ];
 
-  const faqs = [
-    {
-      question: isEs ? '¿Cómo determinan el costo de automatización?' : 'How do you determine automation cost?',
-      answer: isEs
-        ? 'Depende de: tipo de automatización (RPA, workflow, API, IA), cantidad de procesos, complejidad de sistemas, necesidad de optimización previa, licencias de software. Evaluación gratuita calcula ROI específico y presenta opciones.'
-        : 'It depends on: type of automation (RPA, workflow, API, AI), number of processes, system complexity, need for prior optimization, software licenses. Free evaluation calculates specific ROI and presents options.'
-    },
-    {
-      question: isEs ? '¿Automatización significa despedir personas?' : 'Does automation mean firing people?',
-      answer: isEs
-        ? 'No. Liberamos personas de trabajo tedioso para que se enfoquen en alto valor. Clientes típicamente NO despiden; reasignan capacidad a actividades estratégicas o crecen sin contratar proporcionalmente.'
-        : 'No. We free people from tedious work so they can focus on high value. Clients typically DON\'T fire; they reassign capacity to strategic activities or grow without hiring proportionally.'
-    },
-    {
-      question: isEs ? '¿Qué pasa si mi proceso cambia?' : 'What happens if my process changes?',
-      answer: isEs
-        ? 'Bots bien diseñados son resilientes a cambios menores. Cambios significativos requieren ajustes (similar a capacitar empleado). Incluimos soporte post-implementación. Mantenimiento típico: 10-15% costo inicial anual.'
-        : 'Well-designed bots are resilient to minor changes. Significant changes require adjustments (similar to training an employee). We include post-implementation support. Typical maintenance: 10-15% initial cost annually.'
-    },
-    {
-      question: isEs ? '¿Puedo automatizar con sistemas viejos (legacy)?' : 'Can I automate with old (legacy) systems?',
-      answer: isEs
-        ? 'Sí. RPA es ideal para eso. No modifica sistemas; interactúa con interfaz como humano. Hemos automatizado en mainframe de los 80s exitosamente.'
-        : 'Yes. RPA is ideal for that. It doesn\'t modify systems; it interacts with the interface like a human. We\'ve successfully automated on 80s mainframes.'
-    },
-    {
-      question: isEs ? '¿Qué tan segura es la automatización?' : 'How secure is automation?',
-      answer: isEs
-        ? 'Muy segura. Bots con credenciales dedicadas y permisos mínimos, trazabilidad completa, encriptación de datos sensibles, cumplimiento ISO 27001/SOC 2. Frecuentemente MEJORA seguridad vs manejo humano.'
-        : 'Very secure. Bots with dedicated credentials and minimum permissions, complete traceability, sensitive data encryption, ISO 27001/SOC 2 compliance. Frequently IMPROVES security vs human handling.'
-    },
-    {
-      question: isEs ? '¿Qué procesos NO automatizar?' : 'What processes NOT to automate?',
-      answer: isEs
-        ? 'Procesos con juicio complejo o empatía, procesos inestables que cambian constantemente, excepciones >30%, procesos que deben optimizarse primero. Evaluamos caso por caso.'
-        : 'Processes with complex judgment or empathy, unstable processes that constantly change, exceptions >30%, processes that must be optimized first. We evaluate case by case.'
-    }
-  ];
+  const faqs = localizeFaqs(faqData, isEs ? 'es' : 'en');
 
   const colorClasses = {
     turquesa: { bg: 'bg-turquesa/10', text: 'text-turquesa', border: 'border-turquesa/20' },

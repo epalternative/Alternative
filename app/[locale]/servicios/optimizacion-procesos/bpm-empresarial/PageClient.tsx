@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { ServiceSidebar } from '@/components/ui/service-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/servicios--optimizacion-procesos--bpm-empresarial';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   RefreshCw,
   ArrowRight,
@@ -359,44 +361,7 @@ export default function BPMEmpresarialPage() {
     }
   ];
 
-  const faqs = [
-    {
-      question: isEs ? '¿Cómo determinan el alcance de implementación de BPM?' : 'How do you determine the scope of BPM implementation?',
-      answer: isEs
-        ? 'Evaluamos: cantidad de procesos a gestionar, madurez actual, necesidad de herramientas BPMS, complejidad organizacional (geografías, unidades). Diagnóstico BPM gratuito desarrolla roadmap y propuesta específica.'
-        : 'We evaluate: number of processes to manage, current maturity, need for BPMS tools, organizational complexity (geographies, units). Free BPM diagnosis develops roadmap and specific proposal.'
-    },
-    {
-      question: isEs ? '¿Cuál es la diferencia entre BPM y simplemente "mejorar procesos"?' : 'What\'s the difference between BPM and simply "improving processes"?',
-      answer: isEs
-        ? 'BPM es capacidad organizacional permanente para gestionar procesos continuamente (diseño, ejecución, monitoreo, mejora, gobierno). "Mejorar procesos" es proyecto puntual que termina. Con BPM estableces roles, metodología y cultura de mejora continua sostenible.'
-        : 'BPM is a permanent organizational capability to continuously manage processes (design, execution, monitoring, improvement, governance). "Improving processes" is a one-time project that ends. With BPM you establish roles, methodology, and sustainable continuous improvement culture.'
-    },
-    {
-      question: isEs ? '¿Necesito software BPM (BPMS)?' : 'Do I need BPM software (BPMS)?',
-      answer: isEs
-        ? 'No obligatorio. Puedes empezar con herramientas ofimáticas. BPMS recomendable cuando tienes 20+ procesos, necesitas workflows automatizados o industria regulada requiere trazabilidad estricta. Primero metodología, luego tecnología.'
-        : 'Not mandatory. You can start with office tools. BPMS recommended when you have 20+ processes, need automated workflows, or regulated industry requires strict traceability. First methodology, then technology.'
-    },
-    {
-      question: isEs ? '¿Qué es un "dueño de proceso"?' : 'What is a "process owner"?',
-      answer: isEs
-        ? 'Persona responsable del desempeño end-to-end de un proceso. No ejecuta; gestiona, mejora y responde por resultados. Sin dueños claros, nadie mejora procesos.'
-        : 'Person responsible for the end-to-end performance of a process. Doesn\'t execute; manages, improves, and is accountable for results. Without clear owners, no one improves processes.'
-    },
-    {
-      question: isEs ? '¿BPM es solo para empresas grandes?' : 'Is BPM only for large companies?',
-      answer: isEs
-        ? 'BPM estructurado aplica típicamente desde 100+ empleados. PYMES más pequeñas se benefician de gestión de procesos simplificada. Evaluamos caso por caso según complejidad, no solo tamaño.'
-        : 'Structured BPM typically applies from 100+ employees. Smaller SMEs benefit from simplified process management. We evaluate case by case based on complexity, not just size.'
-    },
-    {
-      question: isEs ? '¿BPM se vuelve burocracia excesiva?' : 'Does BPM become excessive bureaucracy?',
-      answer: isEs
-        ? 'No si se diseña bien. Governance pragmático: comités cortos (1 hora/mes), documentación mínima viable, autonomía de dueños de proceso. Involucramos equipos operativos en diseño para asegurar que es práctico, no burocrático.'
-        : 'Not if designed well. Pragmatic governance: short committees (1 hour/month), minimum viable documentation, process owner autonomy. We involve operational teams in design to ensure it\'s practical, not bureaucratic.'
-    }
-  ];
+  const faqs = localizeFaqs(faqData, isEs ? 'es' : 'en');
 
   const colorClasses = {
     turquesa: { bg: 'bg-turquesa/10', text: 'text-turquesa', border: 'border-turquesa/20' },

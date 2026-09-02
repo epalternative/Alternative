@@ -6,6 +6,8 @@ import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
 import { ServiceSidebar } from '@/components/ui/service-sidebar';
+import { faqs as faqData } from '@/lib/content/faqs/servicios--sistemas-calidad--auditoria-calidad';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   ArrowRight,
   ChevronDown,
@@ -464,56 +466,7 @@ export default function AuditoriaCalidadPage() {
   };
 
   // FAQs
-  const faqs = [
-    {
-      question: isEs 
-        ? '¿Cuánto tiempo toma una auditoría interna completa?' 
-        : 'How long does a complete internal audit take?',
-      answer: isEs
-        ? 'Depende del tamaño y complejidad de la organización. Para empresas pequeñas (50-100 empleados): 3-5 días. Medianas (100-500): 5-7 días. Grandes (500+): 7-10 días. Incluye planificación, ejecución, reporte y reuniones.'
-        : 'Depends on organization size and complexity. For small companies (50-100 employees): 3-5 days. Medium (100-500): 5-7 days. Large (500+): 7-10 days. Includes planning, execution, reporting and meetings.'
-    },
-    {
-      question: isEs 
-        ? '¿Qué diferencia hay entre auditoría interna y externa?' 
-        : 'What\'s the difference between internal and external audit?',
-      answer: isEs
-        ? 'Auditoría interna es realizada por personal independiente (puede ser externo) para evaluar eficacia del sistema y preparar para certificación. Auditoría externa es realizada por organismo certificador para otorgar o mantener certificación ISO. La interna es preparatoria, la externa es de certificación.'
-        : 'Internal audit is performed by independent personnel (can be external) to evaluate system effectiveness and prepare for certification. External audit is performed by certification body to grant or maintain ISO certification. Internal is preparatory, external is for certification.'
-    },
-    {
-      question: isEs 
-        ? '¿Qué pasa si encuentran muchas no conformidades?' 
-        : 'What happens if they find many non-conformities?',
-      answer: isEs
-        ? 'Es normal encontrar no conformidades en auditorías internas, especialmente si es la primera vez. Lo importante es tener un plan de acción correctiva priorizado. Nosotros ayudamos a clasificar (mayores vs menores), priorizar y desarrollar plan de corrección con responsables y fechas. El objetivo es corregir antes de auditoría externa.'
-        : 'It\'s normal to find non-conformities in internal audits, especially if it\'s the first time. What matters is having a prioritized corrective action plan. We help classify (major vs minor), prioritize and develop correction plan with responsible parties and dates. Goal is to correct before external audit.'
-    },
-    {
-      question: isEs 
-        ? '¿Necesito estar certificado ISO 9001 para hacer auditoría interna?' 
-        : 'Do I need to be ISO 9001 certified to do internal audit?',
-      answer: isEs
-        ? 'No necesariamente. Puedes hacer auditoría interna para: (1) Evaluar sistema de calidad existente aunque no esté certificado, (2) Preparar para certificación futura, (3) Diagnosticar eficacia de procesos. La auditoría interna es una herramienta de mejora, no requiere certificación previa.'
-        : 'Not necessarily. You can do internal audit to: (1) Evaluate existing quality system even if not certified, (2) Prepare for future certification, (3) Diagnose process effectiveness. Internal audit is an improvement tool, doesn\'t require prior certification.'
-    },
-    {
-      question: isEs 
-        ? '¿Pueden auditar solo procesos específicos?' 
-        : 'Can you audit only specific processes?',
-      answer: isEs
-        ? 'Sí, ofrecemos auditorías enfocadas por proceso. Ideal cuando necesitas evaluación profunda de áreas específicas como: gestión documental, control de no conformidades, revisión por la dirección, o procesos críticos del negocio. Es más rápida y económica que auditoría completa.'
-        : 'Yes, we offer focused audits by process. Ideal when you need deep evaluation of specific areas like: document management, non-conformity control, management review, or critical business processes. Faster and more economical than complete audit.'
-    },
-    {
-      question: isEs 
-        ? '¿Qué incluye el reporte de auditoría?' 
-        : 'What does the audit report include?',
-      answer: isEs
-        ? 'El reporte incluye: (1) Resumen ejecutivo, (2) Hallazgos detallados con evidencia objetiva, (3) No conformidades clasificadas (mayores/menores) con referencias a ISO 9001, (4) Oportunidades de mejora, (5) Buenas prácticas identificadas, (6) Plan de acción correctiva recomendado con responsables y fechas. Todo documentado y trazable.'
-        : 'The report includes: (1) Executive summary, (2) Detailed findings with objective evidence, (3) Classified non-conformities (major/minor) with ISO 9001 references, (4) Improvement opportunities, (5) Identified best practices, (6) Recommended corrective action plan with responsible parties and dates. All documented and traceable.'
-    }
-  ];
+  const faqs = localizeFaqs(faqData, isEs ? 'es' : 'en');
 
   const colorClasses = {
     turquesa: { bg: 'bg-turquesa/10', text: 'text-turquesa', border: 'border-turquesa/20' },

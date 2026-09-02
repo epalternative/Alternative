@@ -6,6 +6,8 @@ import { locales, Locale } from '@/i18n';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ConditionalShell } from '@/components/layout/conditional-shell';
 import { SITE_URL, OG_IMAGE } from '@/lib/seo';
+import { buildOrganization } from '@/lib/seo/jsonld';
+import { JsonLd } from '@/components/seo/JsonLd';
 import '../globals.css';
 
 type Props = {
@@ -59,6 +61,8 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased">
+        {/* Organization + WebSite: se emiten una sola vez para todo el sitio. */}
+        <JsonLd data={buildOrganization(locale as 'es' | 'en')} />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
