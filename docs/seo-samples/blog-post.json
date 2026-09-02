@@ -1,0 +1,86 @@
+{
+  "_source": "https://grupoalternative.com/es/blog/que-es-bpm-business-process-management-guia-completa",
+  "_capturedAt": "2026-09-02T23:53:28.012Z",
+  "blocks": [
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://grupoalternative.com/#organization",
+          "name": "Grupo Alternative",
+          "url": "https://grupoalternative.com/es",
+          "logo": "https://grupoalternative.com/logo_alternative_horizontal.webp",
+          "image": "https://grupoalternative.com/og-image.png",
+          "description": "Consultoría en optimización de procesos, sistemas de calidad, gestión de proyectos y transformación digital para empresas en Panamá y LATAM.",
+          "telephone": "+50769908906",
+          "email": "info@grupoalternative.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Ciudad de Panamá",
+            "addressCountry": "PA"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "Panamá"
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "https://schema.org/Monday",
+                "https://schema.org/Tuesday",
+                "https://schema.org/Wednesday",
+                "https://schema.org/Thursday",
+                "https://schema.org/Friday",
+                "https://schema.org/Saturday"
+              ],
+              "opens": "08:00",
+              "closes": "17:00"
+            }
+          ],
+          "founder": {
+            "@type": "Person",
+            "name": "Katherine González",
+            "jobTitle": "Fundadora y CEO",
+            "url": "https://grupoalternative.com/es/nosotros/katherine-gonzalez"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://grupoalternative.com/#website",
+          "url": "https://grupoalternative.com/es",
+          "name": "Grupo Alternative",
+          "inLanguage": "es-PA",
+          "publisher": {
+            "@id": "https://grupoalternative.com/#organization"
+          }
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Qué es BPM (Business Process Management): Guía Completa 2026",
+      "description": "Descubre qué es BPM, cómo funciona, beneficios reales y cómo implementarlo en tu empresa. Guía completa con casos de éxito y plantillas gratuitas.",
+      "inLanguage": "es-PA",
+      "articleSection": "Optimización de Procesos",
+      "wordCount": 95,
+      "keywords": "qué es bpm, business process management, bpm definicion, como funciona bpm, beneficios bpm, que es bpm en una empresa, para que sirve bpm",
+      "image": "https://cdn.sanity.io/images/5s1f6jl3/production/0492cd92edfdc91d386644d95ce8637fa5ca1cac-700x942.jpg",
+      "datePublished": "2026-01-28T20:27:00.000Z",
+      "dateModified": "2026-01-28T20:47:21Z",
+      "author": {
+        "@type": "Person",
+        "name": "Katherine González"
+      },
+      "publisher": {
+        "@id": "https://grupoalternative.com/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://grupoalternative.com/es/blog/que-es-bpm-business-process-management-guia-completa"
+      }
+    }
+  ]
+}
