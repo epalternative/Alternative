@@ -13,9 +13,6 @@
     "blog:lint": "node scripts/blog-lint.mjs",
     "blog:push": "node scripts/sanity-push-post.mjs"
   },
-  "prisma": {
-    "seed": "tsx --require dotenv/config scripts/seed.ts"
-  },
   "devDependencies": {
     "@next/swc-wasm-nodejs": "13.5.1",
     "@sanity/block-tools": "^3.70.0",
