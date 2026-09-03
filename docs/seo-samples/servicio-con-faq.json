@@ -1,6 +1,6 @@
 {
   "_source": "https://grupoalternative.com/es/servicios/sistemas-calidad/certificacion-iso",
-  "_capturedAt": "2026-09-02T23:53:27.890Z",
+  "_capturedAt": "2026-09-03T01:14:38.170Z",
   "blocks": [
     {
       "@context": "https://schema.org",
@@ -15,15 +15,25 @@
           "description": "Consultoría en optimización de procesos, sistemas de calidad, gestión de proyectos y transformación digital para empresas en Panamá y LATAM.",
           "telephone": "+50769908906",
           "email": "info@grupoalternative.com",
+          "sameAs": [
+            "https://www.linkedin.com/company/alternative-consulting-group/"
+          ],
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "Ciudad de Panamá",
+            "addressRegion": "Panamá",
             "addressCountry": "PA"
           },
-          "areaServed": {
-            "@type": "Country",
-            "name": "Panamá"
-          },
+          "areaServed": [
+            {
+              "@type": "Country",
+              "name": "Panamá"
+            },
+            {
+              "@type": "City",
+              "name": "Ciudad de Panamá"
+            }
+          ],
           "openingHoursSpecification": [
             {
               "@type": "OpeningHoursSpecification",

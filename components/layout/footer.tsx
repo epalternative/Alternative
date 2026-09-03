@@ -11,8 +11,6 @@ import {
   Mail,
   Clock,
   Linkedin,
-  Twitter,
-  Facebook,
   ArrowRight,
   Send
 } from 'lucide-react';
@@ -84,14 +82,14 @@ export function Footer() {
             <div className="flex gap-3">
               {[
                 { icon: Linkedin, href: LINKEDIN_URL, label: 'LinkedIn' },
-                { icon: Twitter, href: '#', label: 'Twitter' },
-                { icon: Facebook, href: '#', label: 'Facebook' },
               ].map((social) => {
                 const Icon = social.icon;
                 return (
                   <a
                     key={social.label}
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center text-white/70 hover:bg-turquesa hover:text-azul-marino transition-all duration-300"
                     aria-label={social.label}
                   >

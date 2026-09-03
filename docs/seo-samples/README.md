@@ -5,6 +5,7 @@ Cada fichero incluye `_source` y `_capturedAt`.
 
 | Fichero | Página | Nodos |
 |---|---|---|
+| `organization.json` | bloque del layout, aislado | `ProfessionalService`, `WebSite` |
 | `home.json` | `/es` | `ProfessionalService`, `WebSite` |
 | `servicio-con-faq.json` | `/es/servicios/sistemas-calidad/certificacion-iso` | `ProfessionalService`, `WebSite`, `BreadcrumbList`, `Service`, `FAQPage` (6 preguntas) |
 | `blog-post.json` | `/es/blog/que-es-bpm-business-process-management-guia-completa` | `ProfessionalService`, `WebSite`, `BlogPosting` |

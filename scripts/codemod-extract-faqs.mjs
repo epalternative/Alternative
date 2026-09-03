@@ -176,7 +176,9 @@ if (!DRY && results.length) {
     `\n};\n\n` +
     `/** FAQs de una ruta, o \`undefined\` si no tiene. */\nexport function getFaqsForPath(routePath: string): FaqEntry[] | undefined {\n  return FAQS_BY_PATH[routePath];\n}\n\n` +
     `/** Aplana las FAQs a un idioma, tal como las espera el JSX del cliente. */\nexport function localizeFaqs(\n  entries: FaqEntry[],\n  locale: 'es' | 'en'\n): { question: string; answer: string }[] {\n  return entries.map((e) => ({ question: e.question[locale], answer: e.answer[locale] }));\n}\n`;
-  fs.writeFileSync(path.join('lib/content', 'faqs.ts'), idx);
+  // El registro va aparte: `faqs.ts` no debe importar datos, porque lo
+  // consumen los PageClient y arrastraria las FAQs de todo el sitio.
+  fs.writeFileSync(path.join('lib/content', 'faqs-registry.ts'), idx);
 }
 
 console.log(`${DRY ? '[dry-run] ' : ''}extraídas: ${results.length} páginas`);

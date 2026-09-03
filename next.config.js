@@ -11,7 +11,14 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  images: { unoptimized: true },
+  images: {
+    // El optimizador de Next vuelve a estar activo: genera AVIF/WebP y srcset.
+    // Requiere modo servidor, que es el que usa este proyecto (middleware y
+    // rutas /api impiden output:'export').
+    remotePatterns: [
+      { protocol: 'https', hostname: 'cdn.sanity.io' },
+    ],
+  },
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
