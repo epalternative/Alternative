@@ -204,12 +204,14 @@ export default function ServiciosProfesionalesPage() {
                 Servicios Profesionales
               </span>
               <h1 className="text-3xl md:text-4xl lg:text-5xl text-azul-marino font-semibold leading-tight mb-4">
-                Consultoría para firmas de servicios: gestión de proyectos y eficiencia
+                {isEs
+                  ? 'Consultoría para firmas de servicios: gestión de proyectos y eficiencia'
+                  : 'Consulting for professional services firms: project management and efficiency'}
               </h1>
               <p className="text-lg md:text-xl text-azul-marino/80 mb-8 leading-relaxed">
-                Gestión de proyectos complejos, optimización de operaciones, sistemas de calidad, herramientas
-                tecnológicas. PMs certificados que entienden economía de servicios profesionales: facturación por
-                hora, gestión de utilización, rentabilidad por cliente/proyecto.
+                {isEs
+                  ? 'Gestión de proyectos complejos, optimización de operaciones, sistemas de calidad, herramientas tecnológicas. PMs certificados que entienden economía de servicios profesionales: facturación por hora, gestión de utilización, rentabilidad por cliente/proyecto.'
+                  : 'Complex project management, operations optimization, quality systems and technology tooling. Certified project managers who understand the economics of professional services: hourly billing, utilization management and profitability per client and project.'}
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
                 <Link

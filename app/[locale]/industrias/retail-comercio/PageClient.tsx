@@ -206,12 +206,14 @@ export default function RetailComercioPage() {
                 Sector Retail y Comercio
               </span>
               <h1 className="text-3xl md:text-4xl lg:text-5xl text-azul-marino font-semibold leading-tight mb-4">
-                Consultoría para retail: transformación digital y omnicanalidad
+                {isEs
+                  ? 'Consultoría para retail: transformación digital y omnicanalidad'
+                  : 'Retail consulting: digital transformation and omnichannel'}
               </h1>
               <p className="text-lg md:text-xl text-azul-marino/80 mb-8 leading-relaxed">
-                Gestión de proyectos de transformación digital retail, e-commerce, integración omnicanal, optimización
-                de operaciones. PMs certificados que entienden la complejidad de operar tiendas físicas + canales
-                digitales simultáneamente.
+                {isEs
+                  ? 'Gestión de proyectos de transformación digital retail, e-commerce, integración omnicanal, optimización de operaciones. PMs certificados que entienden la complejidad de operar tiendas físicas + canales digitales simultáneamente.'
+                  : 'Retail digital transformation project management, e-commerce, omnichannel integration and operations optimization. Certified project managers who understand the complexity of running physical stores and digital channels at the same time.'}
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
                 <Link
