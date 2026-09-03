@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useLocale } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,6 +14,8 @@ const MAX_FILE_SIZE_MB = 10;
 const MAX_FILES = 5;
 
 export default function HelpdeskItPage() {
+  const locale = useLocale();
+  const isEs = locale === 'es';
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [files, setFiles] = useState<File[]>([]);
@@ -83,18 +86,18 @@ export default function HelpdeskItPage() {
               priority
             />
             <h1 className="text-3xl md:text-4xl lg:text-display-sm font-semibold text-azul-marino mb-5">
-              Helpdesk IT – Alternative
+              {isEs ? 'Helpdesk IT – Alternative' : 'IT Helpdesk – Alternative'}
             </h1>
             <div className="space-y-4 text-body-lg text-azul-marino/80 max-w-xl">
               <p>
-                Por favor, completa el siguiente formulario para reportar cualquier incidencia, solicitud
-                de soporte o requerimiento técnico relacionado con los servicios contratados.
+                {isEs
+                  ? 'Por favor, completa el siguiente formulario para reportar cualquier incidencia, solicitud de soporte o requerimiento técnico relacionado con los servicios contratados.'
+                  : 'Please complete the form below to report any incident, support request or technical requirement related to your contracted services.'}
               </p>
               <p>
-                Te recomendamos incluir una descripción clara del caso, así como cualquier documento o
-                captura de pantalla que facilite el análisis. Nuestro equipo técnico recibirá tu solicitud
-                y dará seguimiento vía correo electrónico dentro del tiempo de atención establecido en el
-                acuerdo de servicio.
+                {isEs
+                  ? 'Te recomendamos incluir una descripción clara del caso, así como cualquier documento o captura de pantalla que facilite el análisis. Nuestro equipo técnico recibirá tu solicitud y dará seguimiento vía correo electrónico dentro del tiempo de atención establecido en el acuerdo de servicio.'
+                  : 'We recommend including a clear description of the case, along with any document or screenshot that helps the analysis. Our technical team will receive your request and follow up by email within the response time set in the service agreement.'}
               </p>
             </div>
           </header>

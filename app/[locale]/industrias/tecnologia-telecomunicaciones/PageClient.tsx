@@ -204,11 +204,14 @@ export default function TecnologiaTelecomunicacionesPage() {
                 Sector Tecnología y Telecomunicaciones
               </span>
               <h1 className="text-3xl md:text-4xl lg:text-5xl text-azul-marino font-semibold leading-tight mb-4">
-                Consultoría para empresas tech: gestión de proyectos ágiles y desarrollo
+                {isEs
+                  ? 'Consultoría para empresas tech: gestión de proyectos ágiles y desarrollo'
+                  : 'Consulting for tech companies: agile project management and development'}
               </h1>
               <p className="text-lg md:text-xl text-azul-marino/80 mb-8 leading-relaxed">
-                Scrum Masters certificados, Project Managers para implementaciones tecnológicas, desarrollo de software,
-                integración de sistemas. 10+ años gestionando proyectos tech complejos con metodologías ágiles.
+                {isEs
+                  ? 'Scrum Masters certificados, Project Managers para implementaciones tecnológicas, desarrollo de software, integración de sistemas. 15+ años gestionando proyectos tech complejos con metodologías ágiles.'
+                  : 'Certified Scrum Masters, project managers for technology rollouts, software development and system integration. 15+ years managing complex tech projects with agile methodologies.'}
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
                 <Link

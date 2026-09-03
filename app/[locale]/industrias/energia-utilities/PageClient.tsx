@@ -205,12 +205,14 @@ export default function EnergiaUtilitiesPage() {
                 Energía y Utilities
               </span>
               <h1 className="text-3xl md:text-4xl lg:text-5xl text-azul-marino font-semibold leading-tight mb-4">
-                Consultoría para sector energía: proyectos de infraestructura y operaciones críticas
+                {isEs
+                  ? 'Consultoría para sector energía: proyectos de infraestructura y operaciones críticas'
+                  : 'Energy sector consulting: infrastructure projects and critical operations'}
               </h1>
               <p className="text-lg md:text-xl text-azul-marino/80 mb-8 leading-relaxed">
-                Gestión de proyectos de infraestructura energética, optimización de operaciones 24/7, sistemas de
-                gestión de calidad, gestión de mantenimiento de activos críticos. PMs certificados con experiencia en
-                entornos de alta criticidad operativa.
+                {isEs
+                  ? 'Gestión de proyectos de infraestructura energética, optimización de operaciones 24/7, sistemas de gestión de calidad, gestión de mantenimiento de activos críticos. PMs certificados con experiencia en entornos de alta criticidad operativa.'
+                  : 'Energy infrastructure project management, 24/7 operations optimization, quality management systems and critical asset maintenance management. Certified project managers experienced in highly critical operating environments.'}
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
                 <Link
