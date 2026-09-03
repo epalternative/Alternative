@@ -1,6 +1,7 @@
 {
   "_source": "https://grupoalternative.com/es",
-  "_capturedAt": "2026-09-03T01:14:37.911Z",
+  "_capturedAt": "2026-09-03T01:14:38.300Z",
+  "_nota": "Bloque emitido por app/[locale]/layout.tsx, identico en todas las paginas del sitio.",
   "blocks": [
     {
       "@context": "https://schema.org",

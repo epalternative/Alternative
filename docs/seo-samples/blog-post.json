@@ -1,6 +1,6 @@
 {
   "_source": "https://grupoalternative.com/es/blog/que-es-bpm-business-process-management-guia-completa",
-  "_capturedAt": "2026-09-02T23:53:28.012Z",
+  "_capturedAt": "2026-09-03T01:14:38.299Z",
   "blocks": [
     {
       "@context": "https://schema.org",
@@ -15,15 +15,25 @@
           "description": "Consultoría en optimización de procesos, sistemas de calidad, gestión de proyectos y transformación digital para empresas en Panamá y LATAM.",
           "telephone": "+50769908906",
           "email": "info@grupoalternative.com",
+          "sameAs": [
+            "https://www.linkedin.com/company/alternative-consulting-group/"
+          ],
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "Ciudad de Panamá",
+            "addressRegion": "Panamá",
             "addressCountry": "PA"
           },
-          "areaServed": {
-            "@type": "Country",
-            "name": "Panamá"
-          },
+          "areaServed": [
+            {
+              "@type": "Country",
+              "name": "Panamá"
+            },
+            {
+              "@type": "City",
+              "name": "Ciudad de Panamá"
+            }
+          ],
           "openingHoursSpecification": [
             {
               "@type": "OpeningHoursSpecification",
@@ -65,7 +75,7 @@
       "description": "Descubre qué es BPM, cómo funciona, beneficios reales y cómo implementarlo en tu empresa. Guía completa con casos de éxito y plantillas gratuitas.",
       "inLanguage": "es-PA",
       "articleSection": "Optimización de Procesos",
-      "wordCount": 95,
+      "wordCount": 716,
       "keywords": "qué es bpm, business process management, bpm definicion, como funciona bpm, beneficios bpm, que es bpm en una empresa, para que sirve bpm",
       "image": "https://cdn.sanity.io/images/5s1f6jl3/production/0492cd92edfdc91d386644d95ce8637fa5ca1cac-700x942.jpg",
       "datePublished": "2026-01-28T20:27:00.000Z",
