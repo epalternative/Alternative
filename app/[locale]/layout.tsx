@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
@@ -9,6 +10,23 @@ import { SITE_URL, OG_IMAGE, absoluteUrl } from '@/lib/seo';
 import { buildOrganization } from '@/lib/seo/jsonld';
 import { JsonLd } from '@/components/seo/JsonLd';
 import '../globals.css';
+
+/**
+ * Inter auto-hospedada por Next.
+ *
+ * Sustituye al @import de Google Fonts que habia en globals.css, que era
+ * render-blocking en cascada: el navegador tenia que descargar y parsear el CSS
+ * antes de descubrir fonts.googleapis.com, que a su vez descubria
+ * fonts.gstatic.com. Tres saltos secuenciales antes del primer glifo.
+ *
+ * `display: swap` mas los fallback ajustados que genera next/font eliminan
+ * ademas el CLS del cambio de fuente.
+ */
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 type Props = {
   children: React.ReactNode;
@@ -59,7 +77,7 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased">
         {/* Organization + WebSite: se emiten una sola vez para todo el sitio. */}
         <JsonLd data={buildOrganization(locale as 'es' | 'en')} />

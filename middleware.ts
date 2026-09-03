@@ -7,6 +7,11 @@ const intlMiddleware = createMiddleware({
   locales,
   defaultLocale,
   localePrefix: 'always',
+  // next-intl emitia una cabecera Link con hreflang cuyo x-default apuntaba a
+  // la ruta sin prefijo (p. ej. /servicios), que siempre redirige. Contradecia
+  // al x-default del HTML, que apunta a /es/servicios. El HTML ya lleva los
+  // tres hreflang correctos, asi que la cabecera sobra.
+  alternateLinks: false,
 });
 
 export function middleware(req: NextRequest) {

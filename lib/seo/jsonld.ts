@@ -7,7 +7,7 @@
 
 import { SITE_URL, OG_IMAGE, LINKEDIN_URL, absoluteUrl } from '@/lib/seo';
 import { getRouteMeta, type RouteMeta } from '@/lib/seo/routes';
-import { getFaqsForPath } from '@/lib/content/faqs';
+import { getFaqsForPath } from '@/lib/content/faqs-registry';
 
 export type Locale = 'es' | 'en';
 

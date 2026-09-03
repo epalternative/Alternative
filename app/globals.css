@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Mona Sans font - Using Inter as fallback since Mona Sans is similar */
-/* Inter is a very similar grotesque sans-serif that works well as alternative */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Inter se carga con next/font desde app/[locale]/layout.tsx y se expone como
+   la variable CSS --font-inter, auto-hospedada y sin peticiones a Google. */
 
 :root {
   /* Brand Colors - Primary (from Manual de Marca) */
@@ -77,7 +76,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
   background-color: rgb(var(--background));
   color: rgb(var(--foreground));
@@ -90,34 +89,34 @@ body {
 
 /* Typography hierarchy - Inter */
 h1, .h1 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 600;
   line-height: 1.1;
   letter-spacing: -0.03em;
 }
 
 h2, .h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
 h3, .h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 500;
   line-height: 1.3;
   letter-spacing: -0.01em;
 }
 
 h4, .h4, h5, .h5, h6, .h6 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 500;
   line-height: 1.4;
 }
 
 p, .body-text {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 400;
   line-height: 1.7;
 }
@@ -491,7 +490,7 @@ p, .body-text {
 .btn-primary {
   background-color: var(--color-azul-marino);
   color: white;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 600;
   padding: 0.875rem 2rem;
   border-radius: 12px;
@@ -524,7 +523,7 @@ p, .body-text {
 .btn-secondary {
   background-color: var(--color-turquesa);
   color: var(--color-azul-marino);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 600;
   padding: 0.875rem 2rem;
   border-radius: 12px;
@@ -542,7 +541,7 @@ p, .body-text {
 .btn-outline {
   background-color: transparent;
   color: var(--color-azul-marino);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 600;
   padding: 0.875rem 2rem;
   border-radius: 12px;
