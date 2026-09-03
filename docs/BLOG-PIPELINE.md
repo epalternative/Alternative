@@ -400,6 +400,73 @@ artículo con enlaces internos dentro del cuerpo de Sanity.
 
 ---
 
+## 12 bis. El workflow fallaba por un bug preexistente del repositorio
+
+La primera ejecución de la GitHub Action falló en `npm ci`:
+
+```
+> postinstall
+> prisma generate
+Error: EACCES: permission denied, mkdir '/home/ubuntu'
+```
+
+### Causa
+
+`prisma/schema.prisma` tiene una **ruta absoluta de otra máquina** hardcodeada:
+
+```prisma
+generator client {
+  output = "/home/ubuntu/grupo_alternative_website/nextjs_space/node_modules/.prisma/client"
+}
+```
+
+En el runner de GitHub `/home/ubuntu` no existe ni se puede crear, así que
+`prisma generate` aborta y con él todo `npm ci`. No es un fallo del pipeline del
+blog: es un problema del repositorio que solo se hizo visible ahora, porque esta
+es la primera Action que ejecuta `npm ci`. Vercel no lo sufre porque su
+contenedor sí permite crear esa ruta.
+
+### Arreglo aplicado
+
+`npm ci --ignore-scripts` en el workflow. Este job solo lee Markdown y escribe en
+Sanity; no necesita el cliente de Prisma. Es el arreglo de menor alcance posible.
+
+También se subió el runner a **Node 22**, porque `@sanity/client` declara
+`engines: node >=22.12` y con Node 20 npm avisa en cada instalación.
+
+Y se hizo robusto el `git diff`: en el primer push a una rama
+`github.event.before` son ceros, y en ese caso ahora se compara contra el padre
+del commit.
+
+### Lo que NO se arregló, y conviene decidir
+
+**Prisma parece no usarse en absoluto.** `lib/db.ts` es el único fichero que
+importa `@prisma/client`, y **nadie importa `lib/db.ts`**. Tampoco existe
+`DATABASE_URL` en `.env.example`. Es decir: el `postinstall` y el
+`prisma generate` del script de build son trabajo muerto que solo puede causar
+fallos.
+
+Tres salidas, de menor a mayor alcance:
+
+1. Corregir la ruta del `output` en el esquema, o eliminarla para que Prisma use
+   la ubicación por defecto. Cambio de una línea.
+2. Quitar `prisma generate` del `postinstall` y del `build`. El build de Vercel
+   se acorta.
+3. Retirar Prisma del proyecto: esquema, dependencias y `lib/db.ts`.
+
+No se tocó nada de esto porque afecta al build de toda la aplicación, que hoy
+funciona en Vercel, y queda fuera del alcance del pipeline del blog.
+
+### Otros avisos de la misma ejecución
+
+| Aviso | Qué significa |
+|---|---|
+| `next@14.2.28: This version has a security vulnerability` | Next recomienda actualizar a una versión parcheada. Es lo más importante de esta lista |
+| `@sanity/block-tools@3.70.0: Renamed - use @portabletext/block-tools` | El paquete sigue funcionando pero ya no recibe actualizaciones |
+| `whatwg-encoding`, `mumath`, `get-random-values-esm` deprecados | Dependencias transitivas; no requieren acción inmediata |
+
+---
+
 ## 13. `TODO_EDWIN` — pipeline
 
 1. **Rotar `SANITY_API_WRITE_TOKEN`** (§10).
@@ -409,3 +476,5 @@ artículo con enlaces internos dentro del cuerpo de Sanity.
 5. **Migrar a Sanity los dos slugs hardcodeados** (§4). `que-es-bpm-…` ya tiene 83 bloques en Sanity que no se muestran; habría que borrar su entrada de `BLOG_SLUG_TO_CONTENT` y comprobar que el render coincide. Para `caso-exito-banco-regional-…` hay que crear antes el documento: no existe en Sanity.
 6. **Revisar el borrador del artículo de prueba** en el Studio y decidir si se publica.
 7. **Arreglar `target="_blank"` en enlaces internos** (§11 bis). Rama aparte: toca `components/`.
+8. **Decidir qué hacer con Prisma** (§12 bis). La ruta absoluta del esquema romperá cualquier CI que ejecute `npm ci` sin `--ignore-scripts`, y todo apunta a que Prisma no se usa.
+9. **Actualizar Next.js** (§12 bis). La versión 14.2.28 tiene una vulnerabilidad de seguridad reportada.
