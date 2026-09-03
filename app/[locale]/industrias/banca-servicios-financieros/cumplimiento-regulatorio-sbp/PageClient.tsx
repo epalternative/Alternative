@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { ReadingProgress } from '@/components/ui/reading-progress';
+import { faqs as faqData } from '@/lib/content/faqs/industrias--banca-servicios-financieros--cumplimiento-regulatorio-sbp';
+import { localizeFaqs } from '@/lib/content/faqs';
 import {
   Scale,
   ArrowRight,
@@ -71,9 +73,116 @@ const StaggerItem = ({ children, className = '' }: { children: React.ReactNode; 
   </motion.div>
 );
 
+const FAQItem = ({
+  question,
+  answer,
+  isOpen,
+  onClick
+}: {
+  question: string;
+  answer: string;
+  isOpen: boolean;
+  onClick: () => void
+}) => (
+  <motion.div className="border-b border-turquesa/20 last:border-0" initial={false}>
+    <button
+      onClick={onClick}
+      className="w-full py-6 flex items-center justify-between text-left group"
+    >
+      <span className="text-lg font-semibold text-azul-marino group-hover:text-turquesa transition-colors pr-8">
+        {question}
+      </span>
+      <motion.div
+        animate={{ rotate: isOpen ? 180 : 0 }}
+        transition={{ duration: 0.3 }}
+        className="flex-shrink-0"
+      >
+        <ChevronDown className="w-5 h-5 text-turquesa" />
+      </motion.div>
+    </button>
+    <motion.div
+      initial={false}
+      animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+      transition={{ duration: 0.3 }}
+      className="overflow-hidden"
+    >
+      <p className="pb-6 text-azul-marino/70 leading-relaxed">{answer}</p>
+    </motion.div>
+  </motion.div>
+);
+
 export default function CumplimientoRegulatorioSBPage() {
   const locale = useLocale();
   const isEs = locale === 'es';
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const faqs = localizeFaqs(faqData, isEs ? 'es' : 'en');
+
+  // Acuerdos verificados contra el PDF oficial de la SBP antes de citarlos:
+  // - Acuerdo 005-2011 (20 sep 2011), Gobierno Corporativo
+  //   https://www.superbancos.gob.pa/documentos/leyes_y_regulaciones/acuerdos/2011/Acuerdo_5-2011.pdf
+  // - Acuerdo 011-2018 (11 sep 2018), Riesgo Operativo
+  //   https://www.superbancos.gob.pa/documentos/leyes_y_regulaciones/acuerdos/2018/Acuerdo_11-2018.pdf
+  const normativa = [
+    {
+      norma: isEs ? 'Acuerdo 011-2018' : 'Agreement 011-2018',
+      materia: isEs ? 'Riesgo operativo · 11 de septiembre de 2018' : 'Operational risk · September 11, 2018',
+      implicacion: isEs
+        ? 'Establece que la gestión del riesgo operativo debe incluir identificación, medición, mitigación, monitoreo y control. El punto que más hallazgos genera no es la identificación, sino el monitoreo: hay que poder demostrar que las acciones de mitigación se cerraron dentro de los plazos definidos, con evidencia y no con actas genéricas.'
+        : 'It establishes that operational risk management must include identification, measurement, mitigation, monitoring and control. The point that generates the most findings is not identification but monitoring: you must be able to demonstrate that mitigation actions were closed within the defined timeframes, with evidence rather than generic minutes.',
+    },
+    {
+      norma: isEs ? 'Acuerdo 005-2011' : 'Agreement 005-2011',
+      materia: isEs ? 'Gobierno corporativo · 20 de septiembre de 2011' : 'Corporate governance · September 20, 2011',
+      implicacion: isEs
+        ? 'Actualiza las disposiciones sobre gobierno corporativo. En términos operativos define quién responde por qué: composición de comités, líneas de reporte y responsabilidades de la junta directiva. Un marco de control interno sin esa estructura detrás no sobrevive a la primera revisión, por bien redactado que esté.'
+        : 'It updates the corporate governance provisions. In operational terms it defines who answers for what: committee composition, reporting lines and board responsibilities. An internal control framework without that structure behind it does not survive the first review, however well drafted.',
+    },
+  ];
+
+  const metodologia = [
+    {
+      titulo: isEs ? 'Diagnóstico de brechas' : 'Gap assessment',
+      detalle: isEs
+        ? 'Comparamos lo que la entidad hace hoy contra lo que el marco regulatorio exige poder demostrar. El resultado no es una lista de documentos faltantes, sino un mapa de controles: cuáles existen y operan, cuáles existen en papel pero nadie ejecuta, y cuáles no existen.'
+        : 'We compare what the institution does today against what the regulatory framework requires you to be able to demonstrate. The output is not a list of missing documents but a control map: which ones exist and operate, which exist on paper but nobody executes, and which do not exist.',
+    },
+    {
+      titulo: isEs ? 'Priorización por criticidad' : 'Prioritization by criticality',
+      detalle: isEs
+        ? 'No se documenta todo a la vez. Se ordena por dos criterios: qué revisa primero un supervisor y dónde una falla golpea al cliente o al balance. Ese orden es el que permite mostrar avance real en los primeros meses en lugar de un frente abierto en todas partes.'
+        : 'You do not document everything at once. Work is ordered by two criteria: what an inspector reviews first and where a failure hits the customer or the balance sheet. That order is what allows showing real progress in the first months instead of an open front everywhere.',
+    },
+    {
+      titulo: isEs ? 'Diseño de gobierno y roles' : 'Governance and role design',
+      detalle: isEs
+        ? 'Antes de escribir procedimientos se define quién decide, quién ejecuta y quién revisa. Comités, líneas de reporte y dueños de proceso. Sin esta capa, la documentación posterior se convierte en un ejercicio de redacción sin efecto sobre la operación.'
+        : 'Before writing procedures we define who decides, who executes and who reviews. Committees, reporting lines and process owners. Without this layer, the documentation that follows becomes a drafting exercise with no effect on operations.',
+    },
+    {
+      titulo: isEs ? 'Documentación con nivel de evidencia' : 'Documentation at evidence level',
+      detalle: isEs
+        ? 'Narrativas, diagramas de flujo, matrices RACI y matrices de riesgos y controles. El criterio de calidad no es la extensión sino si un tercero puede seguir el proceso y verificar que el control operó, con registros que existan de verdad.'
+        : 'Narratives, flow diagrams, RACI matrices and risk and control matrices. The quality criterion is not length but whether a third party can follow the process and verify that the control operated, with records that genuinely exist.',
+    },
+    {
+      titulo: isEs ? 'Pre-auditoría interna' : 'Internal pre-audit',
+      detalle: isEs
+        ? 'Simulamos el enfoque de una supervisión sobre los procesos ya documentados. El objetivo es encontrar los hallazgos antes de que los encuentre el supervisor, cuando todavía hay margen para corregirlos sin plazo encima.'
+        : 'We simulate the approach of an inspection over the already documented processes. The goal is to find the findings before the inspector does, while there is still room to correct them without a deadline overhead.',
+    },
+    {
+      titulo: isEs ? 'Cierre y transferencia' : 'Closure and handover',
+      detalle: isEs
+        ? 'Preparación de la evidencia de cierre y capacitación al equipo en cómo responder un requerimiento: qué mostrar, dónde está y qué no conviene improvisar. El sistema tiene que quedar operando sin nosotros.'
+        : 'Preparation of closure evidence and training for the team on how to answer a request: what to show, where it is and what should not be improvised. The system has to keep running without us.',
+    },
+  ];
+
+  const relacionados = [
+    { tipo: isEs ? 'Industria' : 'Industry', titulo: isEs ? 'Banca y Servicios Financieros' : 'Banking & Financial Services', href: `/${locale}/industrias/banca-servicios-financieros` },
+    { tipo: isEs ? 'Servicio' : 'Service', titulo: isEs ? 'Optimización de Procesos' : 'Process Optimization', href: `/${locale}/servicios/optimizacion-procesos` },
+    { tipo: 'Blog', titulo: isEs ? 'Qué es BPM: guía completa' : 'What is BPM: complete guide', href: `/${locale}/blog/que-es-bpm-business-process-management-guia-completa` },
+  ];
 
   const breadcrumbs = [
     { label: isEs ? 'Inicio' : 'Home', href: `/${locale}` },
@@ -473,6 +582,125 @@ export default function CumplimientoRegulatorioSBPage() {
         </div>
       </section>
       )}
+
+
+      {/* QUÉ EXIGE LA NORMATIVA */}
+      <section className="py-20 lg:py-32 bg-white">
+        <div className="container-custom">
+          <AnimatedSection className="max-w-4xl mx-auto mb-12">
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino mb-6">
+              {isEs ? 'Qué exige la normativa, en concreto' : 'What the regulation requires, specifically'}
+            </h2>
+            <p className="text-lg text-azul-marino/70 leading-relaxed mb-6">
+              {isEs
+                ? 'La mayoría de los proyectos de cumplimiento se atascan por la misma razón: se aborda la norma como un listado de documentos que entregar, y no como un conjunto de capacidades que hay que poder demostrar en funcionamiento. La diferencia se nota en la primera supervisión.'
+                : 'Most compliance projects stall for the same reason: the regulation is treated as a list of documents to deliver rather than a set of capabilities you must be able to demonstrate in operation. The difference shows at the first inspection.'}
+            </p>
+          </AnimatedSection>
+
+          <StaggerContainer className="max-w-4xl mx-auto space-y-6">
+            {normativa.map((item, idx) => (
+              <StaggerItem key={idx}>
+                <div className="bg-blanco-hueso rounded-2xl p-8 border border-gris-arena/20">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-turquesa/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Scale className="w-6 h-6 text-turquesa" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-azul-marino mb-1">{item.norma}</h3>
+                      <p className="text-sm text-turquesa font-medium mb-3">{item.materia}</p>
+                      <p className="text-azul-marino/70 leading-relaxed">{item.implicacion}</p>
+                    </div>
+                  </div>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* METODOLOGÍA */}
+      <section className="py-20 lg:py-32 bg-turquesa/5">
+        <div className="container-custom">
+          <AnimatedSection className="max-w-4xl mx-auto mb-12">
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino mb-6">
+              {isEs ? 'Cómo lo abordamos' : 'How we approach it'}
+            </h2>
+            <p className="text-lg text-azul-marino/70 leading-relaxed">
+              {isEs
+                ? 'El orden importa. Documentar antes de entender qué controles existen produce manuales que nadie reconoce como propios y que no resisten una revisión.'
+                : 'Order matters. Documenting before understanding which controls exist produces manuals nobody recognizes as their own and that do not survive a review.'}
+            </p>
+          </AnimatedSection>
+
+          <StaggerContainer className="max-w-4xl mx-auto space-y-4">
+            {metodologia.map((paso, idx) => (
+              <StaggerItem key={idx}>
+                <div className="bg-white rounded-2xl p-6 shadow-brand border border-gris-arena/20 flex items-start gap-5">
+                  <div className="w-10 h-10 bg-violeta/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-violeta font-semibold">{idx + 1}</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-azul-marino mb-2">{paso.titulo}</h3>
+                    <p className="text-azul-marino/70 leading-relaxed">{paso.detalle}</p>
+                  </div>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-20 lg:py-32 bg-white">
+        <div className="container-custom">
+          <AnimatedSection className="max-w-3xl mx-auto mb-12 text-center">
+            <h2 className="text-3xl lg:text-4xl font-semibold text-azul-marino">
+              {isEs ? 'Preguntas frecuentes' : 'Frequently asked questions'}
+            </h2>
+          </AnimatedSection>
+
+          <AnimatedSection className="max-w-3xl mx-auto">
+            <div className="bg-blanco-hueso rounded-2xl p-8">
+              {faqs.map((faq, idx) => (
+                <FAQItem
+                  key={idx}
+                  question={faq.question}
+                  answer={faq.answer}
+                  isOpen={openFAQ === idx}
+                  onClick={() => setOpenFAQ(openFAQ === idx ? null : idx)}
+                />
+              ))}
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ENLACES RELACIONADOS */}
+      <section className="py-16 bg-blanco-hueso">
+        <div className="container-custom">
+          <AnimatedSection className="max-w-4xl mx-auto">
+            <h2 className="text-2xl font-semibold text-azul-marino mb-6">
+              {isEs ? 'Seguir leyendo' : 'Keep reading'}
+            </h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {relacionados.map((rel) => (
+                <Link
+                  key={rel.href}
+                  href={rel.href}
+                  className="bg-white rounded-xl p-6 border border-gris-arena/20 hover:border-turquesa hover:shadow-brand transition-all duration-300 group"
+                >
+                  <p className="text-sm text-turquesa font-medium mb-2">{rel.tipo}</p>
+                  <p className="text-azul-marino font-semibold group-hover:text-turquesa transition-colors inline-flex items-center gap-2">
+                    {rel.titulo}
+                    <ArrowRight className="w-4 h-4" />
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
 
       {/* CTA FINAL */}
       <section className="py-20 lg:py-32 bg-violeta relative overflow-hidden">

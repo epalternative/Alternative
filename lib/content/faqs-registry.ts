@@ -8,6 +8,9 @@
 
 import type { FaqEntry } from './faqs';
 import { faqs as industrias__banca_servicios_financieros } from './faqs/industrias--banca-servicios-financieros';
+import { faqs as industrias__banca_servicios_financieros__cumplimiento_regulatorio_sbp } from './faqs/industrias--banca-servicios-financieros--cumplimiento-regulatorio-sbp';
+import { faqs as industrias__banca_servicios_financieros__gestion_proyectos_bancarios } from './faqs/industrias--banca-servicios-financieros--gestion-proyectos-bancarios';
+import { faqs as industrias__banca_servicios_financieros__iso_9001_sector_financiero } from './faqs/industrias--banca-servicios-financieros--iso-9001-sector-financiero';
 import { faqs as industrias__energia_utilities } from './faqs/industrias--energia-utilities';
 import { faqs as industrias__gobierno_sector_publico } from './faqs/industrias--gobierno-sector-publico';
 import { faqs as industrias__manufactura_logistica } from './faqs/industrias--manufactura-logistica';
@@ -47,6 +50,9 @@ import { faqs as servicios__transformacion_digital__estrategia_digital } from '.
 
 export const FAQS_BY_PATH: Record<string, FaqEntry[]> = {
   "/industrias/banca-servicios-financieros": industrias__banca_servicios_financieros,
+  "/industrias/banca-servicios-financieros/cumplimiento-regulatorio-sbp": industrias__banca_servicios_financieros__cumplimiento_regulatorio_sbp,
+  "/industrias/banca-servicios-financieros/gestion-proyectos-bancarios": industrias__banca_servicios_financieros__gestion_proyectos_bancarios,
+  "/industrias/banca-servicios-financieros/iso-9001-sector-financiero": industrias__banca_servicios_financieros__iso_9001_sector_financiero,
   "/industrias/energia-utilities": industrias__energia_utilities,
   "/industrias/gobierno-sector-publico": industrias__gobierno_sector_publico,
   "/industrias/manufactura-logistica": industrias__manufactura_logistica,
