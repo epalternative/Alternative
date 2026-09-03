@@ -115,6 +115,7 @@ Ajustada al esquema real. Los campos del prompt que no encajan van marcados.
 | `heroImageAlt` | `heroImageAlt` | `string` | directo |
 | (cuerpo Markdown) | `body` | `blockContent` | `marked` → HTML → `htmlToBlocks` con el esquema de `blockContent` |
 | `serviceLink`, `relatedLinks` | — | — | **No hay campo.** Van dentro del cuerpo como enlaces Markdown; el lint verifica que resuelvan |
+| (enlaces del cuerpo) | `markDefs[].href` | `url` | **absolutizar**: el tipo `url` de Sanity exige URL absoluta. El Markdown los mantiene relativos y el push antepone `https://grupoalternative.com` |
 | `sources` | — | — | **No hay campo.** Se usan solo para el lint y para citar en el cuerpo |
 | `status: draft` | — | — | Se refleja en el `_id`: `drafts.post-<slug>` |
 | — | `readingTimeMinutes` | `number` | **calcular**: `Math.ceil(palabras / 200)`. Los 3 posts existentes lo tienen |
@@ -340,6 +341,52 @@ El artículo encontró además un dato que ningún competidor tiene: los esquema
 
 ---
 
+## 11 bis. Dos bugs de enlaces detectados al revisar el borrador
+
+### Corregido: los `href` relativos invalidaban el documento
+
+El primer push guardó los enlaces internos tal cual venían del Markdown:
+
+```
+/es/servicios/sistemas-calidad
+/es/contacto
+```
+
+El campo `href` de la anotación `link` es de **tipo `url`** en `blockContent`, y
+ese tipo valida que el valor sea una URL absoluta. Con paths relativos, el Studio
+marca el documento como inválido y no deja publicarlo.
+
+`sanity-push-post.mjs` incorpora ahora `absolutizeLinks()`, que antepone
+`https://grupoalternative.com` a todo `href` que empiece por `/`, **en el límite
+con Sanity**. El Markdown del repositorio sigue con enlaces relativos, que es lo
+correcto para el control de versiones y para el lint.
+
+Verificado en el borrador tras el arreglo: los 4 enlaces del ES apuntan a
+`https://grupoalternative.com/es/...` y los del EN a `.../en/...`.
+
+### Pendiente: los enlaces internos abren en pestaña nueva
+
+`components/blog/BlogPortableText.tsx` (líneas 41-49) renderiza **todos** los
+enlaces del cuerpo con `target="_blank" rel="noopener noreferrer"`:
+
+```tsx
+link: ({ value, children }) => (
+  <a href={value?.href} target="_blank" rel="noopener noreferrer" …>
+```
+
+Para un enlace externo está bien. Para uno interno no: abre una pestaña nueva
+hacia el propio sitio y rompe la navegación. Como efecto secundario, el enlace
+interno pierde parte de su valor como señal de navegación.
+
+**No lo he corregido**: `components/` está fuera del alcance aditivo acordado
+para esta rama. Es un cambio pequeño —distinguir por si el `href` empieza por
+`https://grupoalternative.com` o por `/`— pero debe ir en su propia rama.
+
+Es una incidencia preexistente que solo se hace visible ahora: este es el primer
+artículo con enlaces internos dentro del cuerpo de Sanity.
+
+---
+
 ## 12. Qué NO cubre el pipeline todavía
 
 | Falta | Qué haría falta |
@@ -361,3 +408,4 @@ El artículo encontró además un dato que ningún competidor tiene: los esquema
 4. **`author.link` está en `null`** (§6.1). Un clic en el Studio: `/nosotros/katherine-gonzalez`.
 5. **Migrar a Sanity los dos slugs hardcodeados** (§4). `que-es-bpm-…` ya tiene 83 bloques en Sanity que no se muestran; habría que borrar su entrada de `BLOG_SLUG_TO_CONTENT` y comprobar que el render coincide. Para `caso-exito-banco-regional-…` hay que crear antes el documento: no existe en Sanity.
 6. **Revisar el borrador del artículo de prueba** en el Studio y decidir si se publica.
+7. **Arreglar `target="_blank"` en enlaces internos** (§11 bis). Rama aparte: toca `components/`.

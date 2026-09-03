@@ -151,6 +151,32 @@ function toDateOnly(v) {
   return m[1];
 }
 
+const SITE_URL = 'https://grupoalternative.com';
+
+/**
+ * Absolutiza los enlaces internos de los bloques.
+ *
+ * En el Markdown los enlaces internos se escriben relativos (`/es/contacto`),
+ * que es lo correcto para el repositorio. Pero el campo `href` de la anotacion
+ * `link` es de tipo `url` en el esquema de Sanity, y ese tipo **valida que sea
+ * una URL absoluta**: un path relativo hace que el Studio marque el documento
+ * como invalido.
+ *
+ * Se convierten aqui, en el limite con Sanity, para no ensuciar el Markdown.
+ */
+function absolutizeLinks(blocks) {
+  let n = 0;
+  for (const b of blocks) {
+    for (const md of b.markDefs || []) {
+      if (md._type === 'link' && typeof md.href === 'string' && md.href.startsWith('/')) {
+        md.href = `${SITE_URL}${md.href}`;
+        n++;
+      }
+    }
+  }
+  return n;
+}
+
 async function groq(query, params = {}) {
   return client.fetch(query, params);
 }
@@ -179,14 +205,19 @@ const run = async () => {
 
   // ── Cuerpos ──
   const bodyBlocks = toPortableText(body);
+  const nEs = absolutizeLinks(bodyBlocks);
 
   const enFile = file.replace(/\.md$/, '.en.md');
   let en = null;
   if (fs.existsSync(enFile)) {
     const parsed = matter(fs.readFileSync(enFile, 'utf8'));
-    en = { fm: parsed.data, blocks: toPortableText(parsed.content) };
+    const enBlocks = toPortableText(parsed.content);
+    const nEn = absolutizeLinks(enBlocks);
+    en = { fm: parsed.data, blocks: enBlocks };
+    console.log(`  enlaces absolutizados: ${nEs} (ES) · ${nEn} (EN)`);
   } else {
     console.warn(`  ⚠ sin versión EN (${path.basename(enFile)}): los campos *En quedarán vacíos`);
+    console.log(`  enlaces absolutizados: ${nEs} (ES)`);
   }
 
   const words = body.split(/\s+/).filter(Boolean).length;
