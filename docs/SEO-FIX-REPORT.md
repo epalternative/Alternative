@@ -185,12 +185,30 @@ solo cubre ISO 9001. Title aplicado: `Certificación ISO 9001 en Panamá | De Ce
 al Certificado`. Si Alternative presta servicio sobre las otras tres normas, hay
 que ampliar el contenido antes de prometerlas en el title.
 
+### 4.5 ✅ RESUELTO — `ProfessionalService` completo
+
+Cerrados los dos `TODO_EDWIN` que quedaban en `lib/seo/jsonld.ts`:
+
+| Campo | Valor |
+|---|---|
+| `sameAs` | `https://www.linkedin.com/company/alternative-consulting-group/` |
+| `address` | `PostalAddress` con `addressLocality: 'Ciudad de Panamá'`, `addressRegion: 'Panamá'`, `addressCountry: 'PA'` |
+| `areaServed` | `Country: Panamá` + `City: Ciudad de Panamá` |
+
+`address` va **sin `streetAddress` ni `postalCode`** a propósito: Alternative es
+una empresa de servicios sin oficina abierta al público, y declarar una dirección
+postal que no se puede visitar sería un dato falso en datos estructurados.
+
+La URL de LinkedIn vive en `LINKEDIN_URL` (`lib/seo.ts`) y la consumen tanto el
+`sameAs` del schema como los dos enlaces del footer, de modo que no puedan
+divergir.
+
 ### 4.4 Otros pendientes ya conocidos
 
 - `NEXTAUTH_URL` en Vercel (ya no afecta al `metadataBase`, pero conviene revisar).
 - `NEXT_OUTPUT_MODE` en Vercel: confirmar que no es `export` antes de la Fase 5.
-- Dirección postal, URL de LinkedIn y `sameAs` de la empresa para el
-  `ProfessionalService` de la Fase 2.
+- ~~Dirección postal, URL de LinkedIn y `sameAs` de la empresa para el
+  `ProfessionalService` de la Fase 2.~~ ✅ **Resuelto** — ver §4.5.
 - Imagen OG del blog: `consulting-session.webp` es 1066×1600 (vertical).
 
 ---
