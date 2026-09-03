@@ -15,6 +15,14 @@ export type Locale = 'es' | 'en';
 export const OG_IMAGE = '/og-image.png';
 
 /**
+ * Perfil de LinkedIn de la empresa.
+ *
+ * Vive aquí para que el enlace del footer y el `sameAs` del `ProfessionalService`
+ * salgan de la misma fuente y no puedan divergir.
+ */
+export const LINKEDIN_URL = 'https://www.linkedin.com/company/alternative-consulting-group/';
+
+/**
  * Convierte una ruta de imagen en URL absoluta.
  * Devuelve `src` tal cual si ya es absoluta (p. ej. el CDN de Sanity).
  */

@@ -24,7 +24,23 @@ function ArticleJsonLd({
   const url = `${baseUrl}/${locale}/blog/${slug}`;
   const title = locale === 'en' ? post.titleEn : post.title;
   const description = locale === 'en' ? post.metaDescriptionEn : post.metaDescription;
-  const excerpt = locale === 'en' ? post.excerptEn : post.excerpt;
+  const body = (locale === 'en' ? post.bodyEn : post.body) as
+    | { children?: { text?: string }[] }[]
+    | undefined;
+
+  /**
+   * Palabras del cuerpo real (Portable Text de Sanity). Si el post no trae
+   * body se omite: es preferible no declarar `wordCount` a publicar el conteo
+   * del excerpt, que daria una cifra falsa de ~95 para un articulo largo.
+   */
+  const wordCount = Array.isArray(body)
+    ? body
+        .flatMap((b) => b?.children ?? [])
+        .map((c) => c?.text ?? '')
+        .join(' ')
+        .split(/\s+/)
+        .filter(Boolean).length || undefined
+    : undefined;
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -32,7 +48,7 @@ function ArticleJsonLd({
     description,
     inLanguage: locale === 'en' ? 'en-US' : 'es-PA',
     articleSection: locale === 'en' ? post.categoryLabelEn : post.categoryLabel,
-    wordCount: excerpt ? excerpt.split(/\s+/).filter(Boolean).length : undefined,
+    wordCount,
     keywords: post.keywords?.length ? post.keywords.join(', ') : undefined,
     // `heroImage` puede venir del CDN de Sanity (absoluta) o de /public (relativa).
     image: absoluteUrl(post.heroImage ?? OG_IMAGE),

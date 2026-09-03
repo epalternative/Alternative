@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLocale } from 'next-intl';
+import { LINKEDIN_URL } from '@/lib/seo';
 import {
   MapPin,
   Phone,
@@ -82,7 +83,7 @@ export function Footer() {
             {/* Social Links */}
             <div className="flex gap-3">
               {[
-                { icon: Linkedin, href: '#', label: 'LinkedIn' },
+                { icon: Linkedin, href: LINKEDIN_URL, label: 'LinkedIn' },
                 { icon: Twitter, href: '#', label: 'Twitter' },
                 { icon: Facebook, href: '#', label: 'Facebook' },
               ].map((social) => {
@@ -163,6 +164,17 @@ export function Footer() {
                 <a href="mailto:info@grupoalternative.com" className="flex items-center gap-3 text-white/60 hover:text-turquesa transition-colors">
                   <Mail className="w-5 h-5 text-turquesa flex-shrink-0" />
                   info@grupoalternative.com
+                </a>
+              </li>
+              <li>
+                <a
+                  href={LINKEDIN_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-white/60 hover:text-turquesa transition-colors"
+                >
+                  <Linkedin className="w-5 h-5 text-turquesa flex-shrink-0" />
+                  LinkedIn
                 </a>
               </li>
               <li className="flex items-start gap-3">

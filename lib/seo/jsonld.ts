@@ -5,7 +5,7 @@
  * no vuelva a haber marcado suelto y contradictorio por el árbol.
  */
 
-import { SITE_URL, OG_IMAGE, absoluteUrl } from '@/lib/seo';
+import { SITE_URL, OG_IMAGE, LINKEDIN_URL, absoluteUrl } from '@/lib/seo';
 import { getRouteMeta, type RouteMeta } from '@/lib/seo/routes';
 import { getFaqsForPath } from '@/lib/content/faqs';
 
@@ -26,8 +26,12 @@ export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
 
 /**
- * Datos de contacto tomados del footer (`components/layout/footer.tsx`).
- * TODO_EDWIN: falta la dirección exacta (calle) y los perfiles sociales.
+ * Datos de contacto y perfiles, alineados con el footer
+ * (`components/layout/footer.tsx`).
+ *
+ * `address` va sin `streetAddress` ni `postalCode` a propósito: Alternative es
+ * una empresa de servicios sin oficina abierta al público, y declarar una
+ * dirección postal que no se puede visitar sería un dato falso.
  */
 export function buildOrganization(locale: Locale): JsonLdNode[] {
   const org = {
@@ -43,12 +47,17 @@ export function buildOrganization(locale: Locale): JsonLdNode[] {
         : 'Consulting in process optimization, quality systems, project management and digital transformation for companies in Panama and LATAM.',
     telephone: '+50769908906',
     email: 'info@grupoalternative.com',
+    sameAs: [LINKEDIN_URL],
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Ciudad de Panamá',
+      addressRegion: 'Panamá',
       addressCountry: 'PA',
     },
-    areaServed: { '@type': 'Country', name: 'Panamá' },
+    areaServed: [
+      { '@type': 'Country', name: 'Panamá' },
+      { '@type': 'City', name: 'Ciudad de Panamá' },
+    ],
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',

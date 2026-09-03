@@ -1,0 +1,163 @@
+{
+  "_source": "https://grupoalternative.com/es/servicios/sistemas-calidad/certificacion-iso",
+  "_capturedAt": "2026-09-02T23:53:27.890Z",
+  "blocks": [
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://grupoalternative.com/#organization",
+          "name": "Grupo Alternative",
+          "url": "https://grupoalternative.com/es",
+          "logo": "https://grupoalternative.com/logo_alternative_horizontal.webp",
+          "image": "https://grupoalternative.com/og-image.png",
+          "description": "Consultoría en optimización de procesos, sistemas de calidad, gestión de proyectos y transformación digital para empresas en Panamá y LATAM.",
+          "telephone": "+50769908906",
+          "email": "info@grupoalternative.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Ciudad de Panamá",
+            "addressCountry": "PA"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "Panamá"
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "https://schema.org/Monday",
+                "https://schema.org/Tuesday",
+                "https://schema.org/Wednesday",
+                "https://schema.org/Thursday",
+                "https://schema.org/Friday",
+                "https://schema.org/Saturday"
+              ],
+              "opens": "08:00",
+              "closes": "17:00"
+            }
+          ],
+          "founder": {
+            "@type": "Person",
+            "name": "Katherine González",
+            "jobTitle": "Fundadora y CEO",
+            "url": "https://grupoalternative.com/es/nosotros/katherine-gonzalez"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://grupoalternative.com/#website",
+          "url": "https://grupoalternative.com/es",
+          "name": "Grupo Alternative",
+          "inLanguage": "es-PA",
+          "publisher": {
+            "@id": "https://grupoalternative.com/#organization"
+          }
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://grupoalternative.com/es"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Servicios",
+              "item": "https://grupoalternative.com/es/servicios"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Sistemas de Calidad",
+              "item": "https://grupoalternative.com/es/servicios/sistemas-calidad"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Certificación ISO",
+              "item": "https://grupoalternative.com/es/servicios/sistemas-calidad/certificacion-iso"
+            }
+          ]
+        },
+        {
+          "@type": "Service",
+          "name": "Certificación ISO 9001 en Panamá | De Cero al Certificado",
+          "serviceType": "certificación ISO 9001",
+          "description": "De cero al certificado ISO 9001 con acompañamiento completo: implementación, auditorías internas y apoyo en la auditoría del organismo certificador. 4-8 meses.",
+          "url": "https://grupoalternative.com/es/servicios/sistemas-calidad/certificacion-iso",
+          "provider": {
+            "@id": "https://grupoalternative.com/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "Panamá"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿Cuánto tiempo toma obtener la certificación ISO 9001?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Típicamente 4-8 meses desde el inicio del trabajo con Alternative hasta la auditoría de certificación, según tamaño de la organización, madurez previa y alcance. Incluye implementación, auditorías internas, corrección de no conformidades y preparación para Stage 1 y Stage 2."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué diferencia hay entre implementación y certificación ISO?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Implementación es diseñar, documentar y operar el sistema de gestión según ISO 9001. Certificación es que un organismo acreditado (independiente) audite tu sistema y emita el certificado. Alternative te lleva de cero a implementación y te prepara para la auditoría de certificación; el organismo certificador realiza la auditoría y emite el certificado."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Alternative elige el organismo certificador por nosotros?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. La selección del organismo certificador es decisión del cliente para mantener independencia y objetividad. Alternative te orienta sobre organismos reconocidos (BSI, Bureau Veritas, SGS, DNV, TÜV, etc.), criterios de selección y proceso de cotización. Recomendamos obtener al menos 2-3 cotizaciones."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué pasa si tenemos no conformidades en la auditoría de certificación?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No conformidades menores se cierran con evidencia antes de emitir el certificado (plazo según organismo). Mayores implican que no se emite el certificado hasta corregir y que el organismo verifique. Con Alternative, más del 85% de nuestros clientes aprueban en la primera auditoría gracias a preparación rigurosa, auditorías internas previas y pre-auditoría."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿El certificado ISO 9001 tiene vigencia?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sí. El certificado típicamente se emite por 3 años. Hay auditorías de vigilancia anuales (años 1 y 2) y una auditoría de re-certificación en el año 3. Si se cumplen los requisitos, se renueva el certificado por otros 3 años. Alternative puede apoyarte en mantenimiento post-certificación y preparación para vigilancia y re-certificación."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Podemos certificarnos si ya intentamos antes y no logramos?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sí. Es un escenario frecuente. Revisamos qué falló (documentación incompleta, implementación débil, no conformidades no resueltas, organismo inadecuado) y armamos un plan para cerrar brechas y llegar a certificación. Nuestra metodología y experiencia en 20+ certificaciones nos permiten rescatar proyectos que parecían estancados."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

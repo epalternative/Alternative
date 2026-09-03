@@ -1,0 +1,62 @@
+{
+  "_source": "https://grupoalternative.com/es",
+  "_capturedAt": "2026-09-02T23:53:27.758Z",
+  "blocks": [
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://grupoalternative.com/#organization",
+          "name": "Grupo Alternative",
+          "url": "https://grupoalternative.com/es",
+          "logo": "https://grupoalternative.com/logo_alternative_horizontal.webp",
+          "image": "https://grupoalternative.com/og-image.png",
+          "description": "Consultoría en optimización de procesos, sistemas de calidad, gestión de proyectos y transformación digital para empresas en Panamá y LATAM.",
+          "telephone": "+50769908906",
+          "email": "info@grupoalternative.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Ciudad de Panamá",
+            "addressCountry": "PA"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "Panamá"
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "https://schema.org/Monday",
+                "https://schema.org/Tuesday",
+                "https://schema.org/Wednesday",
+                "https://schema.org/Thursday",
+                "https://schema.org/Friday",
+                "https://schema.org/Saturday"
+              ],
+              "opens": "08:00",
+              "closes": "17:00"
+            }
+          ],
+          "founder": {
+            "@type": "Person",
+            "name": "Katherine González",
+            "jobTitle": "Fundadora y CEO",
+            "url": "https://grupoalternative.com/es/nosotros/katherine-gonzalez"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://grupoalternative.com/#website",
+          "url": "https://grupoalternative.com/es",
+          "name": "Grupo Alternative",
+          "inLanguage": "es-PA",
+          "publisher": {
+            "@id": "https://grupoalternative.com/#organization"
+          }
+        }
+      ]
+    }
+  ]
+}
