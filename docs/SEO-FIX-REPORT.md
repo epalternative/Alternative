@@ -1,10 +1,12 @@
-# Reporte de corrección SEO — Fases 1a, 1b, 2, 3 y 4
+# Reporte de corrección SEO — Fases 1 a 5 (completas)
 
 **Rama:** `seo/fix` (sin merge a `main`)
 **Base:** `76d7b5e`
-**Commits:** `07ac65f` (1a) · `78b0c79` (1b) · `8d0151a` (1a ajustes) · `2eb08b7` (4) · `9da4ace` (2) · `b16afc3` (3)
+**Commits:** `07ac65f` (1a) · `78b0c79` (1b) · `8d0151a` (1a ajustes) · `2eb08b7` (4) ·
+`9da4ace` (2) · `b16afc3` (3) · `1a1f179` (fix remoto) · `ad939eb` (wordCount) ·
+`d010897` (Organization) · `eb7cbb2` (footer) · `6cdffba` (5)
 
-Fase 5 **pendiente**. Este reporte cubre las fases 1a, 1b, 2, 3 y 4.
+**Las cinco fases están en producción y verificadas contra `https://grupoalternative.com`.**
 
 ---
 
@@ -24,13 +26,13 @@ Fase 5 **pendiente**. Este reporte cubre las fases 1a, 1b, 2, 3 y 4.
 | **A5** | `lastmod` del sitemap no real | ✅ **Corregido** | 9 fechas distintas frente a 1 |
 | **A6** | `/en/nosotros` y `/en/helpdesk-it` con metadata en español | ✅ **Corregido** | Layouts eliminados; ambas pasan por el registro bilingüe |
 | **A7** | Ninguna ruta se prerenderiza | ✅ **Corregido** | **115 páginas HTML en disco** (antes 0) |
-| **A8** | Fuentes por `@import` | ⏳ Fase 5 | — |
+| **A8** | Fuentes por `@import` | ✅ **Corregido** | `next/font/google`, auto-hospedada |
 | **A9** | `twitter:image` de 502 KB | ✅ **Corregido** | `og:image` y `twitter:image` = `/og-image.png` |
 | **A10** | `metadataBase` desde `NEXTAUTH_URL` | ✅ **Corregido** | Ahora `new URL(SITE_URL)` |
 | **A11** | Sin analítica | ❌ No aplicado | Fuera del alcance del plan |
 | **A12** | OG image rota para posts de Sanity | ✅ **Corregido** | `absoluteUrl()` en OG, Twitter y JSON-LD |
 | **A13** | `/blog` sin metadata propia | ✅ **Corregido** | `app/[locale]/blog/page.tsx` |
-| **M1** | `x-default` contradictorio en la cabecera `Link` | ⏳ Fase 5 | Requiere `alternateLinks: false` |
+| **M1** | `x-default` contradictorio en la cabecera `Link` | ✅ **Corregido** | `alternateLinks: false` en `middleware.ts` |
 | **M2** | `/nosotros` y `katherine-gonzalez` con la misma metadata | ✅ **Corregido** | Entradas separadas en el registro |
 | **M8** | Cifras contradictorias (500+ vs 50+, 5 vs 15 años) | ✅ **Corregido** | Ver §3 |
 | **M9** | Etiquetas del hero en español dentro de `/en` | ✅ **Corregido** | `hero.counters.*` vía next-intl |
@@ -44,65 +46,75 @@ Fase 5 **pendiente**. Este reporte cubre las fases 1a, 1b, 2, 3 y 4.
 | **M16** | `og:image` del blog vertical | 🟡 **Parcial** | Fallback a `/og-image.png`; `consulting-session.webp` sigue siendo 1066×1600 |
 | **B3** | `robots.ts` bloquea `/admin/` inexistente | ✅ **Corregido** | `app/robots.ts` |
 | **B10** | `Article` en vez de `BlogPosting` | ✅ **Corregido** | + `inLanguage`, `articleSection`, `wordCount` |
+| **M6** | `images.unoptimized: true` | ✅ **Corregido** | Optimizador activo + `remotePatterns` de `cdn.sanity.io` |
+| **M11** | `browserslist` con `ie >= 11` | ✅ **Corregido** | `package.json` |
+| **M12** | `eslint.ignoreDuringBuilds: true` | ❌ **No aplicado** | No existe configuración de ESLint en el repo — ver §5.6 |
+| **B5** | `gray-matter` sin uso | ✅ **Corregido** | Desinstalado |
+| **B6** | `HeroReveal.tsx` código muerto | ✅ **Corregido** | Eliminado (33 KB) |
+| **B8** | 26 ficheros sin referenciar en `public/` | ⚠️ **Listado, no borrado** | Ver §4.6 |
 
 ---
 
 ## 2. Antes / después medido
 
-Ambas columnas provienen de `next build` + rastreo del HTML servido con `scripts/seo-check.mjs`.
+Ambas columnas provienen del HTML **realmente servido**: el «antes» de
+`https://grupoalternative.com` en el commit `76d7b5e`, el «después» de la misma
+URL tras desplegar las cinco fases.
 
-| Métrica | Antes (`76d7b5e`) | Después (`b16afc3`) |
+| Métrica | Antes (`76d7b5e`) | Ahora (producción) |
 |---|---:|---:|
 | Titles únicos en ES (55 rutas) | **3** | **54** |
 | Descriptions únicas en ES | **3** | **54** |
 | URLs con `<meta name="keywords">` | 110 | **0** |
 | URLs `/en` con `<html lang="es">` | 55 | **0** |
-| Rutas con canonical propio | 55 (ya correcto) | 108 |
+| Rutas con canonical propio | 55 | 108 |
 | Páginas prerenderizadas a HTML | **0** | **121** |
-| Rutas en `prerender-manifest.json` | 2 | **122** |
-| Cifras del hero en el HTML | `0+`, `0%`, `0+` | `50+`, `98%`, `15+` |
-| Rutas con JSON-LD | 4 (solo posts) | **112** (108 + 4 posts) |
-| Bloques JSON-LD por página | 0 | 2 (`ProfessionalService`+`WebSite`, y el `@graph` de la página) |
-| Soft-404 (HTTP 200 en slug inexistente) | 4 | **0** |
+| Rutas con JSON-LD | 4 (solo posts) | **112** |
+| Soft-404 (200 en slug inexistente) | 4 | **0** |
+| Redirects 308 que acababan en 404 | 7 | **0** |
 | URLs en el sitemap | 100 | 108 |
-| `lastmod` distintos en el sitemap | **1** (idéntico en las 100) | **9** |
-| `/casos-exito` (noindex) en el sitemap | sí | **no** |
+| `lastmod` distintos | **1** | **9** |
 | `/es/studio` | 200 + `index,follow` | **404** |
 | `robots.txt` bloquea `/_next/` | sí | **no** |
-| `og:image` | ruta generada (PNG dinámico) | **`/og-image.png`** |
-| `twitter:image` | `logo_24.webp` (502 KB, 3310×1990) | **`/og-image.png`** (17 KB, 1200×630) |
-| Redirects 308 hacia 404 | 7 | **0** |
+| `og:image` / `twitter:image` | ruta generada / logo de 502 KB | **`/og-image.png`** (17 KB) |
+| Cifras del hero en el HTML | `0+`, `0%`, `0+` | `50+`, `98%`, `15+` |
+| Peticiones a Google Fonts | 3 saltos en cascada | **0** (auto-hospedada, 25 KB) |
+| Optimizador de imágenes | desactivado (`/_next/image` → 404) | **activo** (200, negocia WebP/AVIF) |
+| Cabecera `Link` con `x-default` contradictorio | sí | **no** |
 
-### First Load JS (`next build`)
+### First Load JS
 
-| Ruta | Antes | Después |
-|---|---:|---:|
-| Base compartida | 87.7 kB | 87.7 kB |
-| `/[locale]` (home) | 167 kB | 167 kB |
-| `/[locale]/servicios/optimizacion-procesos/bpm-empresarial` | 165 kB | 165 kB |
-| `/[locale]/nosotros` | 173 kB | 173 kB |
+| Ruta | Antes | Regresión Fase 2 | Ahora |
+|---|---:|---:|---:|
+| Base compartida | 87.7 kB | 87.7 kB | 87.7 kB |
+| `/[locale]` (home) | 167 kB | 167 kB | 167 kB |
+| `…/bpm-empresarial` | 165 kB | **223 kB** | **165 kB** |
+| `…/certificacion-iso` | 164 kB | — | 164 kB |
+| `/[locale]/nosotros` | 173 kB | 173 kB | 173 kB |
 
-Sin cambio, y es lo esperado: la división server/client no reduce el bundle porque
-`PageClient.tsx` sigue siendo el mismo árbol cliente. La reducción de peso es
-objetivo de la Fase 5.
+La columna intermedia documenta una regresión que introduje en la Fase 2 y detecté
+en la Fase 5: `lib/content/faqs.ts` importaba los 37 ficheros de FAQs y los
+`PageClient` importaban `localizeFaqs` de ahí, así que **cada página de servicio
+empaquetaba las FAQs de todas las demás**. El tipo y el helper se quedaron en
+`faqs.ts` (sin imports de datos) y el registro pasó a `faqs-registry.ts`, que solo
+usa el servidor.
 
-### Verificación end-to-end
+Es un fallo que `seo-check` no podía detectar —el HTML servido era correcto— y que
+solo aparece comparando los tamaños del build entre fases.
+
+### Verificación end-to-end en producción
 
 ```
-npx next start -p 3151 &
-node scripts/seo-check.mjs --port 3151 --external
+node scripts/seo-check.mjs      --base=https://grupoalternative.com
+  →  1685 checks · 0 hallazgos
 
-checks superados: 1683   ·   hallazgos: 0
-✔ todo en verde
+node scripts/check-redirects.mjs --base=https://grupoalternative.com
+  →   200 checks · 0 fallos · 4 avisos
 ```
 
-Cobertura del check, sobre las 108 URLs del registro más los posts y 5 sondas de
-slug inexistente: HTTP 200, title y description presentes, longitud y unicidad,
-`<html lang>` igual al locale, exactamente un `<h1>`, canonical propio, 3
-`hreflang`, ausencia de `meta keywords`, `noindex` donde toca, JSON-LD parseable
-con `BreadcrumbList` (salvo home) y `FAQPage` donde hay preguntas, `og:image`
-correcta, contadores sin ceros, 404 en las sondas, `robots.txt` sin `/_next/`, y
-cada `<loc>` del sitemap respondiendo 200 sin incluir rutas `noindex`.
+Los 4 avisos son los redirects hacia `/es/casos-exito` y `/en/casos-exito`, el
+placeholder marcado `noindex`. El script los degrada a aviso a propósito: es un
+estado conocido, no una regresión.
 
 **JSON-LD servido** en una página de servicio:
 
@@ -151,6 +163,7 @@ Cifras oficiales confirmadas: **15+ años**, **50+ proyectos**, **98% satisfacci
 
 ### 4.1 Años de la práctica bancaria y tech — pendiente de Katherine
 
+
 Según tu instrucción, las dejo intactas y las marco para confirmación. Si la
 empresa tiene 15 años, decir "más de 10" en banca es defendible (la práctica
 bancaria puede ser más joven que la empresa), pero conviene confirmarlo:
@@ -170,6 +183,7 @@ bancaria puede ser más joven que la empresa), pero conviene confirmarlo:
 
 ### 4.2 Cinco H1 hardcodeados en español que se sirven también en `/en`
 
+
 Sin resolver: es copy visible, fuera del alcance acordado.
 
 `industrias/energia-utilities` · `industrias/retail-comercio` ·
@@ -180,12 +194,37 @@ La metadata EN de esas rutas ya es correcta; el `<h1>` y el hero siguen en espa�
 
 ### 4.3 `certificacion-iso` — alcance real de la página
 
+
 El title del prompt mencionaba ISO 9001, 14001, 27001 y 45001, pero la página
 solo cubre ISO 9001. Title aplicado: `Certificación ISO 9001 en Panamá | De Cero
 al Certificado`. Si Alternative presta servicio sobre las otras tres normas, hay
 que ampliar el contenido antes de prometerlas en el title.
 
-### 4.5 ✅ RESUELTO — `ProfessionalService` completo
+### 4.4 26 ficheros sin referenciar en `public/`
+
+
+Listados, **no borrados**, como se acordó:
+
+- `logo_1.jpeg` … `logo_25.jpeg` (25 ficheros).
+- `logo_24.webp` — **502 KB**. Quedó huérfano al eliminar
+  `app/[locale]/opengraph-image.tsx` y cambiar `twitter:image` a `/og-image.png`.
+  Era el archivo de 3310×1990 que se servía como tarjeta social.
+
+Ninguno se referencia desde `app/`, `components/`, `lib/` ni `messages/`.
+
+### 4.5 Otros pendientes ya conocidos
+
+
+- `NEXTAUTH_URL` en Vercel (ya no afecta al `metadataBase`, pero conviene revisar).
+- `NEXT_OUTPUT_MODE` en Vercel: confirmar que no es `export` antes de la Fase 5.
+- ~~Dirección postal, URL de LinkedIn y `sameAs` de la empresa para el
+  `ProfessionalService` de la Fase 2.~~ ✅ **Resuelto** — ver §4.5.
+- Imagen OG del blog: `consulting-session.webp` es 1066×1600 (vertical).
+
+---
+
+### 4.6 ✅ RESUELTO — `ProfessionalService` completo
+
 
 Cerrados los dos `TODO_EDWIN` que quedaban en `lib/seo/jsonld.ts`:
 
@@ -203,26 +242,13 @@ La URL de LinkedIn vive en `LINKEDIN_URL` (`lib/seo.ts`) y la consumen tanto el
 `sameAs` del schema como los dos enlaces del footer, de modo que no puedan
 divergir.
 
-### 4.4 Otros pendientes ya conocidos
-
-- `NEXTAUTH_URL` en Vercel (ya no afecta al `metadataBase`, pero conviene revisar).
-- `NEXT_OUTPUT_MODE` en Vercel: confirmar que no es `export` antes de la Fase 5.
-- ~~Dirección postal, URL de LinkedIn y `sameAs` de la empresa para el
-  `ProfessionalService` de la Fase 2.~~ ✅ **Resuelto** — ver §4.5.
-- Imagen OG del blog: `consulting-session.webp` es 1066×1600 (vertical).
-
----
-
 ## 5. Desviaciones respecto al prompt
 
-1. **`og:image` — precedencia no resuelta.** `buildPageMetadata` declara
-   `/og-image.png` como pedía el punto 1.2, pero `app/[locale]/opengraph-image.tsx`
-   **tiene precedencia** sobre `openGraph.images` (medido en el audit: el
-   `og:image` servido es la ruta generada, no el archivo). Hoy conviven una
-   convención de archivo que gana y una declaración que no se usa. La Fase 5 debe
-   decidir cuál se queda: o se borra `opengraph-image.tsx`, o se quita `images` de
-   `buildPageMetadata`. `twitter:image` sí toma `/og-image.png` (ahí no hay
-   convención de archivo), así que A9 queda resuelto para Twitter.
+1. ~~**`og:image` — precedencia no resuelta.**~~ ✅ **Resuelto.**
+   `app/[locale]/opengraph-image.tsx` tenía precedencia sobre `openGraph.images`
+   y dejaba inerte la declaración del metadata. Se eliminó el fichero, así que
+   `og:image` y `twitter:image` son ambos `/og-image.png` (1200×630, 17 KB).
+   Los posts del blog siguen usando su `heroImage` con fallback a esa misma imagen.
 
 2. **Longitud de dos titles.** `sistemas-calidad` EN (47) y
    `digitalizacion-procesos` ES (49) quedan bajo el objetivo de 50. Son los textos
@@ -230,10 +256,10 @@ divergir.
    error: por encima de 60 hay truncamiento real en SERP, por debajo de 50 no hay
    perjuicio.
 
-3. **Sin `JsonLd` en las páginas generadas.** La plantilla del punto 1.3 incluía
-   `<JsonLd data={buildPageJsonLd(...)} />`, pero `lib/seo/jsonld.ts` es Fase 2 y
-   aún no existe: importarlo rompería el build. Las 54 páginas quedan listas para
-   añadir esa línea.
+3. ~~**Sin `JsonLd` en las páginas generadas.**~~ ✅ **Resuelto en la Fase 2.**
+   Las 54 páginas emiten ya `<JsonLd data={buildPageJsonLd(PATH, params.locale)} />`.
+   Se pospuso a propósito en la Fase 1b: `lib/seo/jsonld.ts` aún no existía e
+   importarlo habría roto el build.
 
 4. **Ruta a `<html lang>`.** No se usaron route groups. Se eliminó `app/layout.tsx`
    y `app/[locale]/layout.tsx` pasó a ser root layout, con `app/studio/layout.tsx`
@@ -242,6 +268,35 @@ divergir.
 
 5. **Conteo de rutas.** El audit decía 57 rutas ES; el árbol real tiene **55**
    (54 en el registro tras excluir `business-consultants`). El audit contó 2 de más.
+
+6. **ESLint sigue desactivado, pero no por lo que decía el plan.** El plan pedía poner `eslint.ignoreDuringBuilds: false` y corregir lo que
+   saliera, dejándolo en `true` solo si aparecían más de 20 errores no-SEO.
+
+   El motivo real es otro: **no existe ninguna configuración de ESLint en el repo**.
+   No hay `.eslintrc*`, ni `eslint.config.*`, ni `eslintConfig` en `package.json`,
+   pese a tener cuatro paquetes instalados (`eslint` 9.24, `eslint-config-next`
+   15.3, `eslint-plugin-prettier`, `eslint-plugin-react-hooks`). `next lint` abre
+   el asistente de configuración inicial en vez de analizar nada.
+
+   Consecuencia: las reglas de Next relevantes para SEO y rendimiento
+   (`no-img-element`, `no-page-custom-font`) **nunca se han ejecutado** aquí.
+
+   Configurarlo es una tarea aparte, con dos complicaciones añadidas:
+   `eslint-config-next` es 15.3 sobre Next 14.2, y ESLint 9 exige flat config.
+
+7. **`localeDetection` y `localeCookie` sin tocar.** El plan pedía ponerlos a `false`. Su justificación explícita era
+   **habilitar el prerenderizado estático**, y eso ya se consiguió en la Fase 1b
+   al eliminar `headers()` del layout: 121 páginas se prerenderizan.
+
+   Cambiarlos ahora solo altera lo que ve el visitante: con `localeDetection: false`,
+   un usuario con el navegador en inglés que entre por `/` iría a `/es` en vez de
+   `/en`. Es una decisión de producto, no técnica, así que queda abierta.
+
+8. **Regresión de bundle introducida y corregida.** La extracción de FAQs de la
+   Fase 2 metió las FAQs de las 37 páginas en el bundle de cada una
+   (`bpm-empresarial`: 165 → 223 kB). Detectada en la Fase 5 comparando los
+   tamaños del build; corregida separando `faqs.ts` (tipo + helper, sin datos) de
+   `faqs-registry.ts` (los 37 imports, solo servidor). Ver §2.
 
 ---
 
@@ -286,7 +341,7 @@ curl -s https://grupoalternative.com/es | grep -oE '>[0-9]+<!-- -->[+%]'
 curl -s https://grupoalternative.com/es/servicios/sistemas-calidad/certificacion-iso \
   | grep -o '<link rel="canonical" href="[^"]*"'
 
-# 6. Redirecciones de WordPress (pendientes de Fase 3; hoy 2 de estas fallan)
+# 6. Redirecciones de WordPress (todas verificadas: 308 + destino 200)
 for u in /consultores-de-empresas /blog-grupo-alternative /ia-en-gestion-de-proyectos \
          /service/desarrollo-software /beneficios-de-la-consultoria-en-ti; do
   printf '%-45s ' "$u"
@@ -294,27 +349,41 @@ for u in /consultores-de-empresas /blog-grupo-alternative /ia-en-gestion-de-proy
   echo
 done
 
-# 7. JSON-LD en una página de servicio (Fase 2, aún vacío)
+# 7. JSON-LD en una página de servicio (debe devolver 2)
 curl -s https://grupoalternative.com/es/servicios/optimizacion-procesos/bpm-empresarial \
   | grep -c 'application/ld+json'
+```
+
+Añadidos tras la Fase 5:
+
+```bash
+# 8. Fuente auto-hospedada (debe devolver 0)
+curl -s https://grupoalternative.com/es | grep -c 'fonts.googleapis.com'
+
+# 9. Optimizador de imágenes (debe devolver 200 y negociar webp)
+curl -sI -H 'Accept: image/avif,image/webp'   'https://grupoalternative.com/_next/image?url=%2Fog-image.png&w=640&q=75' | head -3
+
+# 10. La cabecera Link con el x-default contradictorio ya no debe existir
+curl -sI https://grupoalternative.com/es/servicios | grep -i '^link:'
 ```
 
 Verificación local completa:
 
 ```bash
-rm -rf .next && npx next build
-node scripts/validate-routes.mjs
+rm -rf .next && npx next build     # un .next caliente hace fallar el type-check (§6)
+npm run seo:routes
 npx next start -p 3141 &
-node scripts/seo-check.mjs --port 3141 --external
+npm run seo:check -- --port 3141 --external
 ```
 
 ---
 
-## 8. Verificación contra el preview de Vercel: EN VERDE
+## 8. Verificación contra despliegues reales: EN VERDE
 
-Rama publicada y desplegada. Verificado contra el despliegue real, no solo en local.
+Verificado primero contra el preview de la rama y después contra producción,
+no solo en local. Las cifras de producción están en §2.
 
-**Preview:** `https://alternative-irnjkcqof-ep-alternatives-projects.vercel.app` (commit `1a1f179`)
+**Preview usado durante la Fase 3:** `alternative-irnjkcqof-…vercel.app` (`1a1f179`)
 
 ```
 node scripts/seo-check.mjs      --base=<preview>   →  1685 checks · 0 hallazgos
@@ -364,10 +433,37 @@ El secreto no se imprime en ninguna salida.
 
 ---
 
-## 9. Siguiente paso
+## 9. Estado final y decisiones abiertas
 
-Fase 5: fuentes con `next/font`, `images.unoptimized` fuera, `alternateLinks: false`
-para el `x-default` contradictorio de la cabecera `Link`, y limpieza
-(`HeroReveal.tsx`, `browserslist` con `ie >= 11`, `gray-matter` sin uso).
+Las cinco fases están **en producción y verificadas**. Lo que queda no es trabajo
+pendiente de ejecución sino decisiones que dependen de Alternative.
 
-Las fases 1a, 1b, 2, 3 y 4 quedan verificadas contra el despliegue real.
+### Requiere acción
+
+| # | Qué | Por qué no lo hice yo |
+|---|---|---|
+| 1 | **Rotar el bypass secret** de Vercel (Settings → Deployment Protection) | El CLI de Vercel no está autenticado en este entorno (`VERCEL_TOKEN` ausente, sin `auth.json`). Verificado que el valor **no está en el repo ni en el historial de git** (`git log --all -S`), solo en la conversación |
+
+### Decisiones de producto
+
+| # | Qué | Impacto |
+|---|---|---|
+| 2 | `localeDetection: false` (§5.7) | Cambia a qué idioma va quien entra por `/` |
+| 3 | Configurar ESLint (§5.6) | Habilitaría reglas de Next que nunca se han ejecutado |
+| 4 | Los "10+ años" de banca y tech (§4.1) | Confirmación de Katherine; afecta a 7 sitios |
+| 5 | Cinco `<h1>` en español servidos en `/en` (§4.2) | Cambio de copy visible |
+| 6 | Alcance de `certificacion-iso` (§4.3) | Si cubre 14001/27001/45001, ampliar contenido y title |
+| 7 | 26 ficheros sin referenciar en `public/` (§4.4) | `logo_24.webp` pesa 502 KB |
+| 8 | `caso-exito-banco-regional…` huérfano (§4.5) | Subirlo a Sanity o quitarlo del fallback |
+| 9 | `/casos-exito` sigue siendo un placeholder | Hoy `noindex` y fuera del sitemap; 4 redirects apuntan ahí |
+
+### Cómo revalidar en el futuro
+
+```bash
+npm run seo:routes                                        # registro: cobertura, longitudes, unicidad
+npm run seo:check   -- --base=https://grupoalternative.com  # HTML servido
+npm run seo:redirects -- --base=https://grupoalternative.com # 51 reglas de vercel.json
+```
+
+Los tres scripts fallan con código distinto de cero si algo se rompe, así que
+sirven para un paso de CI.
