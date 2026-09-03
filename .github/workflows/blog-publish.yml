@@ -1,0 +1,55 @@
+name: Blog · push de borradores a Sanity
+
+# Al mergear a main, cada artículo nuevo o modificado se empuja a Sanity
+# como BORRADOR. Publicar sigue siendo un clic humano en el Studio.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/posts/**'
+
+# Dos merges seguidos no deben pisarse.
+concurrency:
+  group: blog-publish
+  cancel-in-progress: false
+
+jobs:
+  push-drafts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Necesitamos el commit anterior para el diff.
+          fetch-depth: 2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Artículos cambiados en este push
+        id: changed
+        run: |
+          FILES=$(git diff --name-only --diff-filter=ACM ${{ github.event.before }} ${{ github.sha }} \
+            -- 'content/posts/*.md' | grep -v '\.en\.md$' || true)
+          echo "Artículos: ${FILES:-ninguno}"
+          {
+            echo 'files<<EOF'
+            echo "$FILES"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Empujar borradores
+        if: steps.changed.outputs.files != ''
+        env:
+          SANITY_API_WRITE_TOKEN: ${{ secrets.SANITY_API_WRITE_TOKEN }}
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+          NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+        run: |
+          echo "${{ steps.changed.outputs.files }}" | while read -r f; do
+            [ -z "$f" ] && continue
+            echo "── $f"
+            node scripts/sanity-push-post.mjs "$f"
+          done
