@@ -251,6 +251,25 @@ const run = async () => {
   }
 
   // ── Imagen ──
+  //
+  // Si el frontmatter no trae imagen, se conserva la que ya tenga el documento
+  // en Sanity. Sin esto, `createOrReplace` borraria la heroImage que alguien
+  // haya subido desde el Studio: el Markdown no la conoce y el campo
+  // desapareceria del documento.
+  //
+  // El Studio es la fuente de verdad para las imagenes; el Markdown solo puede
+  // aportar una, nunca quitarla.
+  if (!fm.heroImage) {
+    const existing = await groq(
+      '*[_id in [$draft, $published]] | order(_id desc) [0]{heroImage}',
+      { draft: doc._id, published: `post-${fm.slug}` }
+    );
+    if (existing?.heroImage) {
+      doc.heroImage = existing.heroImage;
+      console.log('  heroImage conservada del documento existente');
+    }
+  }
+
   if (fm.heroImage) {
     const imgPath = path.isAbsolute(fm.heroImage) ? fm.heroImage : path.join('content/images', path.basename(fm.heroImage));
     if (!fs.existsSync(imgPath)) {

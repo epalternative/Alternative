@@ -7,6 +7,14 @@ on:
     branches: [main]
     paths:
       - 'content/posts/**'
+  # Ejecucion manual desde la pestana Actions. Sirve para probar el workflow sin
+  # tocar un articulo, y para re-empujar uno concreto cuando haga falta.
+  workflow_dispatch:
+    inputs:
+      file:
+        description: 'Ruta de un articulo concreto (vacio = todos los de content/posts)'
+        required: false
+        default: ''
 
 # Dos merges seguidos no deben pisarse.
 concurrency:
@@ -35,9 +43,25 @@ jobs:
       # Este workflow no necesita Prisma: solo lee Markdown y escribe en Sanity.
       - run: npm ci --ignore-scripts
 
-      - name: Artículos cambiados en este push
+      - name: Artículos a empujar
         id: changed
         run: |
+          # Ejecucion manual: el fichero indicado, o todos si no se indica ninguno.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ -n "${{ inputs.file }}" ]; then
+              FILES="${{ inputs.file }}"
+            else
+              FILES=$(ls content/posts/*.md 2>/dev/null | grep -v '\.en\.md$' || true)
+            fi
+            echo "Manual · artículos: ${FILES:-ninguno}"
+            {
+              echo 'files<<EOF'
+              echo "$FILES"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           # En el primer push a una rama, github.event.before son ceros; en ese
           # caso se compara contra el padre del commit.
           BEFORE="${{ github.event.before }}"
