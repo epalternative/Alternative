@@ -1,9 +1,14 @@
 'use client';
 
+import Link from 'next/link';
 import { PortableText, type PortableTextComponents } from '@portabletext/react';
 import type { PortableTextBlock } from '@portabletext/types';
 import { client } from '@/sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
+
+// Duplicado a proposito de SITE_URL en lib/seo.ts: importar ese modulo desde un
+// componente cliente arrastraria el registro completo de rutas al bundle.
+const SITE_ORIGIN = 'https://grupoalternative.com';
 
 const builder = imageUrlBuilder(client);
 
@@ -38,16 +43,43 @@ const components: Partial<PortableTextComponents> = {
   marks: {
     strong: ({ children }) => <strong className="font-semibold text-azul-marino dark:text-white">{children}</strong>,
     em: ({ children }) => <em>{children}</em>,
-    link: ({ value, children }) => (
-      <a
-        href={value?.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-turquesa font-medium hover:underline"
-      >
-        {children}
-      </a>
-    ),
+    link: ({ value, children }) => {
+      const href = String(value?.href ?? '');
+      const className = 'text-turquesa font-medium hover:underline';
+
+      // Los enlaces del pipeline se guardan absolutos porque el campo href de
+      // blockContent es type 'url' y Sanity rechaza las rutas relativas. Aqui
+      // se vuelven a reconocer los propios para navegarlos en la misma pestana
+      // y con el router de Next, no como si fueran de otro sitio.
+      const internalPath = href.startsWith(SITE_ORIGIN)
+        ? href.slice(SITE_ORIGIN.length) || '/'
+        : href.startsWith('/')
+          ? href
+          : null;
+
+      if (internalPath) {
+        return (
+          <Link href={internalPath} className={className}>
+            {children}
+          </Link>
+        );
+      }
+
+      // mailto:, tel: y anclas tampoco abren pestana nueva.
+      if (!/^https?:\/\//i.test(href)) {
+        return (
+          <a href={href} className={className}>
+            {children}
+          </a>
+        );
+      }
+
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+          {children}
+        </a>
+      );
+    },
   },
   types: {
     image: ({ value }) => {
