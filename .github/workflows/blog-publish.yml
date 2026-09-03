@@ -24,15 +24,27 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # @sanity/client exige Node >=22.12; con 20 npm avisa de engine
+          # incompatible en cada instalacion.
+          node-version: 22
           cache: npm
 
-      - run: npm ci
+      # --ignore-scripts omite el postinstall del repo, que ejecuta
+      # `prisma generate`. El esquema de Prisma tiene una ruta absoluta de otra
+      # maquina (/home/ubuntu/...) que en el runner da EACCES y aborta npm ci.
+      # Este workflow no necesita Prisma: solo lee Markdown y escribe en Sanity.
+      - run: npm ci --ignore-scripts
 
       - name: Artículos cambiados en este push
         id: changed
         run: |
-          FILES=$(git diff --name-only --diff-filter=ACM ${{ github.event.before }} ${{ github.sha }} \
+          # En el primer push a una rama, github.event.before son ceros; en ese
+          # caso se compara contra el padre del commit.
+          BEFORE="${{ github.event.before }}"
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            BEFORE=$(git rev-parse "${{ github.sha }}^" 2>/dev/null || echo "${{ github.sha }}")
+          fi
+          FILES=$(git diff --name-only --diff-filter=ACM "$BEFORE" ${{ github.sha }} \
             -- 'content/posts/*.md' | grep -v '\.en\.md$' || true)
           echo "Artículos: ${FILES:-ninguno}"
           {
