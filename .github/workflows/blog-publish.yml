@@ -37,10 +37,11 @@ jobs:
           node-version: 22
           cache: npm
 
-      # --ignore-scripts omite el postinstall del repo, que ejecuta
-      # `prisma generate`. El esquema de Prisma tiene una ruta absoluta de otra
-      # maquina (/home/ubuntu/...) que en el runner da EACCES y aborta npm ci.
-      # Este workflow no necesita Prisma: solo lee Markdown y escribe en Sanity.
+      # --ignore-scripts se mantiene por precaucion: este job solo lee Markdown
+      # y escribe en Sanity, asi que no necesita ejecutar ningun script de
+      # instalacion de dependencias. Antes ademas era obligatorio, porque el
+      # postinstall corria `prisma generate` y fallaba en el runner; Prisma ya
+      # no esta en el proyecto.
       - run: npm ci --ignore-scripts
 
       - name: Artículos a empujar
