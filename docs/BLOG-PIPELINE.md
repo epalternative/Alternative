@@ -1,7 +1,7 @@
 # Pipeline editorial del blog
 
 **Rama:** `content/blog-pipeline` · **Base:** `main`
-**Estado:** Fase 0 (reconocimiento) completada. Fases 1-5 pendientes de tu visto bueno.
+**Estado:** Fases 0 a 5 completadas y probadas end-to-end.
 
 ---
 
@@ -107,10 +107,10 @@ Ajustada al esquema real. Los campos del prompt que no encajan van marcados.
 | `description` | `metaDescription` **y** `excerpt` | `text` | **a los dos**: `metaDescription` alimenta la `<meta>`, `excerpt` se muestra en el índice del blog |
 | `slug` | `slug` | `slug` | envolver: `{ _type: 'slug', current: <slug> }` |
 | `locale: es` | — | — | **No existe campo de idioma.** El esquema es bilingüe por pares de campos (`title`/`titleEn`). Un post en ES rellena los campos base y deja los `*En` vacíos |
-| `author: katherine-gonzalez` | `author` | `reference` | resolver a `{ _type:'reference', _ref:'d1e1d740-38b3-483f-9558-a71c45c369f2' }`. **El slug no sirve**: `author` no tiene campo slug, hay que resolver por `name` o usar el `_id` |
+| `author: "Katherine González"` | `author` | `reference` | resolver por `name` a `{ _type:'reference', _ref:'d1e1d740-38b3-483f-9558-a71c45c369f2' }`. **El slug no sirve**: `author` no tiene campo slug, hay que resolver por `name` o usar el `_id` |
 | `category` | `category` | `reference` | GROQ `*[_type=="category" && slug==$cat][0]._id` → `{_type:'reference',_ref:…}` |
 | `keyword` + `secondaryKeywords` | `keywords` | `array<string>` | concatenar: `[keyword, ...secondaryKeywords]` |
-| `publishedAt: YYYY-MM-DD` | `publishedAt` | `datetime` | **añadir hora**: `YYYY-MM-DDT12:00:00.000Z`. El campo es `datetime`, una fecha suelta lo rompe |
+| `publishedAt: YYYY-MM-DD` | `publishedAt` | `datetime` | **añadir hora fija**: `YYYY-MM-DDT08:00:00-05:00`. El campo es `datetime`, una fecha suelta lo rompe |
 | `heroImage` | `heroImage` | `image` | subir con `client.assets.upload('image', …)` → `{_type:'image', asset:{_type:'reference',_ref:<assetId>}}` |
 | `heroImageAlt` | `heroImageAlt` | `string` | directo |
 | (cuerpo Markdown) | `body` | `blockContent` | `marked` → HTML → `htmlToBlocks` con el esquema de `blockContent` |
@@ -202,4 +202,162 @@ El script de push subirá la imagen local como asset. **No hay que meter rutas d
 
 ---
 
-*Fase 0 completada. Detenido a la espera de revisión, según lo acordado.*
+
+---
+
+## 8. Manual de uso
+
+### Para Edwin — el lunes, 4 pasos
+
+1. `/investigar "<keyword>" <slug>` → produce el brief en `content/briefs/`. Revísalo: los huecos detectados son el ángulo del artículo.
+2. `/articulo <slug>` → escribe ES + EN, pasa el lint y abre el PR.
+3. Revisa el PR con su checklist: normativa verificada, cifras en lista blanca, enlaces que resuelven, versión EN completa.
+4. Merge. La GitHub Action empuja el borrador a Sanity automáticamente.
+
+### Para Katherine — 3 pasos
+
+1. Abre el Studio y ve a **Borradores**.
+2. Lee el artículo. Si algo no suena a ti, edítalo ahí mismo.
+3. Pulsa **Publicar**.
+
+---
+
+## 9. Cuándo aparece un post publicado en el sitio
+
+**No aparece solo.** Ver §3: no hay `revalidate` ni ISR en el proyecto.
+
+Tras pulsar *Publicar* en el Studio hace falta **un despliegue** para que el post entre en `/es/blog` y en el `sitemap.xml`.
+
+### Configurar el refresco automático — pasos exactos
+
+No se implementó nada en código, según lo acordado. Estos son los pasos para que publicar dispare un despliegue:
+
+**1. Crear el Deploy Hook en Vercel**
+
+- vercel.com → proyecto **alternative** → *Settings* → *Git* → **Deploy Hooks**
+- Nombre: `sanity-publish`
+- Rama: `main`
+- *Create Hook* → copia la URL, con el formato
+  `https://api.vercel.com/v1/integrations/deploy/prj_xxx/yyy`
+
+**2. Crear el webhook en Sanity**
+
+- sanity.io/manage → proyecto **5s1f6jl3** → *API* → **Webhooks** → *Create webhook*
+- **Name:** `Publicar post → desplegar sitio`
+- **URL:** la del Deploy Hook del paso 1
+- **Dataset:** `production`
+- **Trigger on:** `Create`, `Update`, `Delete`
+- **Filter:** `_type == "post"`
+- **Projection:** vacío
+- **HTTP method:** `POST`
+- **Secret:** vacío (el Deploy Hook ya es una URL secreta)
+- *Save*
+
+**3. Comprobarlo**
+
+Publica cualquier post en el Studio y mira si aparece un despliegue nuevo en Vercel en menos de un minuto.
+
+> El filtro `_type == "post"` es importante: sin él, editar una categoría o la ficha de la autora también dispararía un despliegue.
+
+### Si un post publicado no aparece
+
+1. ¿Hubo despliegue en Vercel después de publicar? Si no, revisa el webhook.
+2. ¿El documento está publicado o sigue en borrador? Un `drafts.*` no sale en las consultas públicas.
+3. ¿Tiene `slug`, `title`, `author`, `category` y `publishedAt`? Los cuatro últimos son obligatorios en el esquema.
+4. Comprueba que la consulta lo devuelve:
+   ```bash
+   curl -s "https://5s1f6jl3.api.sanity.io/v2024-01-01/data/query/production?query=*%5B_type%3D%3D%22post%22%5D.slug.current"
+   ```
+
+---
+
+## 10. Secrets y variables que faltan
+
+### GitHub → Settings → Secrets and variables → Actions
+
+| Secret | Valor | Para qué |
+|---|---|---|
+| `SANITY_API_WRITE_TOKEN` | Token con permiso *Editor* | El workflow escribe los borradores |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | `5s1f6jl3` | |
+| `NEXT_PUBLIC_SANITY_DATASET` | `production` | |
+
+El token se crea en sanity.io/manage → *API* → *Tokens* → *Add API token*, con permiso **Editor** (no *Deploy Studio*, no *Viewer*).
+
+### En local
+
+`.env.local` (ya creado, y está en `.gitignore`) con esas mismas tres variables.
+
+> ⚠️ **Rota el token actual.** El que hay en `.env.local` quedó escrito en la conversación de trabajo, y además llegó a estar pegado en `.env.example`, que sí se versiona. Se sacó de ahí antes de commitear —se verificó que nunca entró al historial de git— pero conviene crear uno nuevo y borrar el viejo en sanity.io/manage.
+
+---
+
+## 11. Prueba end-to-end (Fase 4)
+
+Ejecutada con la keyword `certificación ISO 9001 Panamá`.
+
+| Paso | Resultado |
+|---|---|
+| `/investigar` | `content/briefs/certificacion-iso-9001-panama-costos-plazos.md`. 5 competidores analizados; ninguno menciona a la DGNTI ni al CNA |
+| `/articulo` (ES) | 1.374 palabras · title 56 · description 151 · **lint en verde** |
+| `/articulo` (EN) | 1.375 palabras · title 60 · description 154 · **lint en verde** |
+| `blog:push --dry-run` | 51 bloques; detectó un bug real (ver abajo) |
+| `blog:push` real | `drafts.post-certificacion-iso-9001-panama-costos-plazos`, body 51 · bodyEn 51 |
+| Idempotencia | Segunda ejecución actualiza el mismo borrador |
+| Aislamiento | El dataset público sigue devolviendo 3 posts: el borrador no se ve |
+
+### Conversión a Portable Text — verificada
+
+```
+bloques totales : 51
+estilos         : {"normal": 43, "h2": 8}
+items de lista  : {"number": 8}
+spans en strong : 18
+enlaces         : 4  (/es/... en el ES, /en/... en el EN)
+```
+
+### Bug que encontró el dry-run
+
+`gray-matter` parsea una fecha YAML sin comillas como objeto `Date`, no como string. La concatenación producía:
+
+```
+"publishedAt": "Mon Sep 07 2026 19:00:00 GMT-0500 (hora estándar oriental)T08:00:00-05:00"
+```
+
+Corregido con `toDateOnly()`, que normaliza `Date` y string a `YYYY-MM-DD` usando UTC para que la zona horaria local no desplace la fecha. Es exactamente el tipo de fallo que justifica que el `--dry-run` exista.
+
+### Normativa del artículo de prueba
+
+| Fuente | Verificada | URL |
+|---|---|---|
+| DGNTI (MICI) | ✅ | https://www.mici.gob.pa/direccion-general-de-normas-y-tecnologia-industrial/ |
+| CNA (MICI) | ✅ | https://mici.gob.pa/cna-quienes-somos/ |
+| Acuerdo 011-2018 (SBP) | ✅ (fase anterior) | PDF oficial |
+| **ISO.org** | ❌ **descartada** | Devuelve **HTTP 403** a peticiones automatizadas |
+
+**ISO.org no es verificable con WebFetch.** Siguiendo la regla de `content/CLAUDE.md`, no se citó. Es una limitación permanente del pipeline: cualquier artículo que quiera citar iso.org tendrá que verificarlo a mano.
+
+El artículo encontró además un dato que ningún competidor tiene: los esquemas de acreditación que ofrece el CNA son laboratorios de ensayo y calibración, organismos de inspección y organismos de validación y verificación — **la certificación de sistemas de gestión no está entre ellos**.
+
+---
+
+## 12. Qué NO cubre el pipeline todavía
+
+| Falta | Qué haría falta |
+|---|---|
+| **Imágenes en el cuerpo** | Solo se sube la `heroImage`. Para imágenes dentro del texto habría que subir cada asset y sustituir la referencia Markdown por un bloque `image` antes de `htmlToBlocks` |
+| **Tablas** | `blockContent` no las soporta. O se añade un tipo `table` al esquema (fuera del alcance acordado) o se sigue con checklists |
+| **Cron automático** | Hoy `/investigar` y `/articulo` se lanzan a mano. Se podría programar con `/loop` o una routine, pero conviene mantener el gate humano |
+| **Traducción como paso separado** | La versión EN la escribe el mismo comando. Si se quiere revisión de un traductor, habría que partir `/articulo` en dos |
+| **Publicación automática** | Deliberado: publicar es un clic humano en el Studio |
+| **Verificación de enlaces externos** | El lint valida los internos. Un enlace externo roto no lo detecta nadie |
+
+---
+
+## 13. `TODO_EDWIN` — pipeline
+
+1. **Rotar `SANITY_API_WRITE_TOKEN`** (§10).
+2. **Configurar los 3 secrets en GitHub** (§10). Sin ellos el workflow falla al mergear.
+3. **Configurar Deploy Hook + webhook** (§9). Sin esto los posts publicados no aparecen.
+4. **`author.link` está en `null`** (§6.1). Un clic en el Studio: `/nosotros/katherine-gonzalez`.
+5. **Migrar a Sanity los dos slugs hardcodeados** (§4). `que-es-bpm-…` ya tiene 83 bloques en Sanity que no se muestran; habría que borrar su entrada de `BLOG_SLUG_TO_CONTENT` y comprobar que el render coincide. Para `caso-exito-banco-regional-…` hay que crear antes el documento: no existe en Sanity.
+6. **Revisar el borrador del artículo de prueba** en el Studio y decidir si se publica.

@@ -133,6 +133,24 @@ function toPortableText(md) {
   });
 }
 
+/**
+ * `publishedAt` a `YYYY-MM-DD`.
+ *
+ * gray-matter parsea una fecha YAML sin comillas como objeto Date, no como
+ * string: concatenarla directamente produciria
+ * "Mon Sep 07 2026 …T08:00:00-05:00".
+ */
+function toDateOnly(v) {
+  if (v instanceof Date) {
+    // Se usa UTC para que la fecha no se desplace por la zona horaria local.
+    return v.toISOString().slice(0, 10);
+  }
+  const s = String(v).trim();
+  const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (!m) throw new Error(`publishedAt no es una fecha valida: "${s}"`);
+  return m[1];
+}
+
 async function groq(query, params = {}) {
   return client.fetch(query, params);
 }
@@ -185,7 +203,7 @@ const run = async () => {
     author: { _type: 'reference', _ref: authorId },
     category: { _type: 'reference', _ref: categoryId },
     // El campo es `datetime`: una fecha suelta lo rompe.
-    publishedAt: `${fm.publishedAt}T08:00:00-05:00`,
+    publishedAt: `${toDateOnly(fm.publishedAt)}T08:00:00-05:00`,
     readingTimeMinutes: Math.ceil(words / 200),
     keywords: [fm.keyword, ...(fm.secondaryKeywords || [])].filter(Boolean),
     body: bodyBlocks,

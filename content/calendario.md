@@ -6,7 +6,7 @@ Los comandos actualizan la fila automáticamente. El slug se fija al correr `/in
 
 | Sem | Cluster | Título de trabajo | Keyword | Tipo | Estado | Slug |
 |---|---|---|---|---|---|---|
-| 1 | ISO | Certificación ISO 9001 en Panamá: costos, plazos y pasos | certificación ISO 9001 Panamá | pillar | pendiente | `certificacion-iso-9001-panama-costos-plazos` |
+| 1 | ISO | Certificación ISO 9001 en Panamá: costos, plazos y pasos | certificación ISO 9001 Panamá | pillar | PR | `certificacion-iso-9001-panama-costos-plazos` |
 | 2 | BPM | 7 señales de que tu empresa necesita optimizar procesos | optimización de procesos Panamá | pillar | pendiente | |
 | 3 | Riesgo | Gobierno corporativo bancario: qué exige el Acuerdo 5-2011 | gobierno corporativo Panamá | cluster | pendiente | |
 | 4 | PMO | Cómo implementar una PMO en 90 días | implementación PMO Panamá | pillar | pendiente | |
