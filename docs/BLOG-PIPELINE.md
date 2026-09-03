@@ -467,6 +467,41 @@ funciona en Vercel, y queda fuera del alcance del pipeline del blog.
 
 ---
 
+## 12 ter. Bug de pérdida de imagen, corregido
+
+Al publicar el primer artículo, la imagen se subió **desde el Studio**, no desde
+el frontmatter. El Markdown seguía con `heroImage: ""`.
+
+Como el push usa `createOrReplace`, que reemplaza el documento entero, el
+siguiente empujón de ese artículo habría creado un borrador **sin `heroImage`**.
+Al publicarlo, la imagen se habría perdido sin aviso.
+
+### Arreglo
+
+Cuando el frontmatter no trae imagen, el script lee el documento existente
+—borrador o publicado— y **conserva su `heroImage`**.
+
+El criterio de diseño: **el Studio es la fuente de verdad para las imágenes**. El
+Markdown puede aportar una, nunca quitarla. Eso encaja con cómo se trabaja en la
+práctica: los artículos se escriben en el repositorio y las imágenes se eligen
+en el Studio.
+
+Verificado: re-empujar el artículo publicado produce un borrador que mantiene
+`image-124b1b08…-1536x1024-webp`.
+
+### Ejecución manual del workflow
+
+Se añadió `workflow_dispatch` con un input opcional `file`. Desde la pestaña
+**Actions** → *Blog · push de borradores a Sanity* → **Run workflow** se puede:
+
+- dejar el campo vacío para re-empujar todos los artículos, o
+- indicar una ruta concreta, p. ej. `content/posts/bpmn-como-mapear-un-proceso.md`.
+
+Sirve para probar el workflow sin tener que tocar un artículo, y para
+re-empujar uno cuando haga falta.
+
+---
+
 ## 13. `TODO_EDWIN` — pipeline
 
 1. **Rotar `SANITY_API_WRITE_TOKEN`** (§10).
