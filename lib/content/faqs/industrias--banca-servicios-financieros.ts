@@ -8,8 +8,8 @@ export const faqs: FaqEntry[] = [
       en: "Does Alternative have specific experience in the financial sector or is it generic consulting?",
     },
     answer: {
-      es: "Experiencia específica de 10+ años en bancos, cooperativas y aseguradoras en Panamá y Centroamérica. Conocemos regulación SBP, hemos implementado ISO 9001 en instituciones financieras, gestionado proyectos de core bancario.",
-      en: "Specific experience of 10+ years in banks, cooperatives and insurers in Panama and Central America. We know SBP regulation, have implemented ISO 9001 in financial institutions, managed core banking projects.",
+      es: "Experiencia específica de 15+ años en bancos, cooperativas y aseguradoras en Panamá y Centroamérica. Conocemos regulación SBP, hemos implementado ISO 9001 en instituciones financieras, gestionado proyectos de core bancario.",
+      en: "Specific experience of 15+ years in banks, cooperatives and insurers in Panama and Central America. We know SBP regulation, have implemented ISO 9001 in financial institutions, managed core banking projects.",
     },
   },
   {

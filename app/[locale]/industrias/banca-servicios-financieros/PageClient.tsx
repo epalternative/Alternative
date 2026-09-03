@@ -428,8 +428,8 @@ export default function BancaServiciosFinancierosPage() {
               {/* Subheadline */}
               <p className="text-lg md:text-xl text-azul-marino/80 mb-8 leading-relaxed">
                 {isEs 
-                  ? 'Alternative tiene más de 10 años ejecutando proyectos en instituciones financieras en Panamá y Centroamérica. Entendemos las complejidades del sector regulado: cumplimiento estricto de normativas SBP, procesos core bancarios críticos que no pueden fallar, requerimientos de auditoría y trazabilidad.'
-                  : 'Alternative has more than 10 years executing projects in financial institutions in Panama and Central America. We understand the complexities of the regulated sector: strict SBP regulation compliance, critical core banking processes that cannot fail, audit and traceability requirements.'}
+                  ? 'Alternative tiene más de 15 años ejecutando proyectos en instituciones financieras en Panamá y Centroamérica. Entendemos las complejidades del sector regulado: cumplimiento estricto de normativas SBP, procesos core bancarios críticos que no pueden fallar, requerimientos de auditoría y trazabilidad.'
+                  : 'Alternative has more than 15 years executing projects in financial institutions in Panama and Central America. We understand the complexities of the regulated sector: strict SBP regulation compliance, critical core banking processes that cannot fail, audit and traceability requirements.'}
               </p>
 
               {/* CTAs */}
@@ -571,8 +571,8 @@ export default function BancaServiciosFinancierosPage() {
             <div className="space-y-4 text-azul-marino/70 leading-relaxed mb-8">
               <p>
                 {isEs 
-                  ? 'Alternative tiene más de 10 años ejecutando proyectos en instituciones financieras en Panamá y Centroamérica. Entendemos las complejidades del sector regulado: cumplimiento estricto de normativas SBP, procesos core bancarios críticos que no pueden fallar, requerimientos de auditoría y trazabilidad, presión por eficiencia operativa vs inversión en cumplimiento, y la necesidad de equilibrar innovación digital con gestión de riesgos.'
-                  : 'Alternative has more than 10 years executing projects in financial institutions in Panama and Central America. We understand the complexities of the regulated sector: strict SBP regulation compliance, critical core banking processes that cannot fail, audit and traceability requirements, pressure for operational efficiency vs compliance investment, and the need to balance digital innovation with risk management.'}
+                  ? 'Alternative tiene más de 15 años ejecutando proyectos en instituciones financieras en Panamá y Centroamérica. Entendemos las complejidades del sector regulado: cumplimiento estricto de normativas SBP, procesos core bancarios críticos que no pueden fallar, requerimientos de auditoría y trazabilidad, presión por eficiencia operativa vs inversión en cumplimiento, y la necesidad de equilibrar innovación digital con gestión de riesgos.'
+                  : 'Alternative has more than 15 years executing projects in financial institutions in Panama and Central America. We understand the complexities of the regulated sector: strict SBP regulation compliance, critical core banking processes that cannot fail, audit and traceability requirements, pressure for operational efficiency vs compliance investment, and the need to balance digital innovation with risk management.'}
               </p>
               <p>
                 {isEs 

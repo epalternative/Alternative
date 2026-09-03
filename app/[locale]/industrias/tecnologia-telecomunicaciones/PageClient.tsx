@@ -210,8 +210,8 @@ export default function TecnologiaTelecomunicacionesPage() {
               </h1>
               <p className="text-lg md:text-xl text-azul-marino/80 mb-8 leading-relaxed">
                 {isEs
-                  ? 'Scrum Masters certificados, Project Managers para implementaciones tecnológicas, desarrollo de software, integración de sistemas. 10+ años gestionando proyectos tech complejos con metodologías ágiles.'
-                  : 'Certified Scrum Masters, project managers for technology rollouts, software development and system integration. 10+ years managing complex tech projects with agile methodologies.'}
+                  ? 'Scrum Masters certificados, Project Managers para implementaciones tecnológicas, desarrollo de software, integración de sistemas. 15+ años gestionando proyectos tech complejos con metodologías ágiles.'
+                  : 'Certified Scrum Masters, project managers for technology rollouts, software development and system integration. 15+ years managing complex tech projects with agile methodologies.'}
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
                 <Link

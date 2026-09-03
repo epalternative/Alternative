@@ -607,8 +607,8 @@ export const ROUTES: RouteMeta[] = [
       en: 'Banking Consulting in Panama | Processes, SBP and PMO',
     },
     description: {
-      es: 'Más de 10 años ejecutando proyectos en instituciones financieras de Panamá y Centroamérica: normativa SBP, procesos core, auditoría y trazabilidad.',
-      en: 'Over 10 years delivering projects for financial institutions in Panama and Central America: SBP regulation, core processes, audit and traceability.',
+      es: 'Más de 15 años ejecutando proyectos en instituciones financieras de Panamá y Centroamérica: normativa SBP, procesos core, auditoría y trazabilidad.',
+      en: 'Over 15 years delivering projects for financial institutions in Panama and Central America: SBP regulation, core processes, audit and traceability.',
     },
     keyword: { es: 'consultoría bancaria', en: 'banking consulting' },
     updatedAt: '2026-02-02',
@@ -726,8 +726,8 @@ export const ROUTES: RouteMeta[] = [
       en: 'Technology and Telecom Consulting in Panama | Agile PMs',
     },
     description: {
-      es: 'Scrum Masters certificados y Project Managers para implementaciones tecnológicas, desarrollo e integración. 10+ años en proyectos tech con metodologías ágiles.',
-      en: 'Certified Scrum Masters and Project Managers for technology rollouts, development and integration. 10+ years on complex tech projects with agile methods.',
+      es: 'Scrum Masters certificados y Project Managers para implementaciones tecnológicas, desarrollo e integración. 15+ años en proyectos tech con metodologías ágiles.',
+      en: 'Certified Scrum Masters and Project Managers for technology rollouts, development and integration. 15+ years on complex tech projects with agile methods.',
     },
     keyword: { es: 'consultoría tecnología telecomunicaciones', en: 'technology telecom consulting' },
     updatedAt: '2026-02-02',

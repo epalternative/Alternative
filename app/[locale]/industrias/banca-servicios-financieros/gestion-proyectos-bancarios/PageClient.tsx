@@ -354,7 +354,7 @@ export default function GestionProyectosBancariosPage() {
                   <div className="space-y-4">
                     {[
                       { label: isEs ? 'PMP® Certificado' : 'PMP® Certified', icon: Target, value: '100%' },
-                      { label: isEs ? 'Experiencia Banca' : 'Banking Experience', icon: Clock, value: '10+ años' },
+                      { label: isEs ? 'Experiencia Banca' : 'Banking Experience', icon: Clock, value: isEs ? '15+ años' : '15+ years' },
                       { label: isEs ? 'Proyectos Exitosos' : 'Successful Projects', icon: CheckCircle2, value: '95%' }
                     ].map((item, idx) => (
                       <div key={idx} className="bg-turquesa/10 rounded-xl p-4 border border-turquesa/20">
